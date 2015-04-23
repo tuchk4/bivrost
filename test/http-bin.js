@@ -1,6 +1,6 @@
 import axios from 'axios';
 import HttpAdapterAxios from '../http/adapter/axios';
-import Api from '../http/Api';
+import Api from '../http/api';
 
 const HttpBin = Api.extend({
   base: 'http://httpbin.org',
