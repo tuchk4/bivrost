@@ -2,31 +2,50 @@ import deepExtend from '../util/deep-extend';
 import transpose from '../util/transpose';
 import SourceMethod from './source-method';
 
-function makeDs(config = {}) {
+
+function protoReduce(obj, callback, state) {
+  let cur = obj;
+  
+  do {
+    state = callback(state, cur);
+    cur = cur.__proto__;
+  } while (cur);
+
+  return state;
+}
+
+function mergeResourceConfigs(obj) {
+  function add(state, obj) {
+    if(obj.hasOwnProperty('createResource')) {
+      return deepExtend(state, obj.createResource.call(this));
+    }
+    return state;
+  }
+  return protoReduce(obj, add, {});
+}
+
+
+function buildResource(config) {
   var configByMethod = transpose(config);
+  let resource = {};
 
-  var DS = function(options = {}) {
-    let source = {options};
+  Object.keys(configByMethod)
+    .forEach((methodName) => {
+      let methodConf = configByMethod[methodName];
+      if (methodConf.props) {
+        resource[methodName] = methodConf.props;
+      } else {
+        resource[methodName] = SourceMethod(configByMethod[methodName]);
+      }
+    });
+  return resource;
+}
 
-    Object.keys(configByMethod)
-      .forEach((methodName) => {
-        let methodConf = configByMethod[methodName];
-        if (methodConf.props) {
-          source[methodName] = methodConf.props;
-        } else {
-          source[methodName] = SourceMethod(configByMethod[methodName]);
-        }
-      });
-    return source;
-  };
 
-  DS.extend = function(newConfig) {
-    return makeDs(deepExtend(config, newConfig));
-  };
-
-  return DS;
-};
-
-const DS = makeDs();
-
-export default DS;
+export default class DataSource {
+  constructor(options={}) {
+    this.options = options;
+    let resourceConf = mergeResourceConfigs(this);
+    this.resource = buildResource(resourceConf);
+  }
+}

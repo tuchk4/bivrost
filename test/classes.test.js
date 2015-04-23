@@ -1,6 +1,6 @@
 import assert from 'assert';
 import { log, errorLog } from './util';
-import DataSource from './data/source2';
+import DataSource from '../data/source';
 import HttpBin from './http-bin';
 
 
@@ -16,17 +16,6 @@ class DS_A extends DataSource {
 
   createResource() {
     return {
-      requestStruct: {
-        post: t.struct({
-          Foo: t.Num,
-          Bar: t.Num,
-        }),
-      },
-      responseStruct: {
-        post: t.struct({
-
-        }),
-      },
       serialize: {
         post: req => ({foo: req.Foo, bar: req.Bar}),
         get:  req => ({foo: req.Foo, bar: req.Bar}),
@@ -58,7 +47,6 @@ class DS_C extends DS_B {
     }
   }
 }
-
 
 //--
 
