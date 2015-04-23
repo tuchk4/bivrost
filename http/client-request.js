@@ -1,4 +1,3 @@
-import http from 'axios';
 import RequestTemplate from './request-template';
 import PromiseDeduplicator from '../data/promise-deduplicator';
 
@@ -6,6 +5,7 @@ export default class ClientRequest {
   constructor(template, options = {}) {
     this.requestTemplate = new RequestTemplate(template);
     this.options = Object.assign({}, this.getDefaultOptions(), options);
+    this.http = options.adapter;
   }
 
   execute(params) {
@@ -13,15 +13,7 @@ export default class ClientRequest {
 
     var url = buildUrl(this.options.base, this.options.prefix, request.path);
 
-    var promiseCreator = ()=>
-      http({
-        url: url,
-        method: request.verb,
-        params: request.query,
-        data: request.body,
-        responseType: 'text',
-        withCredentials: true
-      });
+    var promiseCreator = () => this.http(url, request);
 
     if (request.verb === 'GET') {
       var dedupKey = JSON.stringify([

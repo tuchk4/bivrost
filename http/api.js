@@ -14,7 +14,7 @@ function Api(template, options = {}) {
   return fn;
 }
 
-Api.withDefaults = function (defaultOptions) {
+Api.extend = function (defaultOptions) {
   return (url, options)=>Api(url, Object.assign({}, defaultOptions, options));
 };
 
