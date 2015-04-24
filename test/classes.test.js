@@ -14,7 +14,7 @@ class DS_A extends DataSource {
     return this.resource.get(params);
   }
 
-  createResource() {
+  resourceProperties() {
     return {
       serialize: {
         post: req => ({foo: req.Foo, bar: req.Bar}),
@@ -38,7 +38,7 @@ class DS_B extends DS_A {
 }
 
 class DS_C extends DS_B {
-  createResource() {
+  resourceProperties() {
     return {
       api: {
         post: HttpBin('POST /post'),

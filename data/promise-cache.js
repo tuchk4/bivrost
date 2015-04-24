@@ -1,13 +1,4 @@
-import t from 'tcomb';
-
-export default function PromiseCache(cache, key, ttl, fn) {
-  if (!t.Str.is(key)) {
-    throw new TypeError('key');
-  }
-  if (!t.Num.is(ttl)) {
-    throw new TypeError('ttl');
-  }
-
+export default function PromiseCache(cache, key, fn, ttl) {
   var promise = new Promise(
     function(resolve, reject) {
       var previouslyCached = cache.get(key);

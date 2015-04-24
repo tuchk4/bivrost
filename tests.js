@@ -1,3 +1,4 @@
 console.log('Compiling...');
 require('babel/register');
-require('./test/classes.test.js');
+require('./test/list.test.js');
+// require('./test/classes.test.js');
