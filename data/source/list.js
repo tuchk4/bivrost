@@ -3,11 +3,11 @@ import DataSource from '../source';
 export default class DataSourceList extends DataSource {
 
   getList(params) {
-    return this.invokeResourceMethod('getList', params);
+    return this.invokeMethod('getList', params);
   }
 
   getItem(params) {
-    return this.invokeResourceMethod('getItem', params);
+    return this.invokeMethod('getItem', params);
   }
 
   getItemById(id) {

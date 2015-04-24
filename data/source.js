@@ -1,6 +1,5 @@
 import deepExtend from '../util/deep-extend';
 import transpose from '../util/transpose';
-import SourceMethod from './source-method';
 import Cache from './cache';
 import PromiseCache from './promise-cache';
 
@@ -37,20 +36,20 @@ function mergeConfigs(methodName, obj, deep) {
   return protoReduce(obj, add, {});
 }
 
-function buildResource(configByMethod) {
-  let resource = {};
+// function buildResource(configByMethod) {
+//   let resource = {};
 
-  Object.keys(configByMethod)
-    .forEach((methodName) => {
-      let methodConf = configByMethod[methodName];
-      if (methodConf.props) {
-        resource[methodName] = methodConf.props;
-      } else {
-        resource[methodName] = SourceMethod(configByMethod[methodName]);
-      }
-    });
-  return resource;
-}
+//   Object.keys(configByMethod)
+//     .forEach((methodName) => {
+//       let methodConf = configByMethod[methodName];
+//       if (methodConf.props) {
+//         resource[methodName] = methodConf.props;
+//       } else {
+//         resource[methodName] = SourceMethod(configByMethod[methodName]);
+//       }
+//     });
+//   return resource;
+// }
 
 function buildCaches(configByMethod) {
   let caches = {};
@@ -71,9 +70,7 @@ export default class DataSource {
 
     this.properties = mergeConfigs('properties', this, false);
     this.methodProperties = transpose(mergeConfigs('methodProperties', this, true));
-    this.resourceProperties = transpose(mergeConfigs('resourceProperties', this, true));
 
-    this.resource = buildResource(this.resourceProperties);
     if(this.getProperty('enableCache')) {
       this.caches = buildCaches(this.methodProperties);
     } else {
@@ -87,13 +84,31 @@ export default class DataSource {
     }
   }
 
-  invokeResourceMethod(methodName, params) {
+  invokeMethod(methodName, params) {
     params = this.checkInputType(methodName, params);
 
-    return this.invokeCached(
-        methodName,
-        this.resource[methodName].bind(this.resource),
-        params);
+    let func = (params) => {
+      return Promise.resolve(this.serialize(methodName, params))
+        .then(this.invokeApi.bind(this, methodName))
+        .then(this.unserialize.bind(this, methodName)) 
+    }
+
+    return this.invokeCached(methodName, func, params);
+  }
+
+  serialize(methodName, params) {
+    var f = this.getMethodProperty(methodName, 'serialize');
+    return f ? f.call(this, params) : params;
+  }
+
+  unserialize(methodName, params) {
+    var f = this.getMethodProperty(methodName, 'unserialize');
+    return f ? f.call(this, params) : params;
+  }
+
+  invokeApi(methodName, params) {
+    var f = this.getMethodProperty(methodName, 'api');
+    return f ? f.call(this, params) : params;
   }
 
   invokeCached(methodName, fn, params) {
@@ -106,7 +121,7 @@ export default class DataSource {
   }
 
   checkInputType(methodName, params) {
-    let struct = this.getResourceProperty(methodName, 'requestStruct');
+    let struct = this.getMethodProperty(methodName, 'requestStruct');
     if(struct) {
       return struct(params);
     }
@@ -131,13 +146,5 @@ export default class DataSource {
       return undefined;
     }
     return methodProperties[key];
-  }
-
-  getResourceProperty(method, key) {
-    let resourceProperties = this.resourceProperties[method];
-    if(!resourceProperties) {
-      return undefined;
-    }
-    return resourceProperties[key];
   }
 }

@@ -1,5 +1,4 @@
 import assert from 'assert';
-import { log, errorLog } from './util';
 import DataSourceList from '../data/source/list';
 
 const mockItems = [{
@@ -28,6 +27,13 @@ class DS extends DataSourceList {
 
   methodProperties() {
     return {
+      api: {
+        getList: MockApiGetList,
+        getItem: MockApiGetItem,
+      },
+      unserialize: {
+        getList: res => res.items
+      },
       cache: {
         getList: {
           ttl: 60000
@@ -38,25 +44,57 @@ class DS extends DataSourceList {
       }
     }
   }
-
-  resourceProperties() {
-    return {
-      api: {
-        getList: MockableIO('GET /items'),
-        getItem: MockApiGetItem,
-      },
-      unserialize: {
-        getList: res => res.items
-      }
-    };
-  }
 }
 
-var ds = new DS();
 
-// ds.getItemById(2)
-//   .then(log, errorLog)
-//   .then(()=>log(ds));
+describe('List', () => {
+  it('should work', (done) => {
+    var ds = new DS();
+    ds.getItemById(2)
+      .then((res) => {
+        assert.deepEqual(res, {
+          id:2,
+          text: 'two'
+        });
+      })
+      .then(() => done(), done);
+  });
+});
 
+describe('Cache', () => {
+  it('should call api methods only once', (done) => {
+      function spy(fn) {
+        let sp = function (params) {
+          sp.log.push(params);
+          return fn(params);
+        };
+        sp.log = [];
+        return sp;
+      }
+      let spied_MockApiGetItem = spy(MockApiGetItem);
 
-ds.getList().then(log, errorLog);
+      class DS extends DataSourceList {
+        methodProperties() {
+          return {
+            api: {
+              getItem: spied_MockApiGetItem
+            }
+          };
+        }
+      }
+      var ds = new DS();
+
+      ds.getItemById(1)
+        .then(()=>ds.getItemById(2))
+        .then(()=>ds.getItemById(1))
+        .then(()=>{
+          assert.deepEqual(spied_MockApiGetItem.log, [{
+            id: 1
+          }, {
+            id: 2
+          }]);
+        })
+        .then(() => done(), done);
+  });
+});
+
