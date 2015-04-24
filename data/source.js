@@ -91,6 +91,7 @@ export default class DataSource {
       return Promise.resolve(this.serialize(methodName, params))
         .then(this.invokeApi.bind(this, methodName))
         .then(this.unserialize.bind(this, methodName)) 
+        .then(this.checkOutputType.bind(this, methodName));
     }
 
     return this.invokeCached(methodName, func, params);
@@ -122,6 +123,14 @@ export default class DataSource {
 
   checkInputType(methodName, params) {
     let struct = this.getMethodProperty(methodName, 'requestStruct');
+    if(struct) {
+      return struct(params);
+    }
+    return params;
+  }
+
+  checkOutputType(methodName, params) {
+    let struct = this.getMethodProperty(methodName, 'responseStruct');
     if(struct) {
       return struct(params);
     }
