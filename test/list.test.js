@@ -22,28 +22,31 @@ function MockApiGetItem(filters) {
 class DS extends DataSourceList {
   properties() {
     return {
-      idField: 'id'
+      idField: 'id',
     };
   }
 
-  // methodProperties() {
-  //   return {
-  //     cache: {
-  //       getList: {
-  //         ttl: 60000
-  //       },
-  //       getItem: {
-  //         ttl: 60000
-  //       }
-  //     }
-  //   }
-  // }
+  methodProperties() {
+    return {
+      cache: {
+        getList: {
+          ttl: 60000
+        },
+        getItem: {
+          ttl: 60000
+        }
+      }
+    }
+  }
 
   resourceProperties() {
     return {
       api: {
-        getList: MockApiGetList,
+        getList: MockableIO('GET /items'),
         getItem: MockApiGetItem,
+      },
+      unserialize: {
+        getList: res => res.items
       }
     };
   }
@@ -51,8 +54,9 @@ class DS extends DataSourceList {
 
 var ds = new DS();
 
-ds.getItemById(2)
-  .then(log, errorLog)
-  .then(()=>log(ds));
+// ds.getItemById(2)
+//   .then(log, errorLog)
+//   .then(()=>log(ds));
 
 
+ds.getList().then(log, errorLog);

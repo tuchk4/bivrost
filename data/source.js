@@ -87,7 +87,9 @@ export default class DataSource {
     }
   }
 
-  invokeCachedResourceMethod(methodName, params) {
+  invokeResourceMethod(methodName, params) {
+    params = this.checkInputType(methodName, params);
+
     return this.invokeCached(
         methodName,
         this.resource[methodName].bind(this.resource),
@@ -101,6 +103,14 @@ export default class DataSource {
     }
     var key = this.getCacheKey(methodName, params);
     return PromiseCache(cache, key, ()=>fn(params));
+  }
+
+  checkInputType(methodName, params) {
+    let struct = this.getResourceProperty(methodName, 'requestStruct');
+    if(struct) {
+      return struct(params);
+    }
+    return params;
   }
 
   getCacheKey(method, params) {
@@ -121,5 +131,13 @@ export default class DataSource {
       return undefined;
     }
     return methodProperties[key];
+  }
+
+  getResourceProperty(method, key) {
+    let resourceProperties = this.resourceProperties[method];
+    if(!resourceProperties) {
+      return undefined;
+    }
+    return resourceProperties[key];
   }
 }
