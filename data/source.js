@@ -147,4 +147,17 @@ export default class DataSource {
     }
     return methodProperties[key];
   }
+
+  clearCache(methodName) {
+    let cache = this.caches(methodName);
+    if(cache) {
+      cache.clear();
+    }
+  }
+
+  clearAllCaches() {
+    Object.keys(this.caches).forEach((methodName) => {
+      this.caches[methodName].clear();
+    });
+  }
 }
