@@ -90,7 +90,7 @@ export default class DataSource {
     let func = (params) => {
       return Promise.resolve(this.serialize(methodName, params))
         .then(this.invokeApi.bind(this, methodName))
-        .then(this.unserialize.bind(this, methodName)) 
+        .then(this.unserialize.bind(this, methodName, params)) 
         .then(this.checkOutputType.bind(this, methodName));
     }
 
@@ -102,9 +102,9 @@ export default class DataSource {
     return f ? f.call(this, params) : params;
   }
 
-  unserialize(methodName, params) {
+  unserialize(methodName, params, output) {
     var f = this.getMethodProperty(methodName, 'unserialize');
-    return f ? f.call(this, params) : params;
+    return f ? f.call(this, output, params) : output;
   }
 
   invokeApi(methodName, params) {
