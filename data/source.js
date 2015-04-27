@@ -15,7 +15,7 @@ function protoReduce(obj, callback, state) {
 
   for (var i = lifo.length - 1; i >= 0; i--) {
     let [callback, cur] = lifo[i];
-    state = callback(state, cur);
+    state = callback.call(obj, state, cur);
   }
 
   return state;
@@ -129,12 +129,12 @@ export default class DataSource {
     return params;
   }
 
-  checkOutputType(methodName, params) {
+  checkOutputType(methodName, response) {
     let struct = this.getMethodProperty(methodName, 'responseStruct');
     if(struct) {
-      return struct(params);
+      return struct(response);
     }
-    return params;
+    return response;
   }
 
   getCacheKey(method, params) {

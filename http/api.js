@@ -15,7 +15,8 @@ function Api(template, options = {}) {
 }
 
 Api.extend = function (defaultOptions) {
-  return (url, options)=>Api(url, Object.assign({}, defaultOptions, options));
+  return (url, options) =>
+    Api(url, Object.assign({}, defaultOptions || {}, options || {}));
 };
 
 export default Api;

@@ -12,7 +12,7 @@ export default function deepExtend(source, extensions) {
   let allKeys = sourceKeys.concat(restExtKeys);
 
   return allKeys.reduce((result, key)=>{
-    result[key] = Object.assign({}, source[key], extensions[key]);
+    result[key] = Object.assign({}, source[key] || {}, extensions[key] || {});
     return result;
   }, {});
 

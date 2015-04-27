@@ -11,7 +11,7 @@ var cache = new Cache();
  */
 
 
-export default function PromiseDeduplicator(key, fnCreatePromise, ttl=60000) {
+export default function PromiseDeduplicator(key, fnCreatePromise, ttl=0) {
   var cached = cache.get(key);
   if (!cached) {
     var promise = fnCreatePromise().then(
@@ -20,7 +20,7 @@ export default function PromiseDeduplicator(key, fnCreatePromise, ttl=60000) {
       }, (error) => {
         return Promise.reject(error);
       }
-    )
+    );
     cache.put(key, promise, ttl);
     return promise;
   } else {

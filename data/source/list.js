@@ -2,24 +2,33 @@ import DataSource from '../source';
 
 export default class DataSourceList extends DataSource {
 
-  getList(params) {
+  getList(params = {}) {
     return this.invokeMethod('getList', params);
   }
 
-  getItem(params) {
+  getItem(params = {}) {
     return this.invokeMethod('getItem', params);
   }
 
   getItemById(id) {
-    let idField = this.getProperty('idField');
+    let idField = this.getIdField();
     return this.getItem({
       [idField]: id
     });
   }
 
+  getIdField() {
+    return this.getProperty('idField');
+  }
+
+  getIdFieldPlurals() {
+    return this.getProperty('idFieldPlurals');
+  }
+
   properties() {
     return {
       idField: 'id',
+      idFieldPlurals: 'ids',
       enableCache: true,
     }
   }
