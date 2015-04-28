@@ -36,27 +36,21 @@ function mergeConfigs(methodName, obj, deep) {
   return protoReduce(obj, add, {});
 }
 
-// function buildResource(configByMethod) {
-//   let resource = {};
+function makeCache(commonOptions, methodOptions) {
+  let options = Object.assign({}, options || {}, methodOptions || {});
+  let enabled = !!options.enabled;
+  delete options.enabled;
+  return {options, enabled};
+}
 
-//   Object.keys(configByMethod)
-//     .forEach((methodName) => {
-//       let methodConf = configByMethod[methodName];
-//       if (methodConf.props) {
-//         resource[methodName] = methodConf.props;
-//       } else {
-//         resource[methodName] = SourceMethod(configByMethod[methodName]);
-//       }
-//     });
-//   return resource;
-// }
-
-function buildCaches(configByMethod) {
+function buildCaches(properties, methodProperties) {
   let caches = {};
-  Object.keys(configByMethod).forEach(key => {
-    var cacheConf = configByMethod[key].cache;
-    if(cacheConf) {
-      caches[key] = new Cache(cacheConf);
+  let commonOptions = properties.cache;
+  Object.keys(methodProperties).forEach(key => {
+    let methodOptions = methodProperties[key].cache;
+    let cacheConf = makeCache(commonOptions, methodOptions);
+    if(cacheConf.enabled) {
+      caches[key] = new Cache(cacheConf.options);
     }
   });
 
@@ -71,17 +65,15 @@ export default class DataSource {
     this.properties = mergeConfigs('properties', this, false);
     this.methodProperties = transpose(mergeConfigs('methodProperties', this, true));
 
-    if(this.getProperty('enableCache')) {
-      this.caches = buildCaches(this.methodProperties);
-    } else {
-      this.caches = {};
-    }
+    this.caches = buildCaches(this.properties, this.methodProperties);
   }
 
   properties() {
     return {
-      enableCache: false
-    }
+      cache: {
+        enabled: false,
+      },
+    };
   }
 
   invokeMethod(methodName, params) {
@@ -92,7 +84,7 @@ export default class DataSource {
         .then(this.invokeApi.bind(this, methodName))
         .then(this.unserialize.bind(this, methodName, params)) 
         .then(this.checkOutputType.bind(this, methodName));
-    }
+    };
 
     return this.invokeCached(methodName, func, params);
   }

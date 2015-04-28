@@ -84,6 +84,8 @@ describe('Cache', () => {
       }
       var ds = new DS();
 
+      assert.deepEqual(['getList', 'getItem'], Object.keys(ds.caches));
+
       ds.getItemById(1)
         .then(()=>ds.getItemById(2))
         .then(()=>ds.getItemById(1))

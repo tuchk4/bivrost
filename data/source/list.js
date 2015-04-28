@@ -29,7 +29,6 @@ export default class DataSourceList extends DataSource {
     return {
       idField: 'id',
       idFieldPlurals: 'ids',
-      enableCache: true,
     }
   }
 
@@ -37,10 +36,10 @@ export default class DataSourceList extends DataSource {
     return {
       cache: {
         getList: {
-          ttl: 60000
+          enabled: true,
         },
         getItem: {
-          ttl: 60000
+          enabled: true,
         },
       }
     };
