@@ -37,20 +37,29 @@ function mergeConfigs(methodName, obj, deep) {
 }
 
 function makeCache(commonOptions, methodOptions) {
-  let options = Object.assign({}, options || {}, methodOptions || {});
+  let options = Object.assign({}, commonOptions || {}, methodOptions || {});
   let enabled = !!options.enabled;
+  let isGlobal = !!options.isGlobal;
   delete options.enabled;
-  return {options, enabled};
+  delete options.isGlobal;
+  return {options, enabled, isGlobal};
 }
 
-function buildCaches(properties, methodProperties) {
+function buildCaches(constructor, properties, methodProperties) {
   let caches = {};
   let commonOptions = properties.cache;
   Object.keys(methodProperties).forEach(key => {
     let methodOptions = methodProperties[key].cache;
     let cacheConf = makeCache(commonOptions, methodOptions);
     if(cacheConf.enabled) {
-      caches[key] = new Cache(cacheConf.options);
+      if(cacheConf.isGlobal) {
+        if(!constructor.caches[key]) {
+          constructor.caches[key] = new Cache(cacheConf.options);
+        }
+        caches[key] = constructor.caches[key];
+      } else {
+        caches[key] = new Cache(cacheConf.options);
+      }
     }
   });
 
@@ -65,7 +74,11 @@ export default class DataSource {
     this.properties = mergeConfigs('properties', this, false);
     this.methodProperties = transpose(mergeConfigs('methodProperties', this, true));
 
-    this.caches = buildCaches(this.properties, this.methodProperties);
+    var constructor = this.constructor;
+    if(!constructor.caches) {
+      constructor.caches = {};
+    }
+    this.caches = buildCaches(this.constructor, this.properties, this.methodProperties);
   }
 
   properties() {
