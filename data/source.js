@@ -93,17 +93,29 @@ export default class DataSource {
     params = this.checkInputType(methodName, params);
 
     let func = (params) => {
-      return Promise.resolve(this.serialize(methodName, params))
+      return Promise.resolve(this.prepare(methodName, params))
+        .then(this.serialize.bind(this, methodName)) 
         .then(this.invokeApi.bind(this, methodName))
         .then(this.unserialize.bind(this, methodName, params)) 
+        .then(this.process.bind(this, methodName, params)) 
         .then(this.checkOutputType.bind(this, methodName));
     };
 
     return this.invokeCached(methodName, func, params);
   }
 
+  prepare(methodName, params) {
+    var f = this.getMethodProperty(methodName, 'prepare');
+    return f ? f.call(this, params) : params;
+  }
+
   serialize(methodName, params) {
     var f = this.getMethodProperty(methodName, 'serialize');
+    return f ? f.call(this, params) : params;
+  }
+
+  invokeApi(methodName, params) {
+    var f = this.getMethodProperty(methodName, 'api');
     return f ? f.call(this, params) : params;
   }
 
@@ -112,10 +124,11 @@ export default class DataSource {
     return f ? f.call(this, output, params) : output;
   }
 
-  invokeApi(methodName, params) {
-    var f = this.getMethodProperty(methodName, 'api');
-    return f ? f.call(this, params) : params;
+  process(methodName, params, output) {
+    var f = this.getMethodProperty(methodName, 'process');
+    return f ? f.call(this, output, params) : output;
   }
+
 
   invokeCached(methodName, fn, params) {
     var cache = this.caches[methodName];
