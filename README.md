@@ -44,7 +44,8 @@ class People extends DataSource {
 
 let people = new People();
 people.getItem({id: 100})
-  .then((person) => people.update(Object.assign({}, person, {name: 'Jack'})))
+  .then((person) => people.update(Object.assign({}, person, {name: 'Jack'})) )
+  .then(() => people.clearAllCaches() )
   .then(()=>console.log('done'));
 
 ```
