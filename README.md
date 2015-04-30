@@ -12,7 +12,7 @@ Each data-source is ES6 class.
 
 ## Usage
 
-### bivrost/api
+### bivrost/http/api
 
 `Api` is simple HTTP client wrapper that lets us define REST methods in single line of code.
 
