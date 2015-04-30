@@ -1,22 +1,22 @@
-# Bridge (data layer for JS applications)
+# Bivrost (data layer for JS applications)
 
-Bridge allows to organize a simple interface to asyncronous APIs.
+Bivrost allows to organize a simple interface to asyncronous APIs.
 
-The main idea of bridge is grouping several API methods into data-sources.
+The main idea of Bivrost is grouping several API methods into data-sources.
 Each data-source is ES6 class.
 
 ## Installation
 
 ## Usage
 
-### bridge/api
+### bivrost/api
 
 `Api` is simple HTTP client wrapper that lets us define REST methods in single line of code.
 
 ```js
 import axios from 'axios';
-import HttpAdapterAxios from 'bridge/http/adapter/axios';
-import Api from 'bridge/http/api';
+import HttpAdapterAxios from 'bivrost/http/adapter/axios';
+import Api from 'bivrost/http/api';
 
 //setup Api client
 const WeatherApi = Api.extend({
@@ -34,7 +34,7 @@ dailyForecast({q: 'Kiev'})
 
 ```
 
-### bridge/data/source
+### bivrost/data/source
 
 `DataSource` lets us define REST resources declaratively.
 
@@ -52,10 +52,10 @@ Note: type checking plays well with [tcomb](http://gcanti.github.io/tcomb/) runt
 
 In `methodProperties()` we can define any step from this list for any API method.
 
-See [full example](https://github.com/corporateanon/bridge/tree/master/example/weather/index.js)
+See [full example](https://github.com/frankland/bivrost/tree/master/example/weather/index.js)
 
 ```js
-import DataSource from 'bridge/data/source';
+import DataSource from 'bivrost/data/source';
 
 class WeatherDataSource extends DataSource {
   dailyForecast(city) {
