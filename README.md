@@ -48,6 +48,8 @@ By default, every method call passes the following steps:
  * **`process`** — process the request (make high-level transformations)
  * **`outputType`** — type-check the result
 
+Note: type checking plays well with [tcomb](http://gcanti.github.io/tcomb/) runtime type checking library.
+
 In `methodProperties()` we can define any step from this list for any API method.
 
 See [full example](https://github.com/corporateanon/bridge/tree/master/example/weather/index.js)
