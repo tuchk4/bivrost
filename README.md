@@ -9,43 +9,79 @@ Each data-source is ES6 class.
 
 ## Usage
 
-```JS
+### bridge/api
+
+`Api` is simple HTTP client wrapper that lets us define REST methods in single line of code.
+
+```js
+import axios from 'axios';
+import HttpAdapterAxios from 'bridge/http/adapter/axios';
+import Api from 'bridge/http/api';
+
+//setup Api client
+const WeatherApi = Api.extend({
+  base: 'http://api.openweathermap.org',
+  prefix: '/data/2.5/',
+  adapter: HttpAdapterAxios(axios),
+});
+
+//define API method
+const dailyForecast = WeatherApi('GET /forecast/daily');
+
+//call API method
+dailyForecast({q: 'Kiev'})
+  .then((response) => console.log(response));
+
+```
+
+### bridge/data/source
+
+DataSource lets us define REST resources declaratively.
+
+By default, every method call passes the following steps:
+
+ * **`inputType`** — type-check the input params
+ * **`prepare`** — prepare the request (make high-level transformations, e.g., add any kinds of meta-data to the request, etc)
+ * **`serialize`** — convert the request to the format understood by the server
+ * **`api`** — call the API method
+ * **`unserialize`** — convert the server request to the format understood by our application
+ * **`process`** — process the request (make high-level transformations)
+ * **`outputType`** — type-check the result
+
+In `methodProperties()` we can define any step from this list for any API method.
+
+
+```js
 import DataSource from 'bridge/data/source';
 
-class People extends DataSource {
+class WeatherDataSource extends DataSource {
+  dailyForecast(city) {
+    return this.invokeMethod('dailyForecast', {q:city});
+  }
+
   methodProperties() {
     return {
+      //API methods (our interface to the external world):
       api: {
-        getItem: Api('GET /people/:id'),
-        getList: Api('GET /people/'),
-        create : Api('POST /people/'),
-        update : Api('PUT /people/:id'),
+        dailyForecast: WeatherApi('GET /forecast/daily')
       },
-      prepare: {},
-      serialize: {},
-      unserialize: {},
-      process: {},
+      //Type checking:
+      inputType: {
+        dailyForecast: t.struct({q: t.Str}) //input data is checked against tcomb structure
+      },
+      outputType: {
+        dailyForecast: TWeatherForecast //output data is checked against tcomb structure
+      },
+      //Caching:
       cache: {
-        getItem: {
-          enabled: true
-        },
-        getList: {
-          enabled: true
+        dailyForecast: {
+          enabled: true,  //The results of `dailyForecast` method call will be cached
+          ttl: 60 * 60 * 1000, //for an hour.
+          isGlobal: true, //Share the same cache for all instances of WeatherDataSource. (default - no)
         }
-      }
+      },
     };
   }
-  properties() {
-    cache: {
-      ttl: 60000
-    }
-  }
 }
-
-let people = new People();
-people.getItem({id: 100})
-  .then((person) => people.update(Object.assign({}, person, {name: 'Jack'})) )
-  .then(() => people.clearAllCaches() )
-  .then(()=>console.log('done'));
 
 ```
