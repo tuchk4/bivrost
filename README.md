@@ -1,5 +1,8 @@
 # Bivrost (data layer for JS applications)
 
+[![NPM Version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+
 Bivrost allows to organize a simple interface to asyncronous APIs.
 
 The main idea of Bivrost is grouping several API methods into data-sources.
@@ -88,3 +91,10 @@ class WeatherDataSource extends DataSource {
 }
 
 ```
+
+
+
+[npm-image]: https://img.shields.io/npm/v/bivrost.svg
+[npm-url]: https://npmjs.org/package/bivrost
+[travis-image]: https://travis-ci.org/frankland/bivrost.svg?branch=master
+[travis-url]: https://travis-ci.org/frankland/bivrost
