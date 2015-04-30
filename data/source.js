@@ -90,45 +90,26 @@ export default class DataSource {
   }
 
   invokeMethod(methodName, params) {
-    params = this.checkInputType(methodName, params);
+    params = this.runStep(methodName, 'inputType', params);
 
     let func = (params) => {
-      return Promise.resolve(this.prepare(methodName, params))
-        .then(this.serialize.bind(this, methodName)) 
-        .then(this.invokeApi.bind(this, methodName))
-        .then(this.unserialize.bind(this, methodName, params)) 
-        .then(this.process.bind(this, methodName, params)) 
-        .then(this.checkOutputType.bind(this, methodName));
+      return Promise.resolve(this.runStep(methodName, 'prepare', params))
+        .then(this.runStep.bind(this, methodName, 'serialize'))
+        .then(this.runStep.bind(this, methodName, 'api'))
+        .then(this.runStep.bind(this, methodName, 'unserialize', params)) 
+        .then(this.runStep.bind(this, methodName, 'process', params))
+        .then(this.runStep.bind(this, methodName, 'outputType'));
     };
 
     return this.invokeCached(methodName, func, params);
   }
 
-  prepare(methodName, params) {
-    var f = this.getMethodProperty(methodName, 'prepare');
-    return f ? f.call(this, params) : params;
+  runStep(methodName, stepName, ...args) {
+    let inout = args.slice();
+    inout.reverse();
+    var f = this.getMethodProperty(methodName, stepName);
+    return f ? f.apply(this, inout) : inout[0];
   }
-
-  serialize(methodName, params) {
-    var f = this.getMethodProperty(methodName, 'serialize');
-    return f ? f.call(this, params) : params;
-  }
-
-  invokeApi(methodName, params) {
-    var f = this.getMethodProperty(methodName, 'api');
-    return f ? f.call(this, params) : params;
-  }
-
-  unserialize(methodName, params, output) {
-    var f = this.getMethodProperty(methodName, 'unserialize');
-    return f ? f.call(this, output, params) : output;
-  }
-
-  process(methodName, params, output) {
-    var f = this.getMethodProperty(methodName, 'process');
-    return f ? f.call(this, output, params) : output;
-  }
-
 
   invokeCached(methodName, fn, params) {
     var cache = this.caches[methodName];
@@ -137,22 +118,6 @@ export default class DataSource {
     }
     var key = this.getCacheKey(methodName, params);
     return PromiseCache(cache, key, ()=>fn(params));
-  }
-
-  checkInputType(methodName, params) {
-    let struct = this.getMethodProperty(methodName, 'requestStruct');
-    if(struct) {
-      return struct(params);
-    }
-    return params;
-  }
-
-  checkOutputType(methodName, response) {
-    let struct = this.getMethodProperty(methodName, 'responseStruct');
-    if(struct) {
-      return struct(response);
-    }
-    return response;
   }
 
   getCacheKey(method, params) {
