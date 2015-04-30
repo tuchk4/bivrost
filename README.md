@@ -50,6 +50,7 @@ By default, every method call passes the following steps:
 
 In `methodProperties()` we can define any step from this list for any API method.
 
+See [full example](https://github.com/corporateanon/bridge/tree/master/example/weather/index.js)
 
 ```js
 import DataSource from 'bridge/data/source';
