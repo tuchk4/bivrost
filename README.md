@@ -36,7 +36,7 @@ dailyForecast({q: 'Kiev'})
 
 ### bridge/data/source
 
-DataSource lets us define REST resources declaratively.
+`DataSource` lets us define REST resources declaratively.
 
 By default, every method call passes the following steps:
 
