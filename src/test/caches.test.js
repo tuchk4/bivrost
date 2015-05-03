@@ -1,3 +1,4 @@
+import 'babel-core/polyfill';
 import assert from 'assert';
 import DataSource from '../data/source';
 
