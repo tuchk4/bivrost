@@ -55,7 +55,7 @@ Note: type checking plays well with [tcomb](http://gcanti.github.io/tcomb/) runt
 
 In `methodProperties()` we can define any step from this list for any API method.
 
-See [full example](https://github.com/frankland/bivrost/tree/master/example/weather/index.js)
+See [full example](https://github.com/frankland/bivrost/blob/master/src/example/weather/index.js)
 
 ```js
 import DataSource from 'bivrost/data/source';
