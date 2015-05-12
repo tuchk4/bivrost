@@ -1,5 +1,6 @@
 import Cache from './cache';
-var cache = new Cache();
+// var cache = new Cache();
+var map = new Map();
 
 /**
  * If the promise with given `key` is still running, it is returned instead of creating new one.
@@ -11,17 +12,19 @@ var cache = new Cache();
  */
 
 
-export default function PromiseDeduplicator(key, fnCreatePromise, ttl=0) {
-  var cached = cache.get(key);
+export default function PromiseDeduplicator(key, fnCreatePromise) {
+  var cached = map.get(key);
   if (!cached) {
     var promise = fnCreatePromise().then(
       (result) => {
+        map.delete(key);
         return result;
       }, (error) => {
+        map.delete(key);
         return Promise.reject(error);
       }
     );
-    cache.put(key, promise, ttl);
+    map.set(key, promise);
     return promise;
   } else {
     return cached;
