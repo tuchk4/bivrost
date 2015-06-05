@@ -7,7 +7,7 @@ import PromiseCache from './promise-cache';
 function protoReduce(obj, callback, state) {
   let cur = obj;
   let lifo = [];
-
+  
   do {
     lifo.push([callback, cur]);
     cur = cur.__proto__;
@@ -96,13 +96,12 @@ export default class DataSource {
       return Promise.resolve(this.runStep(methodName, 'prepare', params))
         .then(this.runStep.bind(this, methodName, 'serialize'))
         .then(this.runStep.bind(this, methodName, 'api'))
-        .then(this.runStep.bind(this, methodName, 'unserialize', params))
+        .then(this.runStep.bind(this, methodName, 'unserialize', params)) 
         .then(this.runStep.bind(this, methodName, 'process', params))
         .then(this.runStep.bind(this, methodName, 'outputType'));
     };
 
-    var prepared = this.runStep(methodName, 'prepare', params);
-    return this.invokeCached(methodName, func, prepared);
+    return this.invokeCached(methodName, func, params);
   }
 
   runStep(methodName, stepName, ...args) {
