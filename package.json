@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --compilers js:babel/register",
     "prepublish": "./node_modules/.bin/babel -d ./ src/"
   },
   "author": "",

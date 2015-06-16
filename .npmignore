@@ -3,10 +3,4 @@
 /.idea
 /npm-debug.log
 /node_modules
-
-
-/data
-/example
-/http
-/util
-/test
+/test/test-resources/dest
