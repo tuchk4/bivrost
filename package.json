@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel/register",
-    "prepublish": "./node_modules/.bin/babel -d ./ ./src"
+    "postinstall": "./node_modules/.bin/babel -d ./ ./src"
   },
   "author": "",
   "license": "ISC",
