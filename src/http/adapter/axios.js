@@ -3,7 +3,7 @@ var defaults = {
   withCredentials: false
 };
 
-export default function AdapterAxios(axios, options) {
+export default function AdapterAxios(axios, options = {}) {
   var requestOptions = Object.assign({}, defaults, options);
 
   return function(url, request) {
