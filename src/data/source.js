@@ -141,7 +141,7 @@ export default class DataSource {
   }
 
   clearCache(methodName) {
-    let cache = this.caches(methodName);
+    let cache = this.caches[methodName];
     if(cache) {
       cache.clear();
     }
