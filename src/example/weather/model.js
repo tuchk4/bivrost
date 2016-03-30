@@ -6,7 +6,7 @@ const TWeatherInfo = t.struct({
     "id": t.Num,
     "main": t.Str,
     "description": t.Str,
-    "icon": t.Str,
+    "icon": t.Str
   });
 const TForecastItem = t.struct({
   "dt": t.Num,
@@ -16,7 +16,7 @@ const TForecastItem = t.struct({
     "max": MaybeNum,
     "night": MaybeNum,
     "eve": MaybeNum,
-    "morn": MaybeNum,
+    "morn": MaybeNum
   }),
   "pressure": MaybeNum,
   "humidity": MaybeNum,
@@ -24,12 +24,12 @@ const TForecastItem = t.struct({
   "speed": MaybeNum,
   "deg": MaybeNum,
   "clouds": MaybeNum,
-  "rain": MaybeNum,
+  "rain": MaybeNum
 });
 
 const TLatLon = t.struct({
   "lon": t.Num,
-  "lat": t.Num,
+  "lat": t.Num
 });
 
 const TCity = t.struct({
@@ -37,7 +37,7 @@ const TCity = t.struct({
   "name": t.Str,
   "coord": TLatLon,
   "country": t.Str,
-  "population": t.Num,
+  "population": t.Num
 });
 
 export const TWeatherForecast = t.struct({
@@ -45,7 +45,7 @@ export const TWeatherForecast = t.struct({
   message: t.Num,
   city: TCity,
   cnt: t.Num,
-  list: t.list(TForecastItem),
+  list: t.list(TForecastItem)
 });
 
 export const TWeatherCurrent = t.struct({
@@ -74,5 +74,5 @@ export const TWeatherCurrent = t.struct({
   "dt": t.Num,
   "id": t.Num,
   "name": t.Str,
-  "cod": t.Num,
+  "cod": t.Num
 });

@@ -1,24 +1,17 @@
-export default function PromiseCache(cache, key, fn, ttl) {
-  var promise = new Promise(
-    function(resolve, reject) {
-      var previouslyCached = cache.get(key);
+export default function promiseCache(cache, key, fn, ttl) {
+  return new Promise((resolve, reject) => {
+    const previouslyCached = cache.get(key);
 
-      if (null !== previouslyCached) {
-        resolve(previouslyCached);
-        return;
-      }
+    if (null !== previouslyCached) {
+      resolve(previouslyCached);
+      return;
+    }
 
-      fn().then(
-        (res) => {
-          cache.put(key, res, ttl);
-          resolve(res);
-        },
-
-        (err) => {
-          reject(err);
-        }
-      );
+    fn().then((result) => {
+      cache.put(key, result, ttl);
+      resolve(result);
+    }, (err) => {
+      reject(err);
     });
-
-  return promise;
+  });
 }

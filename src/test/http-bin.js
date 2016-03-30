@@ -1,10 +1,10 @@
 import axios from 'axios';
-import HttpAdapterAxios from '../http/adapter/axios';
-import Api from '../http/api';
+import axiosAdapter from '../http/adapter/axios';
+import api from '../http/api';
 
-const HttpBin = Api.extend({
+const HttpBin = api({
   base: 'http://httpbin.org',
-  adapter: HttpAdapterAxios(axios),
+  adapter: axiosAdapter(axios)
 });
 
 export default HttpBin;

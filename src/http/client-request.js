@@ -1,10 +1,23 @@
 import RequestTemplate from './request-template';
-import PromiseDeduplicator from '../data/promise-deduplicator';
+import promiseDeduplicator from '../data/promise-deduplicator';
+
+
+const DEFAULT_OPTIONS = {
+  base: '',
+  prefix: ''
+};
+
+const buildUrl = (base, prefix, path) => `${ base }${ prefix }${ path }`;
 
 export default class ClientRequest {
   constructor(template, options = {}) {
     this.requestTemplate = new RequestTemplate(template);
-    this.options = Object.assign({}, this.getDefaultOptions(), options);
+
+    this.options = {
+      ...DEFAULT_OPTIONS,
+      ...options
+    };
+
     this.http = options.adapter;
   }
 
@@ -19,23 +32,12 @@ export default class ClientRequest {
       var dedupKey = JSON.stringify([
         request.verb,
         url,
-        request.query,
+        request.query
       ]);
-      return PromiseDeduplicator(dedupKey, promiseCreator);
+
+      return promiseDeduplicator(dedupKey, promiseCreator);
     } else {
       return promiseCreator();
     }
-
   }
-
-  getDefaultOptions() {
-    return {
-      base: '',
-      prefix: '',
-    }; //TODO!!!
-  }
-}
-
-function buildUrl(base, prefix, path) {
-  return `${ base }${ prefix }${ path }`;
 }

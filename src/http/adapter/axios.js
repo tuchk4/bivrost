@@ -1,19 +1,21 @@
-var defaults = {
+const DEFAULTS = {
   responseType: 'text',
   withCredentials: false
 };
 
-export default function AdapterAxios(axios, options = {}) {
-  var requestOptions = Object.assign({}, defaults, options);
+export default function axiosAdapter(axios, options = {}) {
+  let requestOptions = {
+    ...DEFAULTS,
+    ...options
+  };
 
   return function(url, request) {
-    var config = Object.assign({}, requestOptions, {
+    return axios({
+      ...requestOptions,
       url: url,
       method: request.verb,
       params: request.query,
-      data: request.body,
+      data: request.body
     });
-
-    return axios(config);
   }
 };

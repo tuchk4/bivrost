@@ -1,155 +1,117 @@
-import deepExtend from '../util/deep-extend';
-import transpose from '../util/transpose';
+import promiseCache from './promise-cache';
 import Cache from './cache';
-import PromiseCache from './promise-cache';
 
+const DEFAULT_STEPS = ['prepare', 'input', 'api', 'output', 'process'];
+const DEFAULT_METHOD_CACHE_CONFIG = {
+  isGlobal: false,
+  enabled: false,
+  ttl: 60000
+};
 
-function protoReduce(obj, callback, state) {
-  let cur = obj;
-  let lifo = [];
-  
-  do {
-    lifo.push([callback, cur]);
-    cur = cur.__proto__;
-  } while (cur);
+const buildCaches = constructor => {
+  const caches = new Map();
+  const cacheConfig = constructor.cache || {};
 
-  for (var i = lifo.length - 1; i >= 0; i--) {
-    let [callback, cur] = lifo[i];
-    state = callback.call(obj, state, cur);
-  }
+  for (let method of Object.keys(cacheConfig)) {
+    const config = {
+      ...DEFAULT_METHOD_CACHE_CONFIG,
+      ...cacheConfig[method]
+    };
 
-  return state;
-}
+    let cache = null;
 
-function mergeConfigs(methodName, obj, deep) {
-  function add(state, obj) {
-    if(obj.hasOwnProperty(methodName)) {
-      let currentConf = obj[methodName].call(this);
-      if(deep) {
-        return deepExtend(state, currentConf);
-      } else {
-        return Object.assign({}, state, currentConf);
-      }
-    }
-    return state;
-  }
-  return protoReduce(obj, add, {});
-}
-
-function makeCache(commonOptions, methodOptions) {
-  let options = Object.assign({}, commonOptions || {}, methodOptions || {});
-  let enabled = !!options.enabled;
-  let isGlobal = !!options.isGlobal;
-  delete options.enabled;
-  delete options.isGlobal;
-  return {options, enabled, isGlobal};
-}
-
-function buildCaches(constructor, properties, methodProperties) {
-  let caches = {};
-  let commonOptions = properties.cache;
-  Object.keys(methodProperties).forEach(key => {
-    let methodOptions = methodProperties[key].cache;
-    let cacheConf = makeCache(commonOptions, methodOptions);
-    if(cacheConf.enabled) {
-      if(cacheConf.isGlobal) {
-        if(!constructor.caches[key]) {
-          constructor.caches[key] = new Cache(cacheConf.options);
+    if (config.enabled) {
+      if (config.isGlobal) {
+        if (!constructor.caches.hasOwnProperty(method)) {
+          constructor.caches[method] = new Cache(config);
         }
-        caches[key] = constructor.caches[key];
+        cache = constructor.caches[method];
       } else {
-        caches[key] = new Cache(cacheConf.options);
+        cache = new Cache(config);
       }
+
+      caches.set(method, cache);
     }
-  });
+  }
 
   return caches;
-}
+};
 
+const _steps = Symbol('steps');
+const _caches = Symbol('caches');
 
-export default class DataSource {
-  constructor(options={}) {
+export default class Source {
+  static caches = [];
+
+  debug = false;
+
+  constructor(options, steps = DEFAULT_STEPS) {
     this.options = options;
 
-    this.properties = mergeConfigs('properties', this, false);
-    this.methodProperties = transpose(mergeConfigs('methodProperties', this, true));
-
-    var constructor = this.constructor;
-    if(!constructor.caches) {
-      constructor.caches = {};
-    }
-    this.caches = buildCaches(this.constructor, this.properties, this.methodProperties);
+    this[_steps] = steps;
+    this[_caches] = buildCaches(this.constructor);
   }
 
-  properties() {
-    return {
-      cache: {
-        enabled: false,
-      },
+  enableDebug() {
+    this.debug = true;
+  }
+
+  disableDebug() {
+    this.debug = false;
+  }
+
+  getCache(method) {
+    return this[_caches].get(method);
+  }
+
+  invoke(method, params) {
+    const proxy = input => input;
+
+    const fn = params => {
+      let stepsPromise = Promise.resolve(params);
+
+      if (this.debug) {
+        console.log(`invoke method "${method}"`, params);
+      }
+
+      for (let stepId of this[_steps]) {
+        const stepConfig = this.constructor[stepId] || {};
+        const isStepExists = stepConfig.hasOwnProperty(method);
+
+        let step = proxy;
+
+        if (isStepExists) {
+          if (this.debug) {
+            console.log(`- ${stepId}`);
+          }
+
+          step = stepConfig[method];
+
+          stepsPromise = stepsPromise.then(input => {
+            if (this.debug) {
+              console.log(`invoke step "${stepId}"`, input);
+            }
+
+            return step(input, params)
+          });
+        }
+      }
+
+      return stepsPromise;
     };
-  }
 
-  invokeMethod(methodName, params) {
-    params = this.runStep(methodName, 'inputType', params);
 
-    let func = (params) => {
-      return Promise.resolve(this.runStep(methodName, 'prepare', params))
-        .then(this.runStep.bind(this, methodName, 'serialize'))
-        .then(this.runStep.bind(this, methodName, 'api'))
-        .then(this.runStep.bind(this, methodName, 'unserialize', params)) 
-        .then(this.runStep.bind(this, methodName, 'process', params))
-        .then(this.runStep.bind(this, methodName, 'outputType'));
-    };
+    var cache = this.getCache(method);
 
-    return this.invokeCached(methodName, func, params);
-  }
-
-  runStep(methodName, stepName, ...args) {
-    let inout = args.slice();
-    inout.reverse();
-    var f = this.getMethodProperty(methodName, stepName);
-    return f ? f.apply(this, inout) : inout[0];
-  }
-
-  invokeCached(methodName, fn, params) {
-    var cache = this.caches[methodName];
-    if(!cache) {
+    if (!cache) {
       return fn(params);
+    } else {
+      var key = this.getCacheKey(method, params);
+      return promiseCache(cache, key, () => fn(params));
     }
-    var key = this.getCacheKey(methodName, params);
-    return PromiseCache(cache, key, ()=>fn(params));
   }
 
   getCacheKey(method, params) {
-    let methodGetCacheKey = this.getMethodProperty(method, 'getCacheKey');
-    if(methodGetCacheKey) {
-      return methodGetCacheKey.call(this, method, params);
-    }
     return JSON.stringify(params);
-  }
-
-  getProperty(key) {
-    return this.properties[key];
-  }
-
-  getMethodProperty(method, key) {
-    let methodProperties = this.methodProperties[method];
-    if(!methodProperties) {
-      return undefined;
-    }
-    return methodProperties[key];
-  }
-
-  clearCache(methodName) {
-    let cache = this.caches[methodName];
-    if(cache) {
-      cache.clear();
-    }
-  }
-
-  clearAllCaches() {
-    Object.keys(this.caches).forEach((methodName) => {
-      this.caches[methodName].clear();
-    });
   }
 }

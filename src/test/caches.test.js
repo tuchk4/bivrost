@@ -1,55 +1,37 @@
-import 'babel-core/polyfill';
 import assert from 'assert';
 import DataSource from '../data/source';
 
 
 describe('Cache', () => {
-
   it('should be able to work per-class', () => {
     class DS extends DataSource {
-      methodProperties() {
-        return {
-          cache: {
-            foo: {
-              enabled: true
-            }
-          }
-        };
-      }
-      properties() {
-        return {
-          cache: {
-            isGlobal: true
-          }
-        };
-      }
+      static cache = {
+        foo: {
+          isGlobal: true,
+          enabled: true
+        }
+      };
     }
+
     let ds0 = new DS();
     let ds1 = new DS();
-    assert.equal(ds0.caches.foo, ds1.caches.foo);
+
+    assert.equal(ds0.getCache('foo'), ds1.getCache('foo'));
   });
 
   it('should be able to work per-instance', () => {
     class DS extends DataSource {
-      methodProperties() {
-        return {
-          cache: {
-            foo: {
-              enabled: true
-            }
-          }
-        };
-      }
-      properties() {
-        return {
-          cache: {
-            isGlobal: false
-          }
-        };
-      }
+      static cache = {
+        foo: {
+          isGlobal: false,
+          enabled: true
+        }
+      };
     }
+
     let ds0 = new DS();
     let ds1 = new DS();
-    assert.notEqual(ds0.caches.foo, ds1.caches.foo);
+
+    assert.notEqual(ds0.getCache('foo'), ds1.getCache('foo'));
   });
 });

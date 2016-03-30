@@ -1,55 +1,52 @@
 import t from 'tcomb';
 import axios from 'axios';
-import HttpAdapterAxios from '../../http/adapter/axios';
-import Api from '../../http/api';
+import axiosAdapter from '../../http/adapter/axios';
+import api from '../../http/api';
 import DataSource from '../../data/source';
 import {TWeatherForecast, TWeatherCurrent} from './model';
 
 //setup Api client
-const WeatherApi = Api.extend({
+const weatherApi = api({
   base: 'http://api.openweathermap.org', //server
   prefix: '/data/2.5/', //path to API root
-  adapter: HttpAdapterAxios(axios), //HTTP client adapter
+  adapter: axiosAdapter(axios) //HTTP client adapter
 });
 
 class WeatherDataSource extends DataSource {
+  static cache = {
+    dailyForecast: {
+      enabled: true,  //The results of `dailyForecast` method call will be cached
+      ttl: 60 * 60 * 1000, //for an hour.
+      isGlobal: true //Share the same cache for all instances of WeatherDataSource. (default - no)
+    },
+    current: {
+      enabled: true,
+      ttl: 15 * 60 * 1000,
+      isGlobal: true
+    }
+  };
+
+  static input = {
+    dailyForecast: t.struct({q: t.Str}), //input data is checked against tcomb structure
+    current: t.struct({q: t.Str})
+  };
+
+  static api = {
+    dailyForecast: weatherApi('GET /forecast/daily'),
+    current: weatherApi('GET /weather')
+  };
+
+  static output = {
+    dailyForecast: TWeatherForecast, //output data is checked against tcomb structure
+    current: TWeatherCurrent
+  };
+
   dailyForecast(city) {
-    return this.invokeMethod('dailyForecast', {q:city});
-  }
-  current(city) {
-    return this.invokeMethod('current', {q:city});
+    return this.invoke('dailyForecast', {q: city});
   }
 
-  methodProperties() {
-    return {
-      //API methods (our interface to the external world):
-      api: {
-        dailyForecast: WeatherApi('GET /forecast/daily'),
-        current      : WeatherApi('GET /weather'),
-      },
-      //Type checking:
-      inputType: {
-        dailyForecast: t.struct({q: t.Str}), //input data is checked against tcomb structure
-        current      : t.struct({q: t.Str}),
-      },
-      outputType: {
-        dailyForecast: TWeatherForecast, //output data is checked against tcomb structure
-        current      : TWeatherCurrent,
-      },
-      //Caching:
-      cache: {
-        dailyForecast: {
-          enabled : true,  //The results of `dailyForecast` method call will be cached
-          ttl     : 60 * 60 * 1000, //for an hour.
-          isGlobal: true, //Share the same cache for all instances of WeatherDataSource. (default - no)
-        },
-        current: {
-          enabled : true,
-          ttl     : 15 * 60 * 1000,
-          isGlobal: true,
-        },
-      },
-    };
+  current(city) {
+    return this.invoke('current', {q: city});
   }
 }
 
@@ -73,4 +70,5 @@ function printCurrentWeather() {
 
 printWeatherForecast()
   .then(printCurrentWeather)
-  .catch((error) => console.error(error));;
+  .catch((error) => console.error(error));
+;

@@ -1,4 +1,6 @@
 export default class DataLink {
+  static single = 'single';
+  static multiple = 'multiple';
 
   constructor({kind, foreignKey, resolveTo, dataSource, batchLoader}) {
     this.kind = kind;
@@ -9,24 +11,18 @@ export default class DataLink {
   }
 
   resolve(items) {
-    var fk = this.foreignKey;
-    var foreignKeys = items
-      .map((item)=>item[fk])
-      .filter((key)=> null !== key && undefined !== key);
+    const fk = this.foreignKey;
+    const foreignKeys = items
+      .map(item => item[fk])
+      .filter(key => null !== key && undefined !== key);
 
     return this
       .batchLoader
       .load(foreignKeys)
-      .then(this._fillResolvedItems.bind(this, items));
-  }
+      .then((items, foreignItems) => {
 
-  _fillResolvedItems(items, foreignItems) {
-    console.trace('todo');
-    return items;
+        // TODO: fill resolved items
+        return items;
+      });
   }
-
 }
-
-
-DataLink.single = 'single';
-DataLink.multiple = 'multiple';

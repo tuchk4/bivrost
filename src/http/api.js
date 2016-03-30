@@ -1,7 +1,9 @@
 import ClientRequest from './client-request';
 
+const processHttpResponse = httpResponse => httpResponse.data;
+const processHttpError = httpErrorResponse => Promise.reject(httpErrorResponse);
 
-function Api(template, options = {}) {
+function api(template, options = {}) {
   var client = new ClientRequest(template, options);
 
   var fn = function(params) {
@@ -11,19 +13,13 @@ function Api(template, options = {}) {
   };
 
   fn.displayName = `API: ${template}`;
+
   return fn;
 }
 
-Api.extend = function (defaultOptions) {
-  return (url, options) =>
-    Api(url, Object.assign({}, defaultOptions || {}, options || {}));
+export default defaultOptions => {
+  return (url, options = {}) => api(url, {
+    ...defaultOptions,
+    ...options
+  });
 };
-
-export default Api;
-function processHttpResponse(httpResponse) {
-  return httpResponse.data;
-}
-
-function processHttpError(httpErrorResponse) {
-  return Promise.reject(httpErrorResponse);
-}
