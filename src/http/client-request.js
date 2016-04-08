@@ -1,13 +1,19 @@
 import RequestTemplate from './request-template';
 import promiseDeduplicator from '../data/promise-deduplicator';
 
-
 const DEFAULT_OPTIONS = {
   base: '',
   prefix: ''
 };
 
-const buildUrl = (base, prefix, path) => `${ base }${ prefix }${ path }`;
+const join = (...parts) => parts.join('/')
+  .replace(/[\/]+/g, '/')
+  .replace(/\/\?/g, '?')
+  .replace(/\/\#/g, '#')
+  .replace(/\:\//g, '://');
+
+const buildUrl = (base, prefix, path) => join(base, prefix, path);
+
 
 export default class ClientRequest {
   constructor(template, options = {}) {
@@ -21,15 +27,18 @@ export default class ClientRequest {
     this.http = options.adapter;
   }
 
-  execute(params) {
-    var request = this.requestTemplate.apply(params);
+  getRequestOptions(params) {
+    const request = this.requestTemplate.apply(params);
+    const url = buildUrl(this.options.base, this.options.prefix, request.path);
 
-    var url = buildUrl(this.options.base, this.options.prefix, request.path);
+    return {url, request};
+  }
 
-    var promiseCreator = () => this.http(url, request);
+  execute(url, request) {
+    let promiseCreator = () => this.http(url, request);
 
     if (request.verb === 'GET') {
-      var dedupKey = JSON.stringify([
+      let dedupKey = JSON.stringify([
         request.verb,
         url,
         request.query

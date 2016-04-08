@@ -8,6 +8,8 @@ const DEFAULT_METHOD_CACHE_CONFIG = {
   ttl: 60000
 };
 
+const isFunction = func => func && ({}).toString.call(func) === '[object Function]';
+
 const buildCaches = constructor => {
   const caches = new Map();
   const cacheConfig = constructor.cache || {};
@@ -48,7 +50,7 @@ export default class Source {
   constructor(options, steps = DEFAULT_STEPS) {
     this.options = options;
 
-    this[_steps] = steps;
+    this[_steps] = this.constructor.steps || steps;
     this[_caches] = buildCaches(this.constructor);
   }
 
@@ -71,42 +73,50 @@ export default class Source {
       let stepsPromise = Promise.resolve(params);
 
       if (this.debug) {
-        console.log(`invoke method "${method}"`, params);
+        console.groupCollapsed(`Bivrost invoke "${method}" at "${this.constructor.name}"`);
+        console.log(`input arguments:`, params);
       }
 
       for (let stepId of this[_steps]) {
-        const stepConfig = this.constructor[stepId] || {};
-        const isStepExists = stepConfig.hasOwnProperty(method);
+        let step = null;
 
-        let step = proxy;
+        if (isFunction(stepId)) {
+          step = stepId;
+        } else {
+          const stepConfig = this.constructor[stepId] || {};
+          const isStepExists = stepConfig.hasOwnProperty(method);
 
-        if (isStepExists) {
+          if (isStepExists) {
+            step = stepConfig[method];
+          } else {
+            step = proxy;
+          }
+        }
+
+        if (step) {
           if (this.debug) {
             console.log(`- ${stepId}`);
           }
 
-          step = stepConfig[method];
-
           stepsPromise = stepsPromise.then(input => {
-            if (this.debug) {
-              console.log(`invoke step "${stepId}"`, input);
-            }
-
-            return step(input, params)
+            return step(input, params);
           });
         }
+      }
+
+      if (this.debug) {
+        console.groupEnd();
       }
 
       return stepsPromise;
     };
 
-
-    var cache = this.getCache(method);
+    let cache = this.getCache(method);
 
     if (!cache) {
       return fn(params);
     } else {
-      var key = this.getCacheKey(method, params);
+      let key = this.getCacheKey(method, params);
       return promiseCache(cache, key, () => fn(params));
     }
   }

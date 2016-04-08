@@ -1,12 +1,11 @@
 import Url from 'url';
 
-
 const getUniqueBindings = requestTemplate => new Set([
   ...requestTemplate.queryBindings,
   ...requestTemplate.pathBindings]
 );
 
-const buildQuery = (queryBindings, queryDefaults, params) => {
+const buildQuery = (queryBindings, queryDefaults, paramsMap) => {
   let query = {};
 
   for (let def of queryDefaults) {
@@ -14,24 +13,49 @@ const buildQuery = (queryBindings, queryDefaults, params) => {
   }
 
   for (let key of queryBindings) {
-    if (key in params) {
-      query[key] = params[key];
+    if (paramsMap.has(key)) {
+      query[key] = paramsMap.get(key);
     }
   }
 
   return query;
 };
 
-const buildPath = (path, params) => path.replace(/:([\w\d]+)/g, (str, paramName) => params[paramName]);
+const buildPath = (path, paramsMap) => path.replace(/:([\w\d]+)/g, (str, paramName) => {
+  if (!paramsMap.has(paramName)) {
+    throw new Error(`could not build path ("${path}") - param "${paramName}" does not exist`);
+  }
 
+  return paramsMap.get(paramName);
+});
 
 const buildUnboundParams = (exceptParamsSet, params) => {
-  return Object.keys(params)
-    .filter(it => !exceptParamsSet.has(it))
+  let keys = null;
+
+  const isArray = Array.isArray(params);
+  const isFormData = (params instanceof FormData);
+
+  let initialValue = isArray ? [] : {};
+
+  if (isFormData) {
+    keys = params.entries();
+    initialValue = new FormData();
+  } else {
+    keys = Object.keys(params);
+  }
+
+  return keys.filter(it => !exceptParamsSet.has(it))
     .reduce((newParams, key) => {
-      newParams[key] = params[key];
+      if (isFormData) {
+        newParams.append(key, params.get(key));
+      } else if (isArray) {
+        newParams.push(params[key]);
+      } else {
+        newParams[key] = params[key];
+      }
+
       return newParams;
-    }, {});
+    }, initialValue);
 };
 
 const bodyVerbs = new Set(['POST', 'PUT', 'PATCH']);
@@ -74,6 +98,27 @@ const extractVerbAndUrl = templateString => {
   return [verb, url];
 };
 
+const getParamsMap = params => {
+  let keys = null;
+
+  const isFormData = (params instanceof FormData);
+
+  if (isFormData) {
+    keys = params.entries();
+  } else {
+    keys = Object.keys(params);
+  }
+
+  return keys.reduce((paramsMap, key) => {
+    if (isFormData) {
+      paramsMap.set(key, params.get(key));
+    } else {
+      paramsMap.set(key, params[key]);
+    }
+    return paramsMap;
+  }, new Map());
+};
+
 const parseRequestTemplate = templateString => {
   const [httpVerb, urlTemplate] = extractVerbAndUrl(templateString);
 
@@ -109,12 +154,18 @@ export default class RequestTemplate {
   }
 
   apply(params = {}) {
+    if (params instanceof FormData) {
+      console.info('FormData may not be fully supported. Check https://developer.mozilla.org/en/docs/Web/API/FormData');
+    }
+
+    let paramsMap = getParamsMap(params);
     let request = {};
 
-    let query = buildQuery(this.queryBindings, this.queryDefaults, params);
-    let path = buildPath(this.path, params);
+    let query = buildQuery(this.queryBindings, this.queryDefaults, paramsMap);
+    let path = buildPath(this.path, paramsMap);
 
     let body, unboundQuery = {};
+
     if (this.hasBody()) {
       body = buildUnboundParams(this.uniqueBindings, params);
       request.body = body;

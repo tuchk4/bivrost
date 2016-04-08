@@ -1,15 +1,30 @@
 import ClientRequest from './client-request';
 
-const processHttpResponse = httpResponse => httpResponse.data;
-const processHttpError = httpErrorResponse => Promise.reject(httpErrorResponse);
+const CLIENT_REQUEST_SETUP_ERROR = 'CLIENT_REQUEST_SETUP_ERROR';
 
 function api(template, options = {}) {
-  var client = new ClientRequest(template, options);
+  const clientRequest = new ClientRequest(template, options);
 
-  var fn = function(params) {
-    return client
-      .execute(params)
-      .then(processHttpResponse, processHttpError);
+
+  let fn = function(params) {
+    let error = null;
+
+    try {
+      let {url, request} = clientRequest.getRequestOptions(params);
+    } catch (e) {
+      error = {
+        ok: false,
+        message: e.message,
+        type: CLIENT_REQUEST_SETUP_ERROR,
+        error: e
+      }
+    }
+
+    if (error) {
+      return Promise.reject(error);
+    } else {
+      return clientRequest.execute(url, request);
+    }
   };
 
   fn.displayName = `API: ${template}`;

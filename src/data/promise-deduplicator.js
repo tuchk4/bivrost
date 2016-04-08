@@ -4,15 +4,14 @@ import Cache from './cache';
  * If the promise with given `key` is still running, it is returned instead of creating new one.
  * Useful for HTTP request deduplication.
  *
- * var promise1 = PromiseDeduplicator('http://example.com/', http.get.bind(http, 'http://example.com/'))
- * var promise2 = PromiseDeduplicator('http://example.com/', http.get.bind(http, 'http://example.com/'))
+ * let promise1 = PromiseDeduplicator('http://example.com/', http.get.bind(http, 'http://example.com/'))
+ * let promise2 = PromiseDeduplicator('http://example.com/', http.get.bind(http, 'http://example.com/'))
  * promise1 === promise2;
  */
-
 const cacheMap = new Map();
 
 export default function promiseDeduplicator(key, fnCreatePromise) {
-  const cached = map.get(key);
+  const cached = cacheMap.get(key);
 
   if (!cached) {
     const promise = fnCreatePromise().then(result => {
