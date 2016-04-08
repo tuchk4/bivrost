@@ -29,11 +29,14 @@ const buildPath = (path, paramsMap) => path.replace(/:([\w\d]+)/g, (str, paramNa
   return paramsMap.get(paramName);
 });
 
+// TODO: seems something wrong with this function
+const isFormDataSupported = params => (typeof FormData !== 'undefined') && (params instanceof FormData);
+
 const buildUnboundParams = (exceptParamsSet, params) => {
   let keys = null;
 
   const isArray = Array.isArray(params);
-  const isFormData = (params instanceof FormData);
+  const isFormData = isFormDataSupported(params);
 
   let initialValue = isArray ? [] : {};
 
@@ -101,7 +104,7 @@ const extractVerbAndUrl = templateString => {
 const getParamsMap = params => {
   let keys = null;
 
-  const isFormData = (params instanceof FormData);
+  const isFormData = isFormDataSupported(params);
 
   if (isFormData) {
     keys = params.entries();
@@ -154,7 +157,7 @@ export default class RequestTemplate {
   }
 
   apply(params = {}) {
-    if (params instanceof FormData) {
+    if (isFormDataSupported(params)) {
       console.info('FormData may not be fully supported. Check https://developer.mozilla.org/en/docs/Web/API/FormData');
     }
 

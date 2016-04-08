@@ -10,7 +10,7 @@ function api(template, options = {}) {
     let error = null;
 
     try {
-      let {url, request} = clientRequest.getRequestOptions(params);
+      var {url, request} = clientRequest.getRequestOptions(params);
     } catch (e) {
       error = {
         ok: false,

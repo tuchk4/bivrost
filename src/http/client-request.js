@@ -14,7 +14,6 @@ const join = (...parts) => parts.join('/')
 
 const buildUrl = (base, prefix, path) => join(base, prefix, path);
 
-
 export default class ClientRequest {
   constructor(template, options = {}) {
     this.requestTemplate = new RequestTemplate(template);
