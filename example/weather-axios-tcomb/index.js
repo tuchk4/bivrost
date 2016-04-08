@@ -1,8 +1,8 @@
 import t from 'tcomb';
 import axios from 'axios';
-import axiosAdapter from '../../http/adapter/axios';
-import api from '../../http/api';
-import DataSource from '../../data/source';
+import axiosAdapter from 'bivrost-axios-adapter';
+import api from 'bivrost/http/api';
+import DataSource from 'bivrost/data/source';
 import {TWeatherForecast, TWeatherCurrent} from './model';
 
 //setup Api client
