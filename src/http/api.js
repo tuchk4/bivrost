@@ -5,7 +5,6 @@ const CLIENT_REQUEST_SETUP_ERROR = 'CLIENT_REQUEST_SETUP_ERROR';
 function api(template, options = {}) {
   const clientRequest = new ClientRequest(template, options);
 
-
   let fn = function(params) {
     let error = null;
 
@@ -32,7 +31,7 @@ function api(template, options = {}) {
   return fn;
 }
 
-export default defaultOptions => {
+export default (defaultOptions = {}) => {
   return (url, options = {}) => api(url, {
     ...defaultOptions,
     ...options

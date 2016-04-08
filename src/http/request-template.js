@@ -158,7 +158,7 @@ export default class RequestTemplate {
 
   apply(params = {}) {
     if (isFormDataSupported(params)) {
-      console.info('FormData may not be fully supported. Check https://developer.mozilla.org/en/docs/Web/API/FormData');
+      console.info('FormData may not be fully supported. More info https://developer.mozilla.org/en/docs/Web/API/FormData');
     }
 
     let paramsMap = getParamsMap(params);
