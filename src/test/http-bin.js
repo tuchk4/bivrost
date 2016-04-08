@@ -1,5 +1,5 @@
 import axios from 'axios';
-import axiosAdapter from '../http/adapter/axios';
+import axiosAdapter from 'bivrost-axios-adapter';
 import api from '../http/api';
 
 const HttpBin = api({

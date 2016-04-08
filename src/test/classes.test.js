@@ -52,7 +52,7 @@ function getClass() {
 
 describe('Classes', () => {
   it('should work', (done) => {
-    var DS = getClass();
+    let DS = getClass();
 
     let ds = new DS({
       a: 8889

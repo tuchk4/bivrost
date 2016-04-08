@@ -1,7 +1,6 @@
 import assert from 'assert';
 import DataSource from '../data/source';
 
-
 describe('Cache', () => {
   it('should be able to work per-class', () => {
     class DS extends DataSource {
