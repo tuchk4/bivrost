@@ -13,7 +13,6 @@ const join = (...parts) => parts.join('/')
   .replace(/\/\#/g, '#')
   .replace(/\:\//g, '://');
 
-// TODO: add protocol
 const buildUrl = (protocol, base, prefix, path) => `${protocol}//${join(base, prefix, path)}`;
 
 export default class ClientRequest {
