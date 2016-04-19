@@ -1,7 +1,10 @@
 import RequestTemplate from './request-template';
 import promiseDeduplicator from '../data/promise-deduplicator';
 
-const DEFAULT_OPTIONS = {};
+const DEFAULT_OPTIONS = {
+  protocol: 'http:'
+};
+
 const DEFAULT_INTERCEPTORS = {};
 
 const join = (...parts) => parts.join('/')
@@ -11,7 +14,7 @@ const join = (...parts) => parts.join('/')
   .replace(/\:\//g, '://');
 
 // TODO: add protocol
-const buildUrl = (base, prefix, path) => join(base, prefix, path);
+const buildUrl = (protocol, base, prefix, path) => `${protocol}//${join(base, prefix, path)}`;
 
 export default class ClientRequest {
   constructor(template, options = {}) {
@@ -31,7 +34,7 @@ export default class ClientRequest {
       headers: this.options.headers || {}
     };
 
-    const url = buildUrl(this.options.base, this.options.prefix, request.path);
+    const url = buildUrl(this.options.protocol, this.options.base, this.options.prefix, request.path);
 
     return {url, request};
   }
