@@ -3,10 +3,6 @@
 /.idea
 /npm-debug.log
 /node_modules
-
-
-/steps
 /data
 /http
-/util
-/test
+/coverage

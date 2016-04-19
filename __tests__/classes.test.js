@@ -1,7 +1,8 @@
-import assert from 'assert';
-import DataSource from '../data/source';
-import httpBin from './http-bin';
+jest.unmock('../src/data/source');
+jest.unmock('./http-bin');
 
+import DataSource from '../src/data/source';
+import httpBin from './http-bin';
 
 function getClass() {
   class DS_A extends DataSource {
@@ -51,7 +52,7 @@ function getClass() {
 
 
 describe('Classes', () => {
-  it('should work', (done) => {
+  it('should cone XHR request with correct result', (done) => {
     let DS = getClass();
 
     let ds = new DS({
@@ -60,7 +61,7 @@ describe('Classes', () => {
 
     ds.highLevelMethod()
       .then(res => {
-        assert.deepEqual(res, {
+        expect(res).toEqual({
           bar: 200,
           foo: 8889
         });

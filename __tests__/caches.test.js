@@ -1,5 +1,6 @@
-import assert from 'assert';
-import DataSource from '../data/source';
+jest.unmock('../src/data/source');
+
+import DataSource from '../src/data/source';
 
 describe('Cache', () => {
   it('should be able to work per-class', () => {
@@ -15,7 +16,7 @@ describe('Cache', () => {
     let ds0 = new DS();
     let ds1 = new DS();
 
-    assert.equal(ds0.getCache('foo'), ds1.getCache('foo'));
+    expect(ds0.getCache('foo')).toEqual(ds1.getCache('foo'));
   });
 
   it('should be able to work per-instance', () => {
@@ -31,6 +32,6 @@ describe('Cache', () => {
     let ds0 = new DS();
     let ds1 = new DS();
 
-    assert.notEqual(ds0.getCache('foo'), ds1.getCache('foo'));
+    expect(ds0.getCache('foo')).not.toEqual(ds1.getCache('foo'));
   });
 });

@@ -60,7 +60,6 @@ function printWeatherForecast() {
     .catch((error) => console.error(error));
 }
 
-
 function printCurrentWeather() {
   return weather.current('Kiev')
     .then((current) => console.log('CURRENT WEATHER:', current))
@@ -70,5 +69,4 @@ function printCurrentWeather() {
 
 printWeatherForecast()
   .then(printCurrentWeather)
-  .catch((error) => console.error(error));
-;
+  .catch(error => console.error(error));

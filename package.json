@@ -6,19 +6,19 @@
   "scripts": {
     "prepublish": "./node_modules/.bin/babel -d ./ ./src",
     "dev": "./node_modules/.bin/babel -d ./ ./src --watch",
-    "test": "mocha ./src/test/**.test.js --compilers js:babel-register"
+    "test": "./node_modules/.bin/jest --coverage",
+    "test-dev": "./node_modules/.bin/jest --watch"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "axios": "^0.5.4",
-    "bivrost-axios-adapter": "^0.0.1",
-    "babel": "^6.3.26",
     "babel-cli": "^6.4.0",
+    "babel-jest": "^11.0.1",
+    "babel-polyfill": "^6.7.4",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
-    "babel-register": "^6.7.2",
-    "mocha": "^2.2.4",
-    "tcomb": "^1.0.3"
+    "bivrost-axios-adapter": "^0.0.1",
+    "jest-cli": "^11.0.2"
   }
 }
