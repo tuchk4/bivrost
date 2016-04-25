@@ -7,7 +7,9 @@
     "prepublish": "./node_modules/.bin/babel -d ./ ./src",
     "dev": "./node_modules/.bin/babel -d ./ ./src --watch",
     "test": "./node_modules/.bin/jest --coverage",
-    "test-dev": "./node_modules/.bin/jest --watch"
+    "test-dev": "./node_modules/.bin/jest --watch",
+    "docs:prepare": "gitbook install",
+    "docs:watch": "npm run docs:prepare && gitbook serve"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +21,7 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "bivrost-axios-adapter": "^0.0.2",
+    "gitbook-cli": "^2.1.3",
     "jest-cli": "^11.0.2"
   }
 }

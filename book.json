@@ -1,0 +1,16 @@
+{
+  "gitbook": "2.5.2",
+  "structure": {
+    "summary": "docs/Summary.md"
+  },
+  "plugins": ["edit-link", "prism", "-highlight", "github", "anker-enable"],
+  "pluginsConfig": {
+    "edit-link": {
+      "base": "https://github.com/frankland/bivrost/tree/master",
+      "label": "Edit This Page"
+    },
+    "github": {
+      "url": "https://github.com/frankland/bivrost"
+    }
+  }
+}
