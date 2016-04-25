@@ -1,7 +1,7 @@
 {
   "gitbook": "2.5.2",
   "structure": {
-    "summary": "docs/Summary.md"
+    "summary": "docs/README.md"
   },
   "plugins": ["edit-link", "prism", "-highlight", "github", "anker-enable"],
   "pluginsConfig": {
