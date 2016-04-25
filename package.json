@@ -8,8 +8,8 @@
     "dev": "./node_modules/.bin/babel -d ./ ./src --watch",
     "test": "./node_modules/.bin/jest --coverage",
     "test-dev": "./node_modules/.bin/jest --watch",
-    "docs:prepare": "gitbook install",
-    "docs:watch": "npm run docs:prepare && gitbook serve"
+    "docs:prepare": "./node_modules/.bin/gitbook install",
+    "docs:watch": "npm run docs:prepare && ./node_modules/.bin/gitbook serve"
   },
   "author": "",
   "license": "ISC",
