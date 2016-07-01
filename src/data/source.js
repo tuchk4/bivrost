@@ -1,7 +1,7 @@
-import promiseCache from './promise-cache';
+import promiseCache from '../utils/promise-cache';
 import Cache from './cache';
 
-const DEFAULT_STEPS = ['prepare', 'input', 'api', 'output', 'process'];
+const DEFAULT_STEPS = ['prepare', 'api', 'process'];
 const DEFAULT_METHOD_CACHE_CONFIG = {
   isGlobal: false,
   enabled: false,
@@ -41,11 +41,10 @@ const buildCaches = constructor => {
 
 const _steps = Symbol('steps');
 const _caches = Symbol('caches');
+const _debugLogs = Symbol('debug logs');
 
 export default class Source {
   static caches = [];
-
-  debug = false;
 
   constructor(options, steps = DEFAULT_STEPS) {
     this.options = options;
@@ -54,12 +53,12 @@ export default class Source {
     this[_caches] = buildCaches(this.constructor);
   }
 
-  enableDebug() {
-    this.debug = true;
+  enableDebugLogs() {
+    this[_debugLogs] = true;
   }
 
-  disableDebug() {
-    this.debug = false;
+  disableDebugLogs() {
+    this[_debugLogs] = false;
   }
 
   getCache(method) {
@@ -72,7 +71,7 @@ export default class Source {
     const fn = params => {
       let stepsPromise = Promise.resolve(params);
 
-      if (this.debug) {
+      if (this[_debugLogs]) {
         console.groupCollapsed(`Bivrost invoke "${method}" at "${this.constructor.name}"`);
         console.log(`input arguments:`, params);
       }
@@ -94,7 +93,7 @@ export default class Source {
         }
 
         if (step) {
-          if (this.debug) {
+          if (this[_debugLogs]) {
             console.log(`- ${stepId}`);
           }
 
@@ -104,7 +103,7 @@ export default class Source {
         }
       }
 
-      if (this.debug) {
+      if (this[_debugLogs]) {
         console.groupEnd();
       }
 
@@ -123,5 +122,15 @@ export default class Source {
 
   getCacheKey(method, params) {
     return JSON.stringify(params);
+  }
+
+  clearCache(method) {
+    let caches = method ? [this[_caches].get(method)] : this[_caches].values();
+
+    for (let cache of caches) {
+      if (cache) {
+        cache.clear();
+      }
+    }
   }
 }

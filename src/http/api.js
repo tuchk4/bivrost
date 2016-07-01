@@ -7,10 +7,10 @@ const CLIENT_REQUEST_SETUP_ERROR = 'CLIENT_REQUEST_SETUP_ERROR';
  * @param options - additional api options. (headers, adapter)
  * @returns {fn}
  */
-function api(template, options = {}) {
+function apiRequestTemplate(template, options = {}) {
   const clientRequest = new ClientRequest(template, options);
 
-  let fn = function(params) {
+  let apiRequest = function(params) {
     let error = null;
 
     try {
@@ -31,14 +31,13 @@ function api(template, options = {}) {
     }
   };
 
-  fn.displayName = `API: ${template}`;
+  apiRequest.displayName = `API: ${template}`;
 
-  return fn;
+  return apiRequest;
 }
 
-
-export default (apiCommonOptions = {}) => {
-  return (url, apiOptions = {}) => api(url, {
+export default function api(apiCommonOptions = {}) {
+  return (template, apiOptions = {}) => apiRequestSetup(template, {
     // merge options
     ...apiCommonOptions,
     ...apiOptions,

@@ -11,6 +11,11 @@
     "docs:prepare": "./node_modules/.bin/gitbook install",
     "docs:watch": "npm run docs:prepare && ./node_modules/.bin/gitbook serve"
   },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "/_book/"
+    ]
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {

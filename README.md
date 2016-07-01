@@ -1,93 +1,107 @@
-# Bivrost (data layer for JS applications)
-
-[![Build Status](https://travis-ci.org/tuchk4/presets.svg?branch=master)](https://travis-ci.org/tuchk4/presets)
-[![NPM Version](https://img.shields.io/npm/v/bivrost.svg)](https://npmjs.org/package/bivrost)
+# [Bivrost](http://frankland.github.io/bivrost/)
 
 Bivrost allows to organize a simple interface to asyncronous APIs.
 
+[![build status](https://img.shields.io/travis/frankland/bivrost/master.svg?style=flat-square)](https://travis-ci.org/frankland/bivrost)
+[![npm version](https://img.shields.io/npm/v/bivrost.svg?style=flat-square)](https://www.npmjs.com/package/bivrost)
+
+## Bivrost (data layer for JS applications)
+
 The main idea of Bivrost is grouping several API methods into data-sources.
-Each data-source is ES6 class.
 
 ## Installation
 
-## Usage
+`npm install --save bivrost`
+ 
+## The gist
 
-### bivrost/http/api
-
-`Api` is simple HTTP client wrapper that lets us define REST methods in single line of code.
+That’s it! Create api function for github api.
 
 ```js
-import axios from 'axios';
-import HttpAdapterAxios from 'bivrost/http/adapter/axios';
-import Api from 'bivrost/http/api';
+import api from 'bivrost/http/api'
+import fetchAdapter from 'bivrost-fetch-adapter';
 
-//setup Api client
-const WeatherApi = Api.extend({
-  base: 'http://api.openweathermap.org',
-  prefix: '/data/2.5/',
-  adapter: HttpAdapterAxios(axios),
+const githubApi = api({
+  protocol: 'https:'
+  host: 'api.github.com',
+  adapter: fetchAdapter()
 });
 
 //define API method
-const dailyForecast = WeatherApi('GET /forecast/daily');
+const repositoryList = githubApi('GET /users/:user/repos'),
 
 //call API method
-dailyForecast({q: 'Kiev'})
-  .then((response) => console.log(response));
-
+repositoryList({user: 'tuchk4'})
+  .then(repositories => console.log(repositories));
 ```
 
-### bivrost/data/source
-
-`DataSource` lets us define REST resources declaratively.
-
-By default, every method call passes the following steps:
-
- * **`inputType`** — type-check the input params
- * **`prepare`** — prepare the request (make high-level transformations, e.g., add any kinds of meta-data to the request, etc)
- * **`serialize`** — convert the request to the format understood by the server
- * **`api`** — call the API method
- * **`unserialize`** — convert the server request to the format understood by our application
- * **`process`** — process the request (make high-level transformations)
- * **`outputType`** — type-check the result
-
-Note: type checking plays well with [tcomb](http://gcanti.github.io/tcomb/) runtime type checking library.
-
-In `methodProperties()` we can define any step from this list for any API method.
-
-See [full example](https://github.com/frankland/bivrost/blob/master/src/example/weather/index.js)
+Create data source that contain few github api methods(get repositories list and get repository info) and its invoke chain.   
 
 ```js
 import DataSource from 'bivrost/data/source';
+import githubApi from './github-api';
+import tcomb from 'tcomb';
 
-class WeatherDataSource extends DataSource {
-  dailyForecast(city) {
-    return this.invokeMethod('dailyForecast', {q:city});
-  }
+class GihtubRepositories extends DataSource {
+  // define invoke method chain. Default chain is - ['prepare', 'api', 'process']
+  static steps = ['input', 'api', 'immutable'];
 
-  methodProperties() {
-    return {
-      //API methods (our interface to the external world):
-      api: {
-        dailyForecast: WeatherApi('GET /forecast/daily')
-      },
-      //Type checking:
-      inputType: {
-        dailyForecast: t.struct({q: t.Str}) //input data is checked against tcomb structure
-      },
-      outputType: {
-        dailyForecast: TWeatherForecast //output data is checked against tcomb structure
-      },
-      //Caching:
-      cache: {
-        dailyForecast: {
-          enabled: true,  //The results of `dailyForecast` method call will be cached
-          ttl: 60 * 60 * 1000, //for an hour.
-          isGlobal: true, //Share the same cache for all instances of WeatherDataSource. (default - no)
-        }
-      },
-    };
+  // define "input" step. Step will be skipped for "repos" method because not defined
+  static input = {
+    repoInfo: params => tcomb.struct({
+      user: tcomb.Str,
+      repository: tcomb.Str
+    })
+  };
+
+  // define "api" step
+  static api = {
+    repos: githubApi('GET /users/:user/repos'),
+    repoInfo: githubApi('GET /repos/:user/:repository')
+  };
+  
+  // step function will be executed for each method
+  static immutable = response => Immutable.fromJSON(response);
+  
+  // define data source public methods that invokes steps methods
+  getRepositories(user) {
+    return this.invoke('repos', {
+      user
+    });
+  };
+  
+  getRepositoryInfo(user, repository) {
+    return this.invoke('repoInfo', {
+      user,
+      repository
+    });
   }
 }
-
 ```
+
+Extends github data source and define username. Now all requests will be done for facebook's github group.
+
+```js
+const GITHUB_ACCOUNT = 'facebook';
+
+class FacebookRepositories extends GihtubRepositories {
+  getRepositories() {
+    return super.getRepositoryInfo(GITHUB_ACCOUNT);
+  }
+  
+  getRepositoryInfo(repository) {
+    return super.getRepositoryInfo(GITHUB_ACCOUNT, repository);
+  }
+}
+```
+
+## Documentation
+
+* [Basics](docs/basics/README.md)
+* [API Reference](docs/api-reference/README.md)
+* [Testing](docs/testing.md)
+* [Recipes](docs/recipes/README.md)
+* [Adapters list](docs/adapters-list/README.md)
+* [Api functions](docs/api-functions-list/README.md)
+* [Glossary](docs/glossary.md)
+* [Contributing](docs/contributing.md)
