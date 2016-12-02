@@ -37,7 +37,7 @@ function apiRequestTemplate(template, options = {}) {
 }
 
 export default function api(apiCommonOptions = {}) {
-  return (template, apiOptions = {}) => apiRequestSetup(template, {
+  return (template, apiOptions = {}) => apiRequestTemplate(template, {
     // merge options
     ...apiCommonOptions,
     ...apiOptions,

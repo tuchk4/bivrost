@@ -1,4 +1,4 @@
-import Cache from './cache';
+import Cache from '../data/cache';
 
 /**
  * If the promise with given `key` is still running, it is returned instead of creating new one.

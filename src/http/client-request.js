@@ -1,5 +1,5 @@
 import RequestTemplate from './request-template';
-import promiseDeduplicator from '../data/promise-deduplicator';
+import promiseDeduplicator from '../utils/promise-deduplicator';
 
 const DEFAULT_OPTIONS = {
   protocol: 'http:'
