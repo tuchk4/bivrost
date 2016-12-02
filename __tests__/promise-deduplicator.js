@@ -1,6 +1,6 @@
-jest.unmock('../src/data/promise-deduplicator');
+jest.unmock('../src/utils/promise-deduplicator');
 
-import promiseDedup from '../src/data/promise-deduplicator';
+import promiseDedup from '../src/utils/promise-deduplicator';
 
 describe('Promise deduplicator', () => {
   const key1 = 123;

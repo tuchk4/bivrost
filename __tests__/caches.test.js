@@ -16,7 +16,7 @@ describe('Cache', () => {
     let ds0 = new DS();
     let ds1 = new DS();
 
-    expect(ds0.getCache('foo')).toEqual(ds1.getCache('foo'));
+    expect(ds0.getCache('foo')).toBe(ds1.getCache('foo'));
   });
 
   it('should be able to work per-instance', () => {
@@ -32,6 +32,6 @@ describe('Cache', () => {
     let ds0 = new DS();
     let ds1 = new DS();
 
-    expect(ds0.getCache('foo')).not.toEqual(ds1.getCache('foo'));
+    expect(ds0.getCache('foo')).not.toBe(ds1.getCache('foo'));
   });
 });
