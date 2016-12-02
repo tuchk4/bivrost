@@ -1,6 +1,6 @@
 {
   "name": "bivrost",
-  "version": "0.0.10",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
   },
   "jest": {
     "modulePathIgnorePatterns": [
-      "/_book/"
+      "__tests__/http-bin.js"
     ]
   },
   "author": "",
@@ -28,10 +28,5 @@
     "bivrost-axios-adapter": "^0.0.2",
     "gitbook-cli": "^2.1.3",
     "jest-cli": "^17.0.3"
-  },
-  "jest": {
-    "modulePathIgnorePatterns": [
-      "__tests__/http-bin.js"
-    ]
   }
 }
