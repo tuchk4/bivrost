@@ -1,6 +1,3 @@
-jest.unmock('../src/data/source');
-jest.unmock('./http-bin');
-
 import DataSource from '../src/data/source';
 import httpBin from './http-bin';
 

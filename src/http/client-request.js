@@ -5,8 +5,6 @@ const DEFAULT_OPTIONS = {
   protocol: 'http:'
 };
 
-const DEFAULT_INTERCEPTORS = {};
-
 const join = (...parts) => parts.join('/')
   .replace(/[\/]+/g, '/')
   .replace(/\/\?/g, '?')
@@ -29,26 +27,20 @@ export default class ClientRequest {
 
   getRequestOptions(params) {
     const request = {
-      ...this.requestTemplate.apply(params),
-      headers: this.options.headers || {}
+      ...this.requestTemplate.apply(params)
     };
 
     const url = buildUrl(this.options.protocol, this.options.host, this.options.prefix, request.path);
 
-    return {url, request};
+    return { url, request };
   }
 
-  execute(url, request) {
-    const interceptors = {
-      ...DEFAULT_INTERCEPTORS,
-      ...this.options.interceptors
-    };
+  execute(url, request, apiOptions) {
+    const promiseCreator = () => this.adapter(url, request, apiOptions);
 
-    let promiseCreator = () => this.adapter(url, request, interceptors);
-
-    if (request.verb === 'GET') {
+    if (request.method === 'GET') {
       let dedupKey = JSON.stringify([
-        request.verb,
+        request.method,
         url,
         request.query
       ]);

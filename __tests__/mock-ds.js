@@ -1,41 +1,29 @@
-## Mock data source steps and methods
+import DataSource from '../src/data/source';
+import mockDs from '../src/utils/mock-data-source';
 
-Suggest to use [jest](https://facebook.github.io/jest/) for testing.
-It is really painless javascript unit testing library with code coverage and perfects mocks.
-
-Example data source:
-
-```js
-export default class UsersDataSource extends DataSource {
+class DS extends DataSource {
   static steps = ['serialize', 'api'];
 
   static serialize = {
-    loadAll: ({ groupId }) => ({
+    loadAll: ({ groupId }) => Promise.resolve({
       g: groupId
     })
   };
 
   static api = {
-    loadAll: api('GET /users')
+    loadAll: input => Promise.resolve(input)
   }
 
   loadAll(props) {
-    return this.invoke(props);
+    return this.invoke('loadAll', props);
   }
 };
-```
-
-Example data source test:
-
-```js
-import UsersDataSource from 'data/sources/users';
-import mockDataSource from 'bivrost/utils/mock-data-source';
 
 describe('Datasource steps mock', () => {
   let ds = null;
 
   beforeEach(() => {
-    ds = new UsersDataSource();
+    ds = new DS();
   });
 
   it('should mock ds steps', () => {
@@ -56,4 +44,3 @@ describe('Datasource steps mock', () => {
     });
   });
 });
-```

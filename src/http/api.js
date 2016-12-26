@@ -2,19 +2,17 @@ import ClientRequest from './client-request';
 
 const CLIENT_REQUEST_SETUP_ERROR = 'CLIENT_REQUEST_SETUP_ERROR';
 
-/**
- * @param template - http path template. 'GET /users' 'POST /user/:id'
- * @param options - additional api options. (headers, adapter)
- * @returns {fn}
- */
-function apiRequestTemplate(template, options = {}) {
-  const clientRequest = new ClientRequest(template, options);
+function apiRequestTemplate(template, apiCommonOptions = {}, apiOptions = {}) {
+  const clientRequest = new ClientRequest(template, {
+    ...apiCommonOptions,
+    ...apiOptions
+  });
 
-  let apiRequest = function(params) {
+  const apiRequest = function(params) {
     let error = null;
 
     try {
-      var {url, request} = clientRequest.getRequestOptions(params);
+      var { url, request } = clientRequest.getRequestOptions(params);
     } catch (e) {
       error = {
         ok: false,
@@ -26,8 +24,8 @@ function apiRequestTemplate(template, options = {}) {
 
     if (error) {
       return Promise.reject(error);
-    } else {
-      return clientRequest.execute(url, request);
+    } else {      
+      return clientRequest.execute(url, request, apiOptions);
     }
   };
 
@@ -37,14 +35,5 @@ function apiRequestTemplate(template, options = {}) {
 }
 
 export default function api(apiCommonOptions = {}) {
-  return (template, apiOptions = {}) => apiRequestTemplate(template, {
-    // merge options
-    ...apiCommonOptions,
-    ...apiOptions,
-    // merge headers
-    headers: {
-      ...(apiCommonOptions.headers || {}),
-      ...(apiOptions.headers || {})
-    }
-  });
+  return (template, apiOptions = {}) => apiRequestTemplate(template, apiCommonOptions, apiOptions);
 };

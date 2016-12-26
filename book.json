@@ -1,16 +1,14 @@
 {
-  "gitbook": "2.5.2",
-  "structure": {
-    "summary": "docs/README.md"
-  },
+  "gitbook": ">=3.2.1",
+  "title": "Bivrost",
   "plugins": ["edit-link", "prism", "-highlight", "github", "anker-enable"],
   "pluginsConfig": {
     "edit-link": {
-      "base": "https://github.com/frankland/bivrost/tree/master",
+      "base": "https://github.com/tuchk4/bivrost/tree/master",
       "label": "Edit This Page"
     },
     "github": {
-      "url": "https://github.com/frankland/bivrost"
+      "url": "https://github.com/tuchk4/bivrost"
     }
   }
 }

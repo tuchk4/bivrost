@@ -1,9 +1,6 @@
-#Ideas 
+# Api enchantment
 
-# Open source development
-
-Because *Api* - is a simple configured function it is easy to create APIs for popular open api services and publish them
-to npm. 
+## <a id='api-for-services'></a>[#](#api-for-services) Create api for popular services
 
 For example twitter api:
 
@@ -13,85 +10,64 @@ import api from 'bivrost/http/api';
 
 export default (authToken, config = {}) => {
   const adapter = fetchAdapter();
-  
-  let apiInstance = api({
+
+  let twitterApi = api({
     protocol: 'https:',
     host: 'api.twitter.com'
     prefix: '1.1',
     ...config,
-    headers: {
-      ...config.headers,
-      TwitterOAuth: authToken
-    },
-    adapter: fetchAdapter();
+    adapter: fetchAdapter({
+      headers: {
+        ...config.headers,
+        TwitterOAuth: authToken
+      }
+    });
   });
-   
-  // Returns the 20 most recent mentions (tweets containing a users’s @screen_name) 
+
+  // Returns the 20 most recent mentions (tweets containing a users’s @screen_name)
   // for the authenticating user.
-  apiInstance.mentionsTimeline = apiInstance('GET /statuses/mentions_timeline');
-  
+  twitterApi.mentionsTimeline = apiInstance('GET /statuses/mentions_timeline');
+
   // Returns a single Tweet, specified by the id parameter.
-  apiInstance.show = apiInstance('GET /statuses/show/:id');
-  
-  return apiInstance;
+  twitterApi.show = apiInstance('GET /statuses/show/:id');
+
+  return twitterApi;
 }
 ```
 
-```js
-import twitterApi from 'twitter-api'
+Usage:
 
-const api = twitterApi(AUTH_TOKEN);
+```js
+import createTwitterApi from 'twitter-api'
+
+const twitterApi = createTwitterApi(AUTH_TOKEN);
 
 // manual call
-apiInstance('GET /statuses/mentions_timeline')
-    .then(() => {}, () => {});
-        
-// shortcut call
-api.mentionsTimeline()
-    .then(() => {}, () => {});
+twitterApi('GET /statuses/mentions_timeline');
 
-api.show({
+// shortcut call
+twitterApi.mentionsTimeline();
+
+twitterApi.show({
     id: TWEET_ID
-}).then(() => {}, () => {});
+});
 ```
 
 Same could be implemented for
 
-- Github
-- Open weather api
-- Slack chat
-- Reddit
-- Twitter
-- numbers of other services
+* Github - https://developer.github.com/v3/
+* Open weather api - https://openweathermap.org/api
+* Slack chat - https://api.slack.com/
+* Reddit - https://www.reddit.com/dev/api/
+* Twitter - https://dev.twitter.com/rest/public
+* etc.
 
-# Local development
+## <a id='group-api-backend'></a>[#](#group-api-backend) Group api by backend services
 
-Api could be grouped by environment:
- 
- - api/dev
- - api/staging
- - api/prod
+Especially it is very useful for microservice architecture.
 
-Also it is easy to auto generate api function according to environment config:
-```js
-import fetchAdapter from 'bivrost-fetch-adapter';
-import env from 'environment';
+* *src/data/api/auth.js* - api for auth service service
+* *src/data/api/users.js* - api for application users service
+* *src/data/api/notifications.js* - api for notification service
 
-export default () => {
-  return api({
-    adapter: fetchAdapter(),
-    protocol: env('api.protocol'),
-    host: env('api.host'),
-    prefix: env('api.prefix')
-  });
-}
-```
-  
-Another useful case - group api by backend services:
- 
- - api/auth
- - api/users
- - api/statistics
-
-This is very useful because such api functions could be easily shared between other application via local npm 
-or git repositories.
+Also such api functions could be easily shared between other applications.

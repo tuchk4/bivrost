@@ -1,5 +1,3 @@
-jest.unmock('../src/data/source');
-
 import DataSource from '../src/data/source';
 
 describe('Cache', () => {

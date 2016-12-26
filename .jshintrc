@@ -1,7 +1,0 @@
-{
-  "esnext"        : true,
-  "undef"         : true,
-  "unused"        : true,
-  "devel"         : true,
-  "debug"         : false
-}

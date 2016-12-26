@@ -2,17 +2,19 @@
 
 Bivrost allows to organize a simple interface to asyncronous APIs.
 
-[![build status](https://img.shields.io/travis/frankland/bivrost/master.svg?style=flat-square)](https://travis-ci.org/frankland/bivrost)
+[![build status](https://img.shields.io/travis/frankland/bivrost/master.svg?style=flat-square)](https://travis-ci.org/tuchk4/bivrost)
 [![npm version](https://img.shields.io/npm/v/bivrost.svg?style=flat-square)](https://www.npmjs.com/package/bivrost)
 
-## Bivrost (data layer for JS applications)
+## Bivrost
 
 The main idea of Bivrost is grouping several API methods into data-sources.
 
 ## Installation
 
-`npm install --save bivrost`
- 
+```
+npm install --save bivrost
+```
+
 ## The gist
 
 That’s it! Create api function for github api.
@@ -31,11 +33,11 @@ const githubApi = api({
 const repositoryList = githubApi('GET /users/:user/repos'),
 
 //call API method
-repositoryList({user: 'tuchk4'})
+repositoryList({ user: 'tuchk4' })
   .then(repositories => console.log(repositories));
 ```
 
-Create data source that contain few github api methods(get repositories list and get repository info) and its invoke chain.   
+Create data source that contain few github api methods (get repositories list and get repository info) and its invoke chain.   
 
 ```js
 import DataSource from 'bivrost/data/source';
@@ -43,33 +45,25 @@ import githubApi from './github-api';
 import tcomb from 'tcomb';
 
 class GihtubRepositories extends DataSource {
-  // define invoke method chain. Default chain is - ['prepare', 'api', 'process']
-  static steps = ['input', 'api', 'immutable'];
+  // define invoke method chain. Default chain is - ['api', 'process']
+  static steps = ['api', 'immutable'];
 
-  // define "input" step. Step will be skipped for "repos" method because not defined
-  static input = {
-    repoInfo: params => tcomb.struct({
-      user: tcomb.Str,
-      repository: tcomb.Str
-    })
-  };
-
-  // define "api" step
+  // "define "api" step
   static api = {
     repos: githubApi('GET /users/:user/repos'),
     repoInfo: githubApi('GET /repos/:user/:repository')
   };
-  
+
   // step function will be executed for each method
   static immutable = response => Immutable.fromJSON(response);
-  
+
   // define data source public methods that invokes steps methods
   getRepositories(user) {
     return this.invoke('repos', {
       user
     });
   };
-  
+
   getRepositoryInfo(user, repository) {
     return this.invoke('repoInfo', {
       user,
@@ -79,29 +73,58 @@ class GihtubRepositories extends DataSource {
 }
 ```
 
-Extends github data source and define username. Now all requests will be done for facebook's github group.
+Extends GihtubRepositories and define username. Now all requests will be done for facebook's github group.
 
 ```js
-const GITHUB_ACCOUNT = 'facebook';
+import GihtubRepositories from './github-repositories';
+
+const FACEBOOK_GITHUB_ACCOUNT = 'facebook';
 
 class FacebookRepositories extends GihtubRepositories {
   getRepositories() {
-    return super.getRepositoryInfo(GITHUB_ACCOUNT);
+    return super.getRepositories(FACEBOOK_GITHUB_ACCOUNT);
   }
-  
+
   getRepositoryInfo(repository) {
-    return super.getRepositoryInfo(GITHUB_ACCOUNT, repository);
+    return super.getRepositoryInfo(FACEBOOK_GITHUB_ACCOUNT, repository);
   }
 }
 ```
 
-## Documentation
+### [Contributing](docs/contributing.md)
 
-* [Basics](docs/basics/README.md)
-* [API Reference](docs/api-reference/README.md)
-* [Testing](docs/testing.md)
-* [Recipes](docs/recipes/README.md)
-* [Adapters list](docs/adapters-list/README.md)
-* [Api functions](docs/api-functions-list/README.md)
-* [Glossary](docs/glossary.md)
+Project is open for new ideas and features:
+
+- new adapters
+- new api functions
+- data source features
+- feedback is very matter
+
+---
+
+## Docs
+
+* [Basics](/docs/basics/README.md)
+  * [Api function](/docs/basics/api-function.md)
+  * [Adapter](/docs/basics/adapter.md)
+  * [Data source](/docs/basics/data-source.md)
+* [Recipes](/docs/recipes/README.md)
+  * [Api enchantment](/docs/recipes/api-enchantment.md)
+  * [Generate DataSource invoke functions](/docs/recipes/data-source-auto-invoke.md)
+  * [Data source immutable output](/docs/recipes/data-source-immutable.md)
+  * [Data source type checking (tcomb)](/docs/recipes/data-source-type-checking.md)
+  * [CRUD Data source](/docs/recipes/generate-crud-methods.md)
+  * [File upload](/docs/recipes/file-upload.md)
+  * [Fixtures](/docs/recipes/fixtures.md)
+  * [Default api response](/docs/recipes/default-response.md)
+  * [Prepare request and process response](/docs/recipes/prepare-process.md)
+* [Testing](/docs/testing.md)
 * [Contributing](docs/contributing.md)
+
+#### Adapters
+
+  * [Fetch adapter](https://github.com/tuchk4/bivrost-fetch-adapter)
+  * [Axios adapter](https://github.com/tuchk4/bivrost-axios-adapter)
+  * [Delay adapter](https://github.com/tuchk4/bivrost-delay-adapter)
+  * [Local storage adapter](https://github.com/tuchk4/bivrost-local-storage-adapter)
+  * [Save blob adapter adapter](https://github.com/tuchk4/bivrost-save-blob-adapter)

@@ -1,5 +1,3 @@
-jest.unmock('../src/utils/promise-deduplicator');
-
 import promiseDedup from '../src/utils/promise-deduplicator';
 
 describe('Promise deduplicator', () => {

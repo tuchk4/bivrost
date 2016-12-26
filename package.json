@@ -8,25 +8,39 @@
     "dev": "./node_modules/.bin/babel -d ./ ./src --watch",
     "test": "./node_modules/.bin/jest --coverage",
     "test-dev": "./node_modules/.bin/jest --watch",
+    "docs:clean": "rimraf _book",
     "docs:prepare": "./node_modules/.bin/gitbook install",
-    "docs:watch": "npm run docs:prepare && ./node_modules/.bin/gitbook serve"
+    "docs:build": "npm run docs:prepare && rm -rf _book && ./node_modules/.bin/gitbook build",
+    "docs:watch": "npm run docs:prepare && ./node_modules/.bin/gitbook serve",
+    "docs:publish": "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push git@github.com:tuchk4/bivrost gh-pages --force"
   },
   "jest": {
     "modulePathIgnorePatterns": [
-      "__tests__/http-bin.js"
+      "__tests__/http-bin.js",
+      "_book"
     ]
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuchk4/bivrost.git"
+  },
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tuchk4/bivrost/issues"
+  },
+  "homepage": "hhttps://github.com/tuchk4/bivrost",
   "devDependencies": {
-    "axios": "^0.5.4",
+    "axios": "^0.15.3",
     "babel-cli": "^6.4.0",
-    "babel-jest": "^11.0.1",
+    "babel-jest": "^18.0.0",
     "babel-polyfill": "^6.7.4",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "bivrost-axios-adapter": "^0.0.2",
-    "gitbook-cli": "^2.1.3",
-    "jest-cli": "^17.0.3"
+    "gitbook-cli": "^2.3.0",
+    "jest": "^18.0.0"
+  },
+  "dependencies": {
+    "bows": "^1.6.0"
   }
 }

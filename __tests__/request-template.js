@@ -1,5 +1,3 @@
-jest.unmock('../src/http/request-template');
-
 import RequestTemplate from '../src/http/request-template';
 
 describe('Request template', () => {
@@ -25,7 +23,7 @@ describe('Request template', () => {
     expect(request).toEqual({
       query: {},
       path: '/user/1',
-      verb: 'POST',
+      method: 'POST',
       body: {
         name: 'Thor'
       }
@@ -43,7 +41,7 @@ describe('Request template', () => {
         name: 'Thor'
       },
       path: '/user/1',
-      verb: 'GET'
+      method: 'GET'
     });
   });
 

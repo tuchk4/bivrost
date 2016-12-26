@@ -1,7 +1,3 @@
-jest.unmock('../src/utils/promise-cache');
-jest.unmock('../src/data/cache');
-jest.unmock('../src/utils/promise-deduplicator');
-
 import promiseCache from '../src/utils/promise-cache';
 import promiseDedup from '../src/utils/promise-deduplicator';
 

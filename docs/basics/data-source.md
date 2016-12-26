@@ -1,263 +1,199 @@
+# Data source
 
-# Data sources
+A DataSource - is a group of several API methods and its configuration. Every method call passes with the configured steps. Result of each step will be passed as arguments to the next step and whole steps chain will be cached if cache is enabled.
 
->##### A Note for Flux Users
+A DataSource provide methods for:
 
->If you’re coming from Flux, there is a single important difference you need to understand. Redux doesn’t have a Dispatcher or support many stores. **Instead, there is just a single store with a single root [reducing function](../Glossary.md#reducer).** As your app grows, instead of adding stores, you split the root reducer into smaller reducers independently operating on the different parts of the state tree. You can use a helper like [`combineReducers`](combineReducers.md) to combine them. This is similar to how there is just one root component in a React app, but it is composed out of many small components.
+* steps configuration
+* steps executing
+* cache manipulations
+* request deduplication
 
-### Data Source concepts
 
-- method chain and invoke
-- static prop configuration
-
-### <a id='invoke'></a>[`invoke(method: string, params: object)`](#invoke) 
-### <a id='invoke'></a>[`invoke(method: string, params: object)`](#invoke) 
-
+### <a id='this-gist'></a>[#](#this-gist) The gist
 
 ```js
 import DataSource from 'bivrost/data/source';
+import bivrostApi from 'bivrost/http/api'
+import fetchAdapter from 'bivrost-fetch-adapter';
 
-class AnyDataSource extends DataSource {
+import { Record } from 'immutable';
 
+const api = bivrostApi({
+  host: 'localhost',
+  adapter: fetchAdapter()
+});
+
+const User = Record({
+  id: null,
+  name: ''
+});
+
+class UsersDataSource extends DataSource {
+  static steps = ['validate', 'api', 'model'];
+
+  static cache = {
+    loadAll: {
+      enabled: true,
+      isGlobal: true,
+      ttl: 60000
+    }
+  };
+
+  static validate = {
+    update: ({ id }) => {
+        if (!id) {
+          throw new Error('"ID" field is required for user update');
+        }
+    }
+  }
+
+  static api = {
+    loadAll: api('GET /users')
+    update: api('PUT /user/:id')
+  }
+
+  static model = {
+    update: User
+  }
+
+  update(user) {
+    return this.invoke('update', user);
+  }
+
+  loadAll(filters) {
+    return this.invoke('loadAll', filters);
+  }
 }
+
+usersDataSource.loadAll({});
+
+// if previous loadAll call IS NOT finished:
+//  - will not trigger step chain because of deduplication
+usersDataSource.loadAll({});
+
+// if previous loadAll call IS finished - will not trigger step chain.
+//  - will not trigger step chain because of enabled cache
+usersDataSource.loadAll({});
 ```
 
-# Invoke
+
+
+### <a id='invoke'></a>[#](#invoke) invoke(method: string, params: object)
 
 ```js
-DataSource.invoke(method: string, params: object) 
+DataSource.invoke(method: string, params: object)
 ```
 
-Invoke is a data source's function that execute `method`'s chain and pass `params` as initial arguments.
-Method's chain - sequence of steps where each step is a `function` and its result is an argument for the next step.
-Steps sequence could configured as second argument to data source constructor or as static property `steps`.
+Invoke is a data source's function that execute *method* chain and pass *params* as initial arguments.
+Method's chain - sequence of steps where each step is a *function* and its result is an argument for the next step.
+Steps sequence could configured as second argument to data source constructor or as property *steps*.
+If there is no method configuration at step - it will be skipped.
 
 Default steps sequence:
 
-- `prepare` - used for request data transformation and serialization
-- `api` - xhr api call
-- `process` - process the response
+- *prepare* - used for request data transformation and serialization
+- *api* - api call
+- *process* - process the response
 
-# Steps sequence configuration
+## <a id='invoke-steps'></a>[#](#invoke-steps) Invoke steps
 
-As static property
+As property:
+
 ```js
 import DataSource from 'bivrost/data/source';
 
-class AnyDataSource extends DataSource {
-  static steps = ['validate', 'serialize', 'api'];
+class AppDataSource extends DataSource {
+  steps = ['validate', 'serialize', 'api'];
 }
 ```
 
-As constructor argument
+As constructor argument:
+
 ```js
 import DataSource from 'bivrost/data/source';
 
 const STEPS = ['validate', 'serialize', 'api'];
 
-class UserDataSource extends DataSource {
+class AppDataSource extends DataSource {
   constructor(options) {
     super(options, STEPS);
   }
 }
 ```
 
-There are three steps in invoke sequence in this example: *validate*, *serialize* and *api*. Steps sequence and naming - just
-a developer fantasy and depends on application architecture and requirements.
+In this example - there are three steps for *invoke* function - *validate*, *serialize* and *api*. Steps sequence and naming - just a developer fantasy and depends on application architecture and requirements.
 
-# Step configuration
+## <a id='step-configuration'></a>[#](#step-configuration) Step configuration
 
-Method's step function is configuring as static property with same name as step. 
+Step could be configured as *object* or as *function*.
+
+* If step is configured as object:
 
 ```js
-import DataSource from 'bivrost/data/source';
-import api from './api';
-
 class UserDataSource extends DataSource {
-  static steps = ['validate', 'serialize', 'api'];
-  
-  static validate = {
-    list: params => {
-      if (!params.groupId) {
-        throw new Error('groupId should be specified');
-      }
-      
-      return params;
-    }
-  }
-  
-  static serialize = {
-    list: params => {
-      return dropEmptyValue(params);
-    }
-  }
-  
+  static steps = ['api'];
+
   static api = {
-    list: api ('GET /users')
-  };
-  
-  loadUsersList(params) {
-    return this.invoke('list', params);
+    loadAll: api('GET /users')
+  }
+
+  loadAll() {
+    return invoke('loadAll')
   }
 }
 ```
 
-Add another methods:
+* If step is configured as function - it will be executed for all methods:
 
 ```js
-import DataSource from 'bivrost/data/source';
-import api from './api';
-
 class UserDataSource extends DataSource {
-  static steps = ['validate', 'serialize', 'api'];
-  
-  static validate = {
-    list: params => {
-      if (!params.group) {
-        throw new Error('groupId should be specified');
-      }
-      
-      return params;
-    }
-  }
-  
-  static serialize = {
-    list: params => {
-      return dropEmptyValue(params);
-    }
-  }
-  
-  static api = {
-    list: api ('GET /users'),
-    user: api('GET /users/:id')
-  };
-  
-  loadUsersList(params) {
-    return this.invoke('list', params);
-  }
-  
-  loadUserById(id) {
-    return this.invoke('user', {
-      id
-    });
-  }
-}
-```
+  static steps = ['api', 'immutable'];
 
-If there is not configuration for step - it will be skipped. At this example there are no configuration for *validate*
-and *serialize* steps for **user** method.
-
-# Step configuration as function
-
-```js
-import DataSource from 'bivrost/data/source';
-
-class AnyDataSource extends DataSource {
-  static steps = ['validate', 'serialize', 'api', 'immutable'];
-  
   static immutable = response => Immutable.fromJSON(response);
-  
+
   static api = {
-    list: api ('GET /users')
+    loadAll: api ('GET /users')
   };
-    
-  loadUsersList(params) {
-    return this.invoke('list', params);
+
+  loadAll(params) {
+    return this.invoke('loadAll', params);
   }
 }
 ```
 
-There is the additional last step configure as function. That means that this steps will be executed for each invoked 
-method. In this example - *api* step result always will be immutable.
-
-
-# Cache
+## <a id='cache'></a>[#](#cache) Cache
 
 ```js
-import DataSource from 'bivrost/data/source';
-
-class AnyDataSource extends DataSource {
+class UserDataSource extends DataSource {
   static cache = {
-    list: {
+    loadAll: {
       enabled: true,
       isGlobal: true,
       ttl: 60000
     }
-  }
+  };
 }
 ```
 
 Configuration is almost same as invoke steps. Cache options:
- 
- - `enabled: boolean` - enable / disable cache for method
- - `isGlobal: boolean` - enable / disabled global method cache. If *true* - method's cache storage will be same for each
-  data source instance.
- - `ttl: integer` - cache lifetime in miliseconds
- 
- Cache methods:
- 
- ### getCacheKey
- ```js
- getCacheKey(method: string, params: object)
- ```
- 
- Hook for cache key generating. By default this function looks like:
- 
- ```js
- getCacheKey(method, params) {
-   return JSON.stringify(params);
- }
- ```
- 
- ### clearCache
- 
- ```js
- clearCache(method: string)
- ```
- 
- Clear method caches. If `method` argument is not specified - clear all data source caches.
- 
- NOTE: if there is any global caches - they also will be cleared.
 
+* *enabled: boolean* - enable / disable cache for method
+* *isGlobal: boolean* - enable / disable global method cache. If *true* - cache will be shared between all data source instances.
+* *ttl: integer* - cache lifetime in miliseconds
 
-# Extending
+Cache methods:
+
+* *getCacheKey(method: string, params: object)* - Hook for cache key generating. By default cache key is `JSON.stringify(params)``
+
+* *clearCache(method: string)* - Clear method caches. If *method* argument is not specified - clear all data source caches.
+
+## <a id='debug-logs'></a>[#](#debug-logs) Debug logs
 
 ```js
-import DataSource from 'bivrost/data/source';
-
-class AppDataSource extends DataSource { 
-  static steps = ['validation', 'api', 'process']; 
-}
-
-class UsersDataSources extends AppDataSource {
-   static api = {
-     user: api('GET /user/:id')
-     list: api('GET /users/')
-   }
-  
-   getUser(id) {
-     return this.invoke('user', { 
-       id
-     });
-   } 
-  
-   getList() {
-     return this.invoke('list');
-   }
-}
-
-class UsersDataSource extends UsersDataSource {
-  static api = {
-    ...super.api,
-    list: api('GET /vip/users')  
-  }
-}
-
-
-# Debug
-
-### Debug logs
-```js
-const userDataSource = new AppDataSource();
-userDataSource.enableDebugLogs();
+const appDataSource = new AppDataSource();
+appDataSource.enableDebugLogs();
+appDataSource.disableDebugLogs();
 ```
+
+If logs are enabled - data source will post *console.log* messages for each step with its parameters.

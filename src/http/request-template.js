@@ -2,8 +2,8 @@ import Url from 'url';
 
 const getUniqueBindings = requestTemplate => new Set([
   ...requestTemplate.queryBindings,
-  ...requestTemplate.pathBindings]
-);
+  ...requestTemplate.pathBindings
+]);
 
 const buildQuery = (queryBindings, queryDefaults, paramsMap) => {
   let query = {};
@@ -29,7 +29,7 @@ const buildPath = (path, paramsMap) => path.replace(/:([\w\d]+)/g, (str, paramNa
   return paramsMap.get(paramName);
 });
 
-// TODO: seems something wrong with this function
+// TODO: wrong function
 const isFormDataSupported = params => (typeof FormData !== 'undefined') && (params instanceof FormData);
 
 const buildUnboundParams = (exceptParamsSet, params) => {
@@ -61,9 +61,9 @@ const buildUnboundParams = (exceptParamsSet, params) => {
     }, initialValue);
 };
 
-const bodyVerbs = new Set(['POST', 'PUT', 'PATCH']);
+const bodyMethods = new Set(['POST', 'PUT', 'PATCH']);
 
-const fNot = f => (a) => !f(a);
+const fNot = f => a => !f(a);
 
 const getTemplateBinding = str => {
   let matches = str.match(/^:([\w\d]+)$/);
@@ -79,7 +79,7 @@ const extractQueryBindings = url => {
 const extractQueryDefaults = url => {
   return Object.keys(url.query)
     .filter(fNot(getTemplateBinding))
-    .map(it => [it, query[it]]);
+    .map(it => [it, url.query[it]]);
 };
 
 const extractPathBindings = url => {
@@ -88,17 +88,17 @@ const extractPathBindings = url => {
     .filter(it => it !== null);
 };
 
-const extractVerbAndUrl = templateString => {
+const extractMethodAndUrl = templateString => {
   const parts = templateString.match(/^([a-z]+)\s(.+)$/i);
-  let verb = 'GET';
+  let method = 'GET';
   let url = templateString;
 
   if (parts) {
-    verb = parts[1].toUpperCase();
+    method = parts[1].toUpperCase();
     url = parts[2];
   }
 
-  return [verb, url];
+  return [method, url];
 };
 
 const getParamsMap = params => {
@@ -123,7 +123,7 @@ const getParamsMap = params => {
 };
 
 const parseRequestTemplate = templateString => {
-  const [httpVerb, urlTemplate] = extractVerbAndUrl(templateString);
+  const [httpMethod, urlTemplate] = extractMethodAndUrl(templateString);
 
   const url = Url.parse(urlTemplate, true);
   const queryBindings = extractQueryBindings(url);
@@ -131,7 +131,7 @@ const parseRequestTemplate = templateString => {
   const pathBindings = extractPathBindings(url);
 
   return {
-    httpVerb,
+    httpMethod,
     queryBindings,
     queryDefaults,
     pathBindings,
@@ -141,9 +141,9 @@ const parseRequestTemplate = templateString => {
 
 export default class RequestTemplate {
   constructor(templateString) {
-    const { httpVerb, queryBindings, queryDefaults, pathBindings, path } = parseRequestTemplate(templateString);
+    const { httpMethod, queryBindings, queryDefaults, pathBindings, path } = parseRequestTemplate(templateString);
 
-    this.httpVerb = httpVerb;
+    this.httpMethod = httpMethod;
     this.queryBindings = queryBindings;
     this.queryDefaults = queryDefaults;
     this.pathBindings = pathBindings;
@@ -153,7 +153,7 @@ export default class RequestTemplate {
   }
 
   hasBody() {
-    return bodyVerbs.has(this.httpVerb);
+    return bodyMethods.has(this.httpMethod);
   }
 
   apply(params = {}) {
@@ -183,7 +183,7 @@ export default class RequestTemplate {
         ...unboundQuery
       },
       path,
-      verb: this.httpVerb
+      method: this.httpMethod
     };
   }
 }

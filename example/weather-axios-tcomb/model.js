@@ -60,14 +60,14 @@ export const TWeatherCurrent = t.struct({
   "base": t.Str,
 
   "main": t.struct({
-      "temp": MaybeNum,
-      "temp_min": MaybeNum,
-      "temp_max": MaybeNum,
-      "pressure": MaybeNum,
-      "sea_level": MaybeNum,
-      "grnd_level": MaybeNum,
-      "humidity": MaybeNum
-    }),
+    "temp": MaybeNum,
+    "temp_min": MaybeNum,
+    "temp_max": MaybeNum,
+    "pressure": MaybeNum,
+    "sea_level": MaybeNum,
+    "grnd_level": MaybeNum,
+    "humidity": MaybeNum
+  }),
   "wind": t.Obj,
   "clouds": t.Obj,
   "rain": t.Obj,

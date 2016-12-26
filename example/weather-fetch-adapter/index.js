@@ -10,7 +10,9 @@ const weatherApi = api({
 });
 
 class WeatherDataSource extends DataSource {
-  static cache = {
+  steps = ['input', 'api', 'output'];
+
+  cache = {
     dailyForecast: {
       enabled: true,  //The results of `dailyForecast` method call will be cached
       ttl: 60 * 60 * 1000, //for an hour.
@@ -23,7 +25,7 @@ class WeatherDataSource extends DataSource {
     }
   };
 
-  static api = {
+  api = {
     dailyForecast: weatherApi('GET /forecast/daily'),
     current: weatherApi('GET /weather')
   };

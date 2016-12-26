@@ -1,3 +1,4 @@
+import bows from 'bows';
 import promiseCache from '../utils/promise-cache';
 import Cache from './cache';
 
@@ -10,9 +11,9 @@ const DEFAULT_METHOD_CACHE_CONFIG = {
 
 const isFunction = func => func && ({}).toString.call(func) === '[object Function]';
 
-const buildCaches = constructor => {
+const buildCaches = instance => {
   const caches = new Map();
-  const cacheConfig = constructor.cache || {};
+  const cacheConfig = instance.constructor.cache || {};
 
   for (let method of Object.keys(cacheConfig)) {
     const config = {
@@ -24,10 +25,10 @@ const buildCaches = constructor => {
 
     if (config.enabled) {
       if (config.isGlobal) {
-        if (!constructor.caches.hasOwnProperty(method)) {
-          constructor.caches[method] = new Cache(config);
+        if (!instance.constructor.caches.hasOwnProperty(method)) {
+          instance.constructor.caches[method] = new Cache(config);
         }
-        cache = constructor.caches[method];
+        cache = instance.constructor.caches[method];
       } else {
         cache = new Cache(config);
       }
@@ -50,7 +51,11 @@ export default class Source {
     this.options = options;
 
     this[_steps] = this.constructor.steps || steps;
-    this[_caches] = buildCaches(this.constructor);
+    this[_caches] = buildCaches(this);
+  }
+
+  getSteps() {
+    return this[_steps];
   }
 
   enableDebugLogs() {
@@ -66,14 +71,18 @@ export default class Source {
   }
 
   invoke(method, params) {
-    const proxy = input => input;
+    const proxy = input => Promise.resolve(input);
 
     const fn = params => {
       let stepsPromise = Promise.resolve(params);
+      let log = null;
 
       if (this[_debugLogs]) {
-        console.groupCollapsed(`Bivrost invoke "${method}" at "${this.constructor.name}"`);
-        console.log(`input arguments:`, params);
+        log = bows('Bivrost', `${this.constructor.name}.${method}()`);
+        // console.groupCollapsed(`Bivrost invoke "${method}" at "${this.constructor.name}"`);
+        // console.log(`input arguments:`, params);
+
+        log(params);
       }
 
       for (let stepId of this[_steps]) {
@@ -88,23 +97,42 @@ export default class Source {
           if (isStepExists) {
             step = stepConfig[method];
           } else {
+
+            if (log) {
+
+              log(`"${stepId}" is skiped`);
+            }
+
             step = proxy;
           }
         }
 
         if (step) {
-          if (this[_debugLogs]) {
-            console.log(`- ${stepId}`);
-          }
-
           stepsPromise = stepsPromise.then(input => {
-            return step(input, params);
+
+            if (log && step != proxy) {
+              log(`"${stepId}" input`, input);
+            }
+
+            const stepResult = step(input, params);
+
+            return Promise.resolve(stepResult)
+              .then(output => {
+                if (log && step != proxy) {
+                  log(`"${stepId}" output`, output);
+                }
+
+                return output;
+              })
+              .catch(error => {
+                if (log && step != proxy) {
+                  log(`"${stepId}" error`, error);
+                }
+
+                return Promise.reject(error);
+              });
           });
         }
-      }
-
-      if (this[_debugLogs]) {
-        console.groupEnd();
       }
 
       return stepsPromise;
