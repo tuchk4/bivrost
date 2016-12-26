@@ -196,4 +196,7 @@ appDataSource.enableDebugLogs();
 appDataSource.disableDebugLogs();
 ```
 
-If logs are enabled - data source will post *console.log* messages for each step with its parameters.
+If logs are enabled - data source will post messages to console for each step with its parameters.
+[bows](https://www.npmjs.com/package/bows) is used for logging and thats why `localStorage.debug = true` should be set in your console to see messages.
+
+![Bivrost logs](http://i.imgur.com/FOC5z5e.png)
