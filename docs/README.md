@@ -6,6 +6,9 @@
   * [Data source](/docs/basics/data-source.md)
 
 
+* [Bivrost at GitHub](https://github.com/tuchk4/bivrost)
+
+
 * [Recipes](/docs/recipes/README.md)
   * [Api enchantment](/docs/recipes/api-enchantment.md)
   * [Generate DataSource invoke functions](/docs/recipes/data-source-auto-invoke.md)
@@ -16,6 +19,7 @@
   * [Fixtures](/docs/recipes/fixtures.md)
   * [Default api response](/docs/recipes/default-response.md)
   * [Prepare request and process response](/docs/recipes/prepare-process.md)
+
 
 ### Adapters
 
