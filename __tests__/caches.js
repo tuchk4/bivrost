@@ -1,5 +1,6 @@
 import DataSource from '../src/data/source';
 
+
 describe('Cache', () => {
   it('should be able to work per-class', () => {
     class DS extends DataSource {

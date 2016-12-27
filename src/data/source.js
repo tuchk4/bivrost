@@ -1,5 +1,6 @@
 import promiseCache from '../utils/promise-cache';
 import Cache from './cache';
+import bows from 'bows';
 
 const DEFAULT_STEPS = ['prepare', 'api', 'process'];
 const DEFAULT_METHOD_CACHE_CONFIG = {
@@ -76,8 +77,8 @@ export default class Source {
       let stepsPromise = Promise.resolve(params);
       let log = null;
 
-      if (typeof window != 'undefined' && this[_debugLogs]) {
-        const bows = require('bows');
+      if (this[_debugLogs]) {
+
         log = bows('Bivrost', `${this.constructor.name}.${method}()`);
         // console.groupCollapsed(`Bivrost invoke "${method}" at "${this.constructor.name}"`);
         // console.log(`input arguments:`, params);

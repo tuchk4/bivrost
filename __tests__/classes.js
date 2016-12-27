@@ -1,5 +1,5 @@
 import DataSource from '../src/data/source';
-import httpBin from './http-bin';
+import httpBinApi from './http-bin-api';
 
 function getClass() {
   class DS_A extends DataSource {
@@ -39,8 +39,8 @@ function getClass() {
 
   class DS_C extends DS_B {
     static api = {
-      post: httpBin('POST /post'),
-      get: httpBin('GET /get')
+      post: httpBinApi('POST /post'),
+      get: httpBinApi('GET /get')
     }
   }
 

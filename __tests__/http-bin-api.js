@@ -1,10 +1,9 @@
-import axios from 'axios';
 import axiosAdapter from 'bivrost-axios-adapter';
 import api from '../src/http/api';
 
-const HttpBin = api({
+const httpBinApi = api({
   base: 'http://httpbin.org',
-  adapter: axiosAdapter(axios)
+  adapter: axiosAdapter()
 });
 
-export default HttpBin;
+export default httpBinApi;
