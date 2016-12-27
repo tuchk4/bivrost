@@ -27,7 +27,7 @@ describe('Promise cache', () => {
     });
   });
 
-  pit('should work with promise deduplicator', () => {
+  it('should work with promise deduplicator', () => {
     const cache = new Cache();
     const key = 123;
 
