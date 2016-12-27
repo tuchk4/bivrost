@@ -15,13 +15,13 @@
     "docs:publish": "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push git@github.com:tuchk4/bivrost gh-pages --force"
   },
   "jest": {
-    "setupFiles":[
-      "__tests__/localstorage-mock.js"
+    "setupFiles": [
+      "./__tests__/localstorage-mock.js"
     ],
     "modulePathIgnorePatterns": [
-      "__tests__/http-bin-api.js",
-      "__tests__/localstorage-mock.js",
-      "_book"
+      "./__tests__/http-bin-api.js",
+      "./__tests__/localstorage-mock.js",
+      "./_book"
     ]
   },
   "repository": {
@@ -45,6 +45,7 @@
     "jest": "^18.0.0"
   },
   "dependencies": {
-    "bows": "^1.6.0"
+    "bows": "^1.6.0",
+    "gitbook-plugin-ga": "^1.0.1"
   }
 }

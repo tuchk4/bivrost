@@ -1,9 +1,12 @@
-# [Bivrost](http://frankland.github.io/bivrost/)
+# [Bivrost](http://tuchk4.github.io/bivrost/)
 
 Bivrost allows to organize a simple interface to asyncronous APIs.
 
 [![build status](https://img.shields.io/travis/tuchk4/bivrost/master.svg?style=flat-square)](https://travis-ci.org/tuchk4/bivrost)
 [![npm version](https://img.shields.io/npm/v/bivrost.svg?style=flat-square)](https://www.npmjs.com/package/bivrost)
+
+<img src="http://i.imgur.com/2CS3dCD.png" height="48"/> [Bivrost at Github](https://medium.com/@valeriy.sorokobatko/forgekit-785eb17a9b50#.bo3ijxdbm)
+
 
 ## Bivrost
 
