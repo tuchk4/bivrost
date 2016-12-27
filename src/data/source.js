@@ -1,4 +1,3 @@
-import bows from 'bows';
 import promiseCache from '../utils/promise-cache';
 import Cache from './cache';
 
@@ -77,7 +76,8 @@ export default class Source {
       let stepsPromise = Promise.resolve(params);
       let log = null;
 
-      if (this[_debugLogs]) {
+      if (typeof window != 'undefined' && this[_debugLogs]) {
+        const bows = require('bows');
         log = bows('Bivrost', `${this.constructor.name}.${method}()`);
         // console.groupCollapsed(`Bivrost invoke "${method}" at "${this.constructor.name}"`);
         // console.log(`input arguments:`, params);

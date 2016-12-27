@@ -2,7 +2,7 @@
 
 Bivrost allows to organize a simple interface to asyncronous APIs.
 
-[![build status](https://img.shields.io/travis/frankland/bivrost/master.svg?style=flat-square)](https://travis-ci.org/tuchk4/bivrost)
+[![build status](https://img.shields.io/travis/tuchk4/bivrost/master.svg?style=flat-square)](https://travis-ci.org/tuchk4/bivrost)
 [![npm version](https://img.shields.io/npm/v/bivrost.svg?style=flat-square)](https://www.npmjs.com/package/bivrost)
 
 ## Bivrost
