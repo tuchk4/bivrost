@@ -9,6 +9,8 @@ Bivrost allows to organize a simple interface to asynchronous APIs.
 
 The main idea of Bivrost is grouping several API methods into data-sources.
 
+[Bivrost full documentation and recipes](https://tuchk4.github.io/bivrost/)
+
 ## Installation
 
 ```
