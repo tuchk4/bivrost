@@ -1,6 +1,6 @@
 # [Bivrost](http://tuchk4.github.io/bivrost/)
 
-Bivrost allows to organize a simple interface to asyncronous APIs.
+Bivrost allows to organize a simple interface to asynchronous APIs.
 
 [![build status](https://img.shields.io/travis/tuchk4/bivrost/master.svg?style=flat-square)](https://travis-ci.org/tuchk4/bivrost)
 [![npm version](https://img.shields.io/npm/v/bivrost.svg?style=flat-square)](https://www.npmjs.com/package/bivrost)
