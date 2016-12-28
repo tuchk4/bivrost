@@ -1,5 +1,8 @@
 # Generate CRUD methods
 
+* [Create data source with CRUD method](#create-crud-ds)
+* [Extends CRUD data source](#extends-crud-ds)
+
 Crud data source factory:
 
 ```js

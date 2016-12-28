@@ -83,6 +83,6 @@ getUsers({
 
 ## <a id='adapters'></a>[#](#adapters) Under the hood: adapters
 
-*  [Adapters]('/docs/basics/adapter.md')
+*  [Adapters](/docs/basics/adapter.md)
 
 `POST /user?:hash&:version` does not guarantee that XHR POST method will be called. What will be done depends on used adapter - *api* just calls adapter function with generated config. In case of *localStorage* adapter - it will save or load data to localStorage.
