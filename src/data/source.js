@@ -78,11 +78,7 @@ export default class Source {
       let log = null;
 
       if (this[_debugLogs]) {
-
         log = bows('Bivrost', `${this.constructor.name}.${method}()`);
-        // console.groupCollapsed(`Bivrost invoke "${method}" at "${this.constructor.name}"`);
-        // console.log(`input arguments:`, params);
-
         log(params);
       }
 
@@ -93,58 +89,58 @@ export default class Source {
           step = stepId;
         } else {
           const stepConfig = this.constructor[stepId] || {};
-          const isStepExists = stepConfig.hasOwnProperty(method);
+          step = isFunction(stepConfig) ? stepConfig : stepConfig[method];
 
-          if (isStepExists) {
-            step = stepConfig[method];
-          } else {
-
-            if (log) {
-
-              log(`"${stepId}" is skiped`);
-            }
-
-            step = proxy;
+          if (!step) {
+            continue;
           }
         }
 
-        if (step) {
-          stepsPromise = stepsPromise.then(input => {
+        stepsPromise = stepsPromise.then(input => {
+          if (log && step != proxy) {
+            log(`"${stepId}" input`, input);
+          }
 
-            if (log && step != proxy) {
-              log(`"${stepId}" input`, input);
-            }
+          const stepResult = step(input, params);
 
-            const stepResult = step(input, params);
+          return Promise.resolve(stepResult)
+            .then(output => {
+              if (log && step != proxy) {
+                log(`"${stepId}" output`, output);
+              }
 
-            return Promise.resolve(stepResult)
-              .then(output => {
-                if (log && step != proxy) {
-                  log(`"${stepId}" output`, output);
-                }
+              return output;
+            })
+            .catch(error => {
+              if (log && step != proxy) {
+                log(`"${stepId}" error`, error);
+              }
 
-                return output;
-              })
-              .catch(error => {
-                if (log && step != proxy) {
-                  log(`"${stepId}" error`, error);
-                }
+              return Promise.reject(error);
+            });
+        });
 
-                return Promise.reject(error);
-              });
-          });
-        }
       }
 
       return stepsPromise;
     };
 
     let cache = this.getCache(method);
-
     if (!cache) {
       return fn(params);
     } else {
-      let key = this.getCacheKey(method, params);
+      const key = this.getCacheKey(method, params);
+
+      if (this[_debugLogs]) {
+        const log = bows('Bivrost', `${this.constructor.name}.${method}()`);
+
+        if (cache.has(key)) {
+          log('load already processed response from cache');
+        } else {
+          log('cache miss');
+        }
+      }
+
       return promiseCache(cache, key, () => fn(params));
     }
   }
@@ -153,12 +149,27 @@ export default class Source {
     return JSON.stringify(params);
   }
 
-  clearCache(method) {
+  clearCache(method, params) {
+    let cacheKey = null;
+    if (params) {
+      cacheKey = this.getCacheKey(params);
+    }
+
     let caches = method ? [this[_caches].get(method)] : this[_caches].values();
+
+    if (this[_debugLogs]) {
+      const log = bows('Bivrost', `${this.constructor.name}`);
+
+      if (cacheKey) {
+        log(`clear cache for "${method}@${cacheKey}"`);
+      } else {
+        log(`clear all "${method}" caches`);
+      }
+    }
 
     for (let cache of caches) {
       if (cache) {
-        cache.clear();
+        cache.clear(cacheKey);
       }
     }
   }

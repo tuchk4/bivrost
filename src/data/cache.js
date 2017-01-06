@@ -31,12 +31,20 @@ export default class Cache {
     return null;
   }
 
+  has(id) {
+    return this.records.has(id);
+  }
+
   put(id, value, ttl = this.ttl) {
     const record = new CacheRecord(value, ttl);
     this.records.set(id, record);
   }
 
-  clear() {
-    this.records = new Map();
+  clear(id) {
+    if (id) {
+      this.records.delete(id);
+    } else {
+      this.records = new Map();
+    }
   }
 }
