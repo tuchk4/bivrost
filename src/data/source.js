@@ -11,6 +11,8 @@ const DEFAULT_METHOD_CACHE_CONFIG = {
 
 const isFunction = func => func && ({}).toString.call(func) === '[object Function]';
 
+const getMethodCacheName = (instance, method) => `${instance.constructor.name}@${method}`;
+
 const buildCaches = instance => {
   const caches = new Map();
   const cacheConfig = instance.constructor.cache || {};
@@ -22,18 +24,19 @@ const buildCaches = instance => {
     };
 
     let cache = null;
+    const cacheMehtodName = getMethodCacheName(instance, method);
 
     if (config.enabled) {
       if (config.isGlobal) {
-        if (!instance.constructor.caches.hasOwnProperty(method)) {
-          instance.constructor.caches[method] = new Cache(config);
+        if (!instance.constructor.caches.hasOwnProperty(cacheMehtodName)) {
+          instance.constructor.caches[cacheMehtodName] = new Cache(config);
         }
-        cache = instance.constructor.caches[method];
+        cache = instance.constructor.caches[cacheMehtodName];
       } else {
         cache = new Cache(config);
       }
 
-      caches.set(method, cache);
+      caches.set(cacheMehtodName, cache);
     }
   }
 
@@ -67,7 +70,8 @@ export default class Source {
   }
 
   getCache(method) {
-    return this[_caches].get(method);
+    const cacheMehtodName = getMethodCacheName(this, method);
+    return this[_caches].get(cacheMehtodName);
   }
 
   invoke(method, params) {
@@ -135,7 +139,7 @@ export default class Source {
         const log = bows('Bivrost', `${this.constructor.name}.${method}()`);
 
         if (cache.has(key)) {
-          log('load already processed response from cache');
+          log(`load already processed response from cache by key "${key}"`);
         } else {
           log('cache miss');
         }
@@ -152,10 +156,10 @@ export default class Source {
   clearCache(method, params) {
     let cacheKey = null;
     if (params) {
-      cacheKey = this.getCacheKey(params);
+      cacheKey = this.getCacheKey(method, params);
     }
 
-    let caches = method ? [this[_caches].get(method)] : this[_caches].values();
+    let caches = method ? [this.getCache(method)] : this[_caches].values();
 
     if (this[_debugLogs]) {
       const log = bows('Bivrost', `${this.constructor.name}`);

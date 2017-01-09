@@ -17,22 +17,28 @@ export default class Cache {
   }
 
   get(id) {
-    if (this.records.has(id)) {
-      const record = this.records.get(id);
-
-      if (record.isExpired()) {
-        this.records.delete(id);
-        return null;
-      }
-
-      return record.value;
+    if (this.has(id)) {
+      return this.records.get(id).value;
     }
 
     return null;
   }
 
   has(id) {
-    return this.records.has(id);
+    let has = false;
+
+    if (this.records.has(id)) {
+      const record = this.records.get(id);
+
+      if (record.isExpired()) {
+        this.records.delete(id);
+        has = false;
+      }
+
+      has = true;
+    }
+
+    return has;
   }
 
   put(id, value, ttl = this.ttl) {
