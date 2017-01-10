@@ -76,15 +76,15 @@ export default class Source {
 
   invoke(method, params) {
     const proxy = input => Promise.resolve(input);
+    let log = null;
+
+    if (this[_debugLogs]) {
+      log = bows('Bivrost', `${this.constructor.name}.${method}()`);
+      log('call argumengts', params);
+    }
 
     const fn = params => {
       let stepsPromise = Promise.resolve(params);
-      let log = null;
-
-      if (this[_debugLogs]) {
-        log = bows('Bivrost', `${this.constructor.name}.${method}()`);
-        log(params);
-      }
 
       for (let stepId of this[_steps]) {
         let step = null;
@@ -102,7 +102,7 @@ export default class Source {
 
         stepsPromise = stepsPromise.then(input => {
           if (log && step != proxy) {
-            log(`"${stepId}" input`, input);
+            log(`"${stepId}" call`, input);
           }
 
           const stepResult = step(input, params);
@@ -110,7 +110,7 @@ export default class Source {
           return Promise.resolve(stepResult)
             .then(output => {
               if (log && step != proxy) {
-                log(`"${stepId}" output`, output);
+                log(`"${stepId}" response`, output);
               }
 
               return output;
@@ -135,9 +135,7 @@ export default class Source {
     } else {
       const key = this.getCacheKey(method, params);
 
-      if (this[_debugLogs]) {
-        const log = bows('Bivrost', `${this.constructor.name}.${method}()`);
-
+      if (log) {
         if (cache.has(key)) {
           log(`load already processed response from cache by key "${key}"`);
         } else {
