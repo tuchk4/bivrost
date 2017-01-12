@@ -11,7 +11,7 @@ const DEFAULT_METHOD_CACHE_CONFIG = {
 
 const isFunction = func => func && ({}).toString.call(func) === '[object Function]';
 
-const getMethodCacheName = (instance, method) => `${instance.uid}@${method}`;
+const getMethodCacheName = (instance, method) => `${instance.constructor.uid}@${method}`;
 
 const buildCaches = instance => {
   const caches = new Map();
@@ -51,9 +51,12 @@ let uid = 1;
 
 export default class Source {
   static caches = [];
-  uid = this.constructor.name || uid++;
 
   constructor(options, steps = DEFAULT_STEPS) {
+    if (!this.constructor.uid) {
+      this.constructor.uid = uid++;
+    }
+
     this.options = options;
 
     this[_steps] = this.constructor.steps || steps;
