@@ -11,7 +11,7 @@ const DEFAULT_METHOD_CACHE_CONFIG = {
 
 const isFunction = func => func && ({}).toString.call(func) === '[object Function]';
 
-const getMethodCacheName = (instance, method) => `${instance.constructor.name}@${method}`;
+const getMethodCacheName = (instance, method) => `${instance.uid}@${method}`;
 
 const buildCaches = instance => {
   const caches = new Map();
@@ -47,8 +47,11 @@ const _steps = Symbol('steps');
 const _caches = Symbol('caches');
 const _debugLogs = Symbol('debug logs');
 
+let uid = 1;
+
 export default class Source {
   static caches = [];
+  uid = this.constructor.name || uid++;
 
   constructor(options, steps = DEFAULT_STEPS) {
     this.options = options;
@@ -137,7 +140,7 @@ export default class Source {
 
       if (log) {
         if (cache.has(key)) {
-          log(`load already processed response from cache by key "${key}"`);
+          log(`get from cache by key "${key}"`);
         } else {
           log('cache miss');
         }
@@ -147,7 +150,7 @@ export default class Source {
     }
   }
 
-  getCacheKey(method, params) {
+  getCacheKey(method, params = {}) {
     return JSON.stringify(params);
   }
 
