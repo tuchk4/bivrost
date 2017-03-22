@@ -33,9 +33,9 @@ export default class Cache {
       if (record.isExpired()) {
         this.records.delete(id);
         has = false;
+      } else {
+        has = true;
       }
-
-      has = true;
     }
 
     return has;
