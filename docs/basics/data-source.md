@@ -163,7 +163,19 @@ class UserDataSource extends DataSource {
 ```
 
 ## <a id='cache'></a>[#](#cache) Cache
+Define default cache config for all data source methods:
+```js
+class UserDataSource extends DataSource {
+  static defaultCache = {
+    enabled: true,
+    isGlobal: true,
+    ttl: 60000
+  };
+}
+```
 
+
+Define cache config for specific data source method:
 ```js
 class UserDataSource extends DataSource {
   static cache = {

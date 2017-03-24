@@ -16,10 +16,14 @@ const getMethodCacheName = (instance, method) => `${instance.constructor.uid}@${
 const buildCaches = instance => {
   const caches = new Map();
   const cacheConfig = instance.constructor.cache || {};
+  const defaultCacheConfig = {
+    ...DEFAULT_METHOD_CACHE_CONFIG,
+    ...instance.constructor.defaultCache
+  };
 
   for (let method of Object.keys(cacheConfig)) {
     const config = {
-      ...DEFAULT_METHOD_CACHE_CONFIG,
+      ...defaultCacheConfig,
       ...cacheConfig[method]
     };
 
