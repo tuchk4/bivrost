@@ -11,7 +11,7 @@ const join = (...parts) => parts.join('/')
   .replace(/\/\#/g, '#')
   .replace(/\:\//g, '://');
 
-const buildUrl = (protocol, host, prefix, path) => `${protocol}//${join(host, prefix, path)}`;
+const buildUrl = (protocol, host, prefix, basepath, path) => `${protocol}//${join(host, prefix, basepath, path)}`;
 
 export default class ClientRequest {
   constructor(template, options = {}) {
@@ -30,7 +30,7 @@ export default class ClientRequest {
       ...this.requestTemplate.apply(params)
     };
 
-    const url = buildUrl(this.options.protocol, this.options.host, this.options.prefix, request.path);
+    const url = buildUrl(this.options.protocol, this.options.host, this.options.prefix, this.options.path, request.path);
 
     return { url, request };
   }
