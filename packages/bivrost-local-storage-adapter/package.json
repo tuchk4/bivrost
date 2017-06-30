@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "_prepublish": "./node_modules/.bin/babel -d ./ ./src",
-    "dev": "./node_modules/.bin/babel -d ./ ./src --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
+    "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"
   },
   "repository": {
     "type": "git",

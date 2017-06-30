@@ -1,6 +1,10 @@
 import qs from 'qs';
 
-const DEFAULT_ADAPTER_OPTIONS = { queryFormat: { arrayFormat: 'brackets' } };
+const DEFAULT_ADAPTER_OPTIONS = {
+  queryFormat: {
+    arrayFormat: 'brackets',
+  },
+};
 
 const DEFAULT_ADAPTER_INTERCEPTORS = {
   response: response => {
@@ -34,7 +38,7 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
     ...interceptors,
   };
 
-  return function (url, requestOptions = {}) {
+  return function(url, requestOptions = {}) {
     const config = {
       ...adapterOptions,
       ...requestOptions,

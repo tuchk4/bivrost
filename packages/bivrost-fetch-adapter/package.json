@@ -4,8 +4,8 @@
   "description": "bivrost XHR adapter using browser's native fetch function",
   "main": "index.js",
   "scripts": {
-    "_prepublish": "./node_modules/.bin/babel -d ./ ./src",
-    "dev": "./node_modules/.bin/babel -d ./ ./src --watch"
+    "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
+    "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"
   },
   "repository": {
     "type": "git",

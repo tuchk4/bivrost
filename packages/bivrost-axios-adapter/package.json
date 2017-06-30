@@ -4,10 +4,8 @@
   "description": "Axios adapter",
   "main": "index.js",
   "scripts": {
-    "_prepublish": "./node_modules/.bin/babel -d ./ ./src",
-    "dev": "./node_modules/.bin/babel -d ./ ./src --watch",
-    "test": "./node_modules/.bin/jest --coverage",
-    "test-dev": "./node_modules/.bin/jest --watch"
+    "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
+    "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"
   },
   "repository": {
     "type": "git",
