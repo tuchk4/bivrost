@@ -19,7 +19,7 @@
     "docs:watch": "npm run docs:prepare && ./node_modules/.bin/gitbook serve",
     "docs:publish": "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push git@github.com:tuchk4/bivrost gh-pages --force",
     "precommit": "lint-staged",
-    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules)/**/*.js'"
+    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules|coverage)/**/*.js'"
   },
   "jest": {
     "rootDir": "./packages",
