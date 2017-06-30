@@ -4,15 +4,15 @@ The main goal of Adapter is make some magic and return function that execute que
 
 In most cases - adapter is using to adapt api function for used approaches or libraries (fetch, axios, rxjs, local storage) and execute query.
 
-Also adapter is using for enchanting other adapters - add additional delays for testing, log api calls, save request response as blob, filter params etc. For example there are [delayAdapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-delay-adapter), [saveBlobAdater](https://github.com/tuchk4/bivrost/tree/master/bivrost-save-blob-adapter), [localStorage](https://github.com/tuchk4/bivrost/tree/master/bivrost-local-storage-adapter) adapter are enchanters.
+Also adapter is using for enchanting other adapters - add additional delays for testing, log api calls, save request response as blob, filter params etc. For example there are [delayAdapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-delay-adapter), [saveBlobAdater](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-save-blob-adapter), [localStorage](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-local-storage-adapter) adapter are enchanters.
 
 ## <a id='adapter-list'></a>[#](#adapter-list) Adapter list
 
-* [Fetch adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-fetch-adapter)
-* [Axios adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-axios-adapter)
-* [Delay adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-delay-adapter)
-* [Local storage adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-local-storage-adapter)
-* [Save blob adapter adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-save-blob-adapter)
+* [Fetch adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-fetch-adapter)
+* [Axios adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-axios-adapter)
+* [Delay adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-delay-adapter)
+* [Local storage adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-local-storage-adapter)
+* [Save blob adapter adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-save-blob-adapter)
 
 ## <a id='under-the-hood'></a>[#](#under-the-hood) Under the hood
 
