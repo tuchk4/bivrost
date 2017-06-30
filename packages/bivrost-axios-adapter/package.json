@@ -1,6 +1,6 @@
 {
   "name": "bivrost-axios-adapter",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Axios adapter",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,6 @@
   "bugs": {
     "url": "https://github.com/tuchk4/bivrost/issues"
   },
-  "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
   "homepage": "hhttps://github.com/tuchk4/bivrost",
   "dependencies": {
     "axios": "^0.15.3"
