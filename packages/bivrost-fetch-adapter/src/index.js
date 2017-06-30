@@ -1,4 +1,6 @@
-const DEFAULT_ADAPTER_OPTIONS = {};
+import qs from 'qs';
+
+const DEFAULT_ADAPTER_OPTIONS = { queryFormat: { arrayFormat: 'brackets' } };
 
 const DEFAULT_ADAPTER_INTERCEPTORS = {
   response: response => {
@@ -7,7 +9,7 @@ const DEFAULT_ADAPTER_INTERCEPTORS = {
 
     let action = null;
 
-    if (contentType && contentType.indexOf('application/json') != -1) {
+    if (contentType && contentType.indexOf('application/json') !== -1) {
       action = () => response.json();
     } else {
       action = () => response.text();
@@ -32,7 +34,7 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
     ...interceptors,
   };
 
-  return function(url, requestOptions = {}) {
+  return function (url, requestOptions = {}) {
     const config = {
       ...adapterOptions,
       ...requestOptions,
@@ -52,10 +54,7 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
 
     let queryString = '';
     if (requestOptions.query) {
-      const query = requestOptions.query;
-      queryString = Object.keys(query)
-        .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(query[k]))
-        .join('&');
+      queryString = qs.stringify(requestOptions.query, config.queryFormat);
     }
 
     let request = new Request(`${url}${queryString ? `?${queryString}` : ''}`, {

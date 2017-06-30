@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "_prepublish": "./node_modules/.bin/babel -d ./ ./src",
-    "dev": "./node_modules/.bin/babel -d ./ ./src --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "./node_modules/.bin/babel -d ./ ./src --watch"
   },
   "repository": {
     "type": "git",
@@ -17,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/tuchk4/bivrost/issues"
   },
-  "homepage": "hhttps://github.com/tuchk4/bivrost"
+  "homepage": "hhttps://github.com/tuchk4/bivrost",
+  "dependencies": {
+    "qs": "6.5.0"
+  }
 }
