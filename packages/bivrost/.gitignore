@@ -1,0 +1,10 @@
+.DS_Store
+/.git
+/.idea
+/_book
+/npm-debug.log
+/node_modules
+/data
+/http
+/coverage
+/utils

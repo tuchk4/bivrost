@@ -125,8 +125,8 @@ Project is open for new ideas and features:
 
 #### Adapters
 
-  * [Fetch adapter](https://github.com/tuchk4/bivrost-fetch-adapter)
-  * [Axios adapter](https://github.com/tuchk4/bivrost-axios-adapter)
-  * [Delay adapter](https://github.com/tuchk4/bivrost-delay-adapter)
-  * [Local storage adapter](https://github.com/tuchk4/bivrost-local-storage-adapter)
-  * [Save blob adapter adapter](https://github.com/tuchk4/bivrost-save-blob-adapter)
+  * [Fetch adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-fetch-adapter)
+  * [Axios adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-axios-adapter)
+  * [Delay adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-delay-adapter)
+  * [Local storage adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-local-storage-adapter)
+  * [Save blob adapter adapter](https://github.com/tuchk4/bivrost/tree/master/bivrost-save-blob-adapter)
