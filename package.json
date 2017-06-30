@@ -1,38 +1,40 @@
 {
   "name": "bivrost",
-  "version": "2.2.4",
-  "description": "",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "Bivrost allows to organize a simple interface to asynchronous APIs.",
+  "keywords": [
+    "data-source",
+    "api",
+    "fetch",
+    "axios",
+    "local-storage"
+  ],
+  "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
   "scripts": {
-    "prepublish": "./node_modules/.bin/babel -d ./ ./src",
-    "dev": "./node_modules/.bin/babel -d ./ ./src --watch",
-    "test": "./node_modules/.bin/jest --coverage",
-    "test-dev": "./node_modules/.bin/jest --watch",
+    "test": "jest  --coverage",
+    "test-dev": "jest   --watch",
     "docs:clean": "rimraf _book",
-    "docs:prepare": "./node_modules/.bin/gitbook install",
+    "docs:prepare": "gitbook install",
     "docs:build": "npm run docs:prepare && rm -rf _book && ./node_modules/.bin/gitbook build",
     "docs:watch": "npm run docs:prepare && ./node_modules/.bin/gitbook serve",
-    "docs:publish": "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push git@github.com:tuchk4/bivrost gh-pages --force"
+    "docs:publish": "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push git@github.com:tuchk4/bivrost gh-pages --force",
+    "precommit": "lint-staged",
+    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules|coverage)/**/*.js'"
   },
   "jest": {
+    "rootDir": "./packages",
     "setupFiles": [
-      "./__tests__/localstorage-mock.js"
+      "./bivrost/__tests__/localstorage-mock.js"
     ],
     "modulePathIgnorePatterns": [
-      "./__tests__/http-bin-api.js",
-      "./__tests__/localstorage-mock.js",
-      "./_book"
+      "./bivrost/__tests__/http-bin-api.js",
+      "./bivrost/__tests__/localstorage-mock.js"
     ]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tuchk4/bivrost.git"
   },
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/tuchk4/bivrost/issues"
-  },
-  "homepage": "hhttps://github.com/tuchk4/bivrost",
   "devDependencies": {
     "axios": "^0.15.3",
     "babel-cli": "^6.4.0",
@@ -43,9 +45,21 @@
     "bivrost-axios-adapter": "^0.0.2",
     "gitbook-cli": "^2.3.0",
     "gitbook-plugin-ga": "^1.0.1",
-    "jest": "^18.0.0"
+    "husky": "^0.14.1",
+    "jest": "^18.0.0",
+    "lerna": "^2.0.0-rc.4",
+    "lint-staged": "^4.0.0",
+    "prettier": "^1.5.2"
   },
-  "dependencies": {
-    "bows": "^1.6.0"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/frankland/bivrost/issues"
+  },
+  "homepage": "https://github.com/frankland/bivrost",
+  "lint-staged": {
+    "*.js": [
+      "prettier --trailing-comma es5 --single-quote --write",
+      "git add"
+    ]
   }
 }
