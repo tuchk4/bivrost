@@ -1,5 +1,7 @@
 # [Bivrost](http://tuchk4.github.io/bivrost/)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/tuchk4/bivrost.svg)](https://greenkeeper.io/)
+
 Bivrost allows to organize a simple interface to asynchronous APIs.
 
 [![build status](https://img.shields.io/travis/tuchk4/bivrost/master.svg?style=flat-square)](https://travis-ci.org/tuchk4/bivrost)
