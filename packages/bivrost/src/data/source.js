@@ -119,9 +119,8 @@ export default class Source {
             log(`"${stepId}" call`, input);
           }
 
-          const stepResult = step(input, params);
-
-          return Promise.resolve(stepResult)
+          return Promise.resolve(null)
+            .then(() => step(input, params))
             .then(output => {
               if (log && step != proxy) {
                 log(`"${stepId}" response`, output);
