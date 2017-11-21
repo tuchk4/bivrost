@@ -1,4 +1,5 @@
 import qs from 'qs';
+import 'isomorphic-fetch';
 
 const DEFAULT_ADAPTER_OPTIONS = {
   queryFormat: {
