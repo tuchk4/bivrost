@@ -1,6 +1,6 @@
 {
   "name": "bivrost-fetch-adapter",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "bivrost XHR adapter using browser's native fetch function",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   },
   "homepage": "hhttps://github.com/tuchk4/bivrost",
   "dependencies": {
-    "qs": "6.5.0",
-    "isomorphic-fetch": "2.2.1"
+    "isomorphic-fetch": "2.2.1",
+    "qs": "6.5.0"
   }
 }
