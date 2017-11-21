@@ -85,7 +85,7 @@ export default class Source {
     return this[_caches].get(cacheMehtodName);
   }
 
-  invoke(method, params) {
+  invoke(method, params, context) {
     const proxy = input => Promise.resolve(input);
     let log = null;
 
@@ -97,7 +97,7 @@ export default class Source {
       log('call argumengts', params);
     }
 
-    const fn = params => {
+    const fn = (params, context) => {
       let stepsPromise = Promise.resolve(params);
 
       for (let stepId of this[_steps]) {
@@ -120,7 +120,7 @@ export default class Source {
           }
 
           return Promise.resolve(null)
-            .then(() => step(input, params))
+            .then(() => step(input, context))
             .then(output => {
               if (log && step != proxy) {
                 log(`"${stepId}" response`, output);
@@ -143,9 +143,9 @@ export default class Source {
 
     let cache = this.getCache(method);
     if (!cache) {
-      return fn(params);
+      return fn(params, context);
     } else {
-      const key = this.getCacheKey(method, params);
+      const key = this.getCacheKey(method, params, context);
 
       if (log) {
         if (cache.has(key)) {
@@ -159,7 +159,7 @@ export default class Source {
     }
   }
 
-  getCacheKey(method, params = {}) {
+  getCacheKey(method, params = {}, context = {}) {
     return JSON.stringify(params);
   }
 
