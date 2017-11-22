@@ -1,5 +1,6 @@
 import qs from 'qs';
 import 'isomorphic-fetch';
+import FormData from 'form-data';
 
 const DEFAULT_ADAPTER_OPTIONS = {
   queryFormat: {
@@ -73,20 +74,14 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
 
     return fetch(request).then(
       response => {
-        if (response.ok) {
-          return adapterIntinterceptors.response
-            ? adapterIntinterceptors.response(response)
-            : response;
-        } else {
-          return adapterIntinterceptors.error
-            ? adapterIntinterceptors.error(response)
-            : Promise.reject(response);
-        }
+        return adapterIntinterceptors.response
+          ? adapterIntinterceptors.response(response)
+          : response;
       },
       error => {
         return adapterIntinterceptors.error
           ? adapterIntinterceptors.error(error)
-          : Promise.reject(error);
+          : error;
       }
     );
   };
