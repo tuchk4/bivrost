@@ -74,14 +74,20 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
 
     return fetch(request).then(
       response => {
-        return adapterIntinterceptors.response
-          ? adapterIntinterceptors.response(response)
-          : response;
+        if (response.ok) {
+          return adapterIntinterceptors.response
+            ? adapterIntinterceptors.response(response)
+            : response;
+        } else {
+          return adapterIntinterceptors.error
+            ? adapterIntinterceptors.error(response)
+            : Promise.reject(response);
+        }
       },
       error => {
         return adapterIntinterceptors.error
           ? adapterIntinterceptors.error(error)
-          : error;
+          : Promise.reject(error);
       }
     );
   };
