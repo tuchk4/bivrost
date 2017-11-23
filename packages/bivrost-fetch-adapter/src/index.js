@@ -1,5 +1,6 @@
 import qs from 'qs';
 import 'isomorphic-fetch';
+import FormData from 'form-data';
 
 const DEFAULT_ADAPTER_OPTIONS = {
   queryFormat: {
