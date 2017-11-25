@@ -18,6 +18,6 @@
   },
   "homepage": "hhttps://github.com/tuchk4/bivrost",
   "dependencies": {
-    "axios": "^0.15.3"
+    "axios": "^0.17.1"
   }
 }

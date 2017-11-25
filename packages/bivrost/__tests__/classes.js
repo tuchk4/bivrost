@@ -9,7 +9,7 @@ function getClass() {
     };
 
     static process = {
-      post: res => res.json,
+      post: res => JSON.parse(res.data.data),
       get: res => res.args,
     };
 
@@ -48,7 +48,7 @@ function getClass() {
 }
 
 describe('Classes', () => {
-  it('should cone XHR request with correct result', done => {
+  it('should done XHR request with correct result', done => {
     let DS = getClass();
 
     let ds = new DS({
@@ -57,6 +57,7 @@ describe('Classes', () => {
 
     ds
       .highLevelMethod()
+      .catch(e => console.log(e))
       .then(res => {
         expect(res).toEqual({
           bar: 200,

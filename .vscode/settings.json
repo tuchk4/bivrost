@@ -1,0 +1,24 @@
+{
+  "files.exclude": {
+    "coverage/": true,
+    "_book/": true,
+    "packages/bivrost/data/": true,
+    "packages/bivrost/http/": true,
+    "packages/bivrost/utils/": true,
+
+    "packages/bivrost-axios-adapter/coverage/": true,
+    "packages/bivrost-axios-adapter/index.js": true,
+
+    "packages/bivrost-delay-adapter/coverage/": true,
+    "packages/bivrost-delay-adapter/index.js": true,
+
+    "packages/bivrost-fetch-adapter/coverage/": true,
+    "packages/bivrost-fetch-adapter/index.js": true,
+
+    "packages/bivrost-local-storage-adapter/coverage/": true,
+    "packages/bivrost-local-storage-adapter/index.js": true,
+
+    "packages/bivrost-save-blob-adapter/coverage/": true,
+    "packages/bivrost-save-blob-adapter/index.js": true
+  }
+}

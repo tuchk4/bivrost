@@ -2,17 +2,11 @@
   "name": "bivrost",
   "version": "1.0.0",
   "description": "Bivrost allows to organize a simple interface to asynchronous APIs.",
-  "keywords": [
-    "data-source",
-    "api",
-    "fetch",
-    "axios",
-    "local-storage"
-  ],
+  "keywords": ["data-source", "api", "fetch", "axios", "local-storage"],
   "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
   "scripts": {
     "test": "jest  --coverage",
-    "test-dev": "jest   --watch",
+    "test-dev": "jest --watch",
     "docs:clean": "rimraf _book",
     "docs:prepare": "gitbook install",
     "docs:build": "npm run docs:prepare && rm -rf _book && ./node_modules/.bin/gitbook build",
@@ -23,9 +17,7 @@
   },
   "jest": {
     "rootDir": "./packages",
-    "setupFiles": [
-      "./bivrost/__tests__/localstorage-mock.js"
-    ],
+    "setupFiles": ["./bivrost/__tests__/localstorage-mock.js"],
     "modulePathIgnorePatterns": [
       "./bivrost/__tests__/http-bin-api.js",
       "./bivrost/__tests__/localstorage-mock.js"
@@ -36,20 +28,19 @@
     "url": "git+https://github.com/tuchk4/bivrost.git"
   },
   "devDependencies": {
-    "axios": "^0.15.3",
-    "babel-cli": "^6.4.0",
-    "babel-jest": "^18.0.0",
-    "babel-polyfill": "^6.7.4",
+    "axios": "^0.17.1",
+    "babel-cli": "^6.26.0",
+    "babel-jest": "^21.2.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
-    "bivrost-axios-adapter": "^0.0.2",
-    "gitbook-cli": "^2.3.0",
-    "gitbook-plugin-ga": "^1.0.1",
-    "husky": "^0.14.1",
-    "jest": "^18.0.0",
-    "lerna": "^2.0.0-rc.4",
-    "lint-staged": "^4.0.0",
-    "prettier": "^1.5.2"
+    "gitbook-cli": "^2.3.2",
+    "gitbook-plugin-ga": "^2.0.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "lerna": "^2.5.1",
+    "lint-staged": "^5.0.0",
+    "prettier": "^1.8.2"
   },
   "license": "ISC",
   "bugs": {
@@ -57,9 +48,6 @@
   },
   "homepage": "https://github.com/frankland/bivrost",
   "lint-staged": {
-    "*.js": [
-      "prettier --trailing-comma es5 --single-quote --write",
-      "git add"
-    ]
+    "*.js": ["prettier --trailing-comma es5 --single-quote --write", "git add"]
   }
 }

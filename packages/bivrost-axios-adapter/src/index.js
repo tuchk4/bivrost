@@ -15,6 +15,25 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
     ...interceptors,
   };
 
+  if (adapterIntinterceptors.request) {
+    axios.interceptors.request.use(adapterIntinterceptors.request);
+  }
+
+  const responseInterceptors = [];
+  if (adapterIntinterceptors.response) {
+    responseInterceptors.push(adapterIntinterceptors.response);
+  }
+
+  if (adapterIntinterceptors.error) {
+    if (!responseInterceptors.length) {
+      responseInterceptors.push(res => res);
+    }
+
+    responseInterceptors.push(adapterIntinterceptors.error);
+  }
+
+  axios.interceptors.response.use(...responseInterceptors);
+
   return function(url, requestOptions = {}) {
     const config = {
       ...adapterOptions,
@@ -33,27 +52,10 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
       config.params = requestOptions.query;
     }
 
-    let request = {
+    return axios({
       ...config,
       url,
       method: requestOptions.method,
-    };
-
-    if (adapterIntinterceptors.request) {
-      request = adapterIntinterceptors.request(request);
-    }
-
-    return axios(request).then(
-      response => {
-        return adapterIntinterceptors.response
-          ? adapterIntinterceptors.response(response)
-          : response;
-      },
-      error => {
-        return adapterIntinterceptors.error
-          ? adapterIntinterceptors.error(error)
-          : Promise.reject(error);
-      }
-    );
+    });
   };
 }

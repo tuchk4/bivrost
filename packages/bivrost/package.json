@@ -7,6 +7,9 @@
     "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
     "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"
   },
+  "devDependencies": {
+    "bivrost-axios-adapter": "=2.0.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tuchk4/bivrost.git"
