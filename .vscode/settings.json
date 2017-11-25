@@ -19,6 +19,9 @@
     "packages/bivrost-local-storage-adapter/index.js": true,
 
     "packages/bivrost-save-blob-adapter/coverage/": true,
-    "packages/bivrost-save-blob-adapter/index.js": true
+    "packages/bivrost-save-blob-adapter/index.js": true,
+
+    "packages/fetch-api-call/coverage/": true,
+    "packages/fetch-api-call/index.js": true
   }
 }

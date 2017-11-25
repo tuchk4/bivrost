@@ -1,8 +1,10 @@
 .DS_Store
 /.git
 /.idea
-/npm-debug.log
+
 /node_modules
-
-
 /index.js
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
