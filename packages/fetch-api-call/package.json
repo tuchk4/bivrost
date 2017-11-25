@@ -1,0 +1,24 @@
+{
+  "name": "fetch-api-call",
+  "version": "2.0.6",
+  "description": "bivrost fetch api call supporting url params / interceptors / awesome api setup",
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
+    "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuchk4/bivrost.git"
+  },
+  "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tuchk4/bivrost/issues"
+  },
+  "homepage": "hhttps://github.com/tuchk4/bivrost",
+  "dependencies": {
+    "bivrost-fetch-adapter": "=2.0.6",
+    "bivrost": "=2.3.1"
+  }
+}
