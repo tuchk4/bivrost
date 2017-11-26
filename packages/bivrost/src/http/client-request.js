@@ -1,5 +1,6 @@
 import RequestTemplate from './request-template';
 import promiseDeduplicator from '../utils/promise-deduplicator';
+import api from './api';
 
 const DEFAULT_OPTIONS = {
   protocol: 'http:',
@@ -30,7 +31,7 @@ export default class ClientRequest {
 
   getRequestOptions(params) {
     const request = {
-      ...this.requestTemplate.apply(params),
+      ...this.requestTemplate.getRequest(params),
     };
 
     const url = buildUrl(
@@ -43,8 +44,8 @@ export default class ClientRequest {
     return { url, request };
   }
 
-  execute(url, request, apiOptions) {
-    const promiseCreator = () => this.adapter(url, request, apiOptions);
+  execute(url, request) {
+    const promiseCreator = () => this.adapter(url, request);
 
     if (request.method === 'GET') {
       let dedupKey = JSON.stringify([request.method, url, request.query]);

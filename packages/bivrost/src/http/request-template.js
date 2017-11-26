@@ -166,7 +166,7 @@ export default class RequestTemplate {
     return bodyMethods.has(this.httpMethod);
   }
 
-  apply(params = {}) {
+  getRequest(params = {}) {
     if (isFormDataSupported(params)) {
       console.info(
         'FormData may not be fully supported. More info https://developer.mozilla.org/en/docs/Web/API/FormData'
@@ -179,8 +179,8 @@ export default class RequestTemplate {
     let query = buildQuery(this.queryBindings, this.queryDefaults, paramsMap);
     let path = buildPath(this.path, paramsMap);
 
-    let body,
-      unboundQuery = {};
+    let body = null;
+    let unboundQuery = {};
 
     if (this.hasBody()) {
       body = buildUnboundParams(this.uniqueBindings, params);

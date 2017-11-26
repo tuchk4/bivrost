@@ -8,7 +8,7 @@ function apiRequestTemplate(template, apiCommonOptions = {}, apiOptions = {}) {
     ...apiOptions,
   });
 
-  const apiRequest = function(params) {
+  const apiRequest = function(params, requestHeaders = {}) {
     let error = null;
 
     try {
@@ -25,7 +25,10 @@ function apiRequestTemplate(template, apiCommonOptions = {}, apiOptions = {}) {
     if (error) {
       return Promise.reject(error);
     } else {
-      return clientRequest.execute(url, request, apiOptions);
+      return clientRequest.execute(url, {
+        ...request,
+        headers: requestHeaders,
+      });
     }
   };
 

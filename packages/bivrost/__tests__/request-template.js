@@ -15,7 +15,7 @@ describe('Request template', () => {
   });
 
   it('apply POST request', () => {
-    const request = POSTrequest.apply({
+    const request = POSTrequest.getRequest({
       id: 1,
       name: 'Thor',
     });
@@ -31,7 +31,7 @@ describe('Request template', () => {
   });
 
   it('apply GET request', () => {
-    const request = GETrequest.apply({
+    const request = GETrequest.getRequest({
       id: 1,
       name: 'Thor',
     });
