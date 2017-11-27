@@ -5,3 +5,4 @@
 /node_modules
 /src
 /test
+/__tests__

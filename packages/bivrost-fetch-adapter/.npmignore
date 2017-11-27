@@ -1,5 +1,6 @@
 .DS_Store
 /.git
+/__tests__
 /.idea
 /npm-debug.log
 /node_modules
