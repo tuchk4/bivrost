@@ -19,17 +19,17 @@ const buildUrl = (protocol, host, prefix, path) =>
 
 export default (template, options = {}) => {
   const getRequest = createRequestTemplate(template);
-  const url = buildUrl(
-    options.protocol,
-    options.host,
-    options.prefix,
-    request.path
-  );
 
   const adapter = options.adapter;
 
   return function getRequestExecuteFunction(params) {
     const request = getRequest(params);
+    const url = buildUrl(
+      options.protocol,
+      options.host,
+      options.prefix,
+      request.path
+    );
 
     return function executeRequest(headers) {
       const promiseCreator = () =>
