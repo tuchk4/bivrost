@@ -1,4 +1,9 @@
 language: node_js
+install:
+  - yarn add lerna
+  - lerna bootstrap --npm-client=yarn
+  - yarn
+
 node_js:
   - "4"
   - "5"
