@@ -1,6 +1,6 @@
 {
   "name": "bivrost-fetch-adapter",
-  "version": "2.0.6",
+  "version": "3.0.0",
   "description": "Bivrost adapter using browser's native fetch function",
   "keywords": [
     "bivrost",

@@ -1,6 +1,6 @@
 {
   "name": "fetch-api-call",
-  "version": "2.0.6",
+  "version": "3.0.0",
   "description": "Fetch api call supporting url params / interceptors / awesome api setup",
   "keywords": [
     "rest",
@@ -31,7 +31,7 @@
   },
   "homepage": "hhttps://github.com/tuchk4/bivrost",
   "dependencies": {
-    "bivrost-fetch-adapter": "=2.0.6",
-    "bivrost": "=2.3.1"
+    "bivrost": "^3.0.0",
+    "bivrost-fetch-adapter": "^3.0.0"
   }
 }
