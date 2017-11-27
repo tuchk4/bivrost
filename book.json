@@ -1,7 +1,14 @@
 {
   "gitbook": ">=3.2.1",
   "title": "Bivrost",
-  "plugins": ["edit-link", "prism", "-highlight", "github", "ga", "anker-enable"],
+  "plugins": [
+    "edit-link",
+    "prism",
+    "-highlight",
+    "github",
+    "ga",
+    "anker-enable"
+  ],
   "pluginsConfig": {
     "edit-link": {
       "base": "https://github.com/tuchk4/bivrost/tree/master",

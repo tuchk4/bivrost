@@ -1,18 +1,16 @@
-# Fetch API Call
+# [Fetch API Call](https://github.com/tuchk4/bivrost/tree/master/packages/fetch-api-call)
 
 Awesome fetch api for browser and nodejs with interceptors easy way to declare
 api endpoints. Provide very easy way to setup api for different
 backends/services.
 
-### Install
+### [#](#install) Install
 
 ```
 yarn add fetch-api-call
 ```
 
-## Usage
-
-### Api Declaration
+### [#](#api-declaration) Api Declaration
 
 ```js
 import fetchApiCall from 'fetch-api-call';
@@ -25,7 +23,7 @@ const { api } = fetchApiCall({
 
 Options:
 
-* _protocol_ - http protocol. Available values - _http:_ an _https:_
+* _protocol_ - http protocol. Available values - **http:** an **https:**
 * _host_ - server hostname
 * _headers_ - requests headers. NOTE that headers could be also set with
   interceptors
@@ -42,7 +40,7 @@ Options:
 const apiCall = api('HTTP_METHOD /api/path/:with/:placeholders');
 ```
 
-**apiCall(params = {}, headers = {})** - function takes two optional params:
+_apiCall(params = {}, headers = {})_ - function takes two optional params:
 
 * _params_ - api params. Also is used for building final api entrypoint. More
   detauls see at
@@ -70,7 +68,7 @@ getUser({
 });
 ```
 
-### Interceptors
+### [#](#interceptors) Interceptors
 
 ```js
 import fetchApiCall from 'fetch-api-call';
@@ -116,7 +114,7 @@ getUser({
 });
 ```
 
-### Request Headers
+### [#](#request-headers) Request Headers
 
 This is useful when using `fetch-api-call` on NodeJS. In some cases it is not
 possible to use interceptors to set auth headers becasue it will work for all
@@ -132,7 +130,7 @@ getStatistics(
 );
 ```
 
-### Multiple Api Instances
+### [#](#multiple-api-instances) Multiple Api Instances
 
 Very useful if there is microservices backend architecture.
 
@@ -172,7 +170,7 @@ loadStatisitcs({
 });
 ```
 
-### Custom Setup
+### [#](#custom-setup) Custom Setup
 
 ```js
 import setup from 'fetch-api-call/setup';
@@ -203,6 +201,6 @@ const login = api('POST /login);
 * _mode_ - default mode. More details at -
   https://developer.mozilla.org/en-US/docs/Web/API/Request/mode
 * _adapter_ - default HTTP adapter. See more at -
-  https://tuchk4.github.io/bivrost/docs/adapters/
+  https://tuchk4.github.io/bivrost/docs/docs/adapters.html
 * _interceptors_ - initial interceptors. NOTE that this is NOT DEFAULT
   interceptors.

@@ -1,6 +1,8 @@
 # Api enchantment
 
-## <a id='api-for-services'></a>[#](#api-for-services) Create api for popular services
+## <a id='api-for-services'>
+
+### [#](#api-for-services) Create api for popular services
 
 For example twitter api:
 
@@ -38,7 +40,7 @@ export default (authToken, config = {}) => {
 Usage:
 
 ```js
-import createTwitterApi from 'twitter-api'
+import createTwitterApi from 'twitter-api';
 
 const twitterApi = createTwitterApi(AUTH_TOKEN);
 
@@ -49,7 +51,7 @@ twitterApi('GET /statuses/mentions_timeline');
 twitterApi.mentionsTimeline();
 
 twitterApi.show({
-    id: TWEET_ID
+  id: TWEET_ID,
 });
 ```
 
@@ -62,12 +64,14 @@ Same could be implemented for
 * Twitter - https://dev.twitter.com/rest/public
 * etc.
 
-## <a id='group-api-backend'></a>[#](#group-api-backend) Group api by backend services
+## <a id='group-api-backend'>
+
+### [#](#group-api-backend) Group api by backend services
 
 Especially it is very useful for microservice architecture.
 
-* *src/data/api/auth.js* - api for auth service service
-* *src/data/api/users.js* - api for application users service
-* *src/data/api/notifications.js* - api for notification service
+* _src/data/api/auth.js_ - api for auth service service
+* _src/data/api/users.js_ - api for application users service
+* _src/data/api/notifications.js_ - api for notification service
 
 Also such api functions could be easily shared between other applications.

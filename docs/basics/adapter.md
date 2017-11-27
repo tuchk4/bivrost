@@ -1,23 +1,59 @@
 # Adapter
 
-The main goal of Adapter is make some magic and return function that execute query according to passed url and Request object or enchant another Adapter.
+The main goal of Adapter is make some magic and return function that execute
+query according to passed url and Request object or enchant another Adapter.
 
-In most cases - adapter is using to adapt api function for used approaches or libraries (fetch, axios, rxjs, local storage) and execute query.
+In most cases - adapter is using to adapt api function for used approaches or
+libraries (fetch, axios, rxjs, local storage) and execute query.
 
-Also adapter is using for enchanting other adapters - add additional delays for testing, log api calls, save request response as blob, filter params etc. For example there are [delayAdapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-delay-adapter), [saveBlobAdater](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-save-blob-adapter), [localStorage](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-local-storage-adapter) adapter are enchanters.
+Also adapter is using for enchanting other adapters - add additional delays for
+testing, log api calls, save request response as blob, filter params etc. For
+example there are
+[delayAdapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-delay-adapter),
+[saveBlobAdater](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-save-blob-adapter),
+[localStorage](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-local-storage-adapter)
+adapter are enchanters.
 
-## <a id='adapter-list'></a>[#](#adapter-list) Adapter list
+## <a id='adapter-list'>
 
-* [Fetch adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-fetch-adapter)
-* [Axios adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-axios-adapter)
-* [Delay adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-delay-adapter)
-* [Local storage adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-local-storage-adapter)
-* [Save blob adapter adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-save-blob-adapter)
+### [#](#adapter-list) Adapter list
 
-## <a id='under-the-hood'></a>[#](#under-the-hood) Under the hood
+* [Fetch
+  adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-fetch-adapter)
+* [Axios
+  adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-axios-adapter)
+* [Delay
+  adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-delay-adapter)
+* [Local storage
+  adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-local-storage-adapter)
+* [Save blob adapter
+  adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-save-blob-adapter)
 
-*api* function does not guarantee that XHR method will be called. It just call adapter with generated config. What magic will be done depends on used adapter. In case of *localStorageAdapter* - it will save and get data from [localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage).
+## <a id='under-the-hood'>
 
+### [#](#under-the-hood) Under the hood
+
+_api_ function does not guarantee that XHR method will be called. It just call
+adapter with generated config. What magic will be done depends on used adapter.
+In case of _localStorageAdapter_ - it will save and get data from
+[localStorage](https://developer.mozilla.org/en/docs/Web/API/Window/localStorage).
+
+```js
+import fetchAdapter from 'bivrost-fetch-adapter';
+const fetch = fetchAdapter(options);
+```
+
+Options depends on the adapter. But in most cases options are:
+
+* _headers_ - requests headers. NOTE that headers could be also set with
+  interceptors
+* _interceptors_ - adapter interceptors - request / response /error
+* [Axios Adapter
+  Options](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-axios-adapter#adapter-options)
+* [Fetch Adapter
+  Options](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-fetch-adapter#configuration)
+
+Example:
 
 ```js
 import bivrostApi from 'bivrost/http/api'
@@ -38,7 +74,8 @@ createUser({
 });
 ```
 
-As the result *api* function will call adapter with generated config and returns its response.
+As the result _api_ function will call adapter with generated config and returns
+its response.
 
 ```json
 {
@@ -50,7 +87,7 @@ As the result *api* function will call adapter with generated config and returns
 }
 ```
 
-From javascript side next two example will produce same result:
+Next two example will produce same result:
 
 * Using api function:
 
@@ -78,13 +115,13 @@ return createUser({
 ```js
 import fetchAdapter from 'bivrost-fetch-adapter';
 
-const fetch =  fetchAdapter();
+const fetch = fetchAdapter();
 
 return fetch({
-  method: "POST",
-  path: "http://localhost:3001/user?hash=eecab3&version=v1.2.0",
+  method: 'POST',
+  path: 'http://localhost:3001/user?hash=eecab3&version=v1.2.0',
   body: {
-    name: "John Doe"
-  }
+    name: 'John Doe',
+  },
 });
 ```

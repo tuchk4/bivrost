@@ -1,6 +1,9 @@
 # Data source
 
-A DataSource - is a group of several API methods and its configuration. Every method call passes with the configured steps. Result of each step will be passed as arguments to the next step and whole steps chain will be cached if cache is enabled.
+A DataSource - is a group of several API methods and its configuration. Every
+method call passes with the configured steps. Result of each step will be passed
+as arguments to the next step and whole steps chain will be cached if cache is
+enabled.
 
 A DataSource provide methods for:
 
@@ -9,8 +12,9 @@ A DataSource provide methods for:
 * cache manipulations
 * request deduplication
 
+### <a id='this-gist'>
 
-### <a id='this-gist'></a>[#](#this-gist) The gist
+### [#](#this-gist) The gist
 
 ```js
 import DataSource from 'bivrost/data/source';
@@ -77,26 +81,29 @@ usersDataSource.loadAll({});
 usersDataSource.loadAll({});
 ```
 
+### <a id='invoke'>
 
-
-### <a id='invoke'></a>[#](#invoke) invoke(method: string, params: object)
+### [#](#invoke) invoke(method: string, params: object)
 
 ```js
-DataSource.invoke(method: string, params: object)
+DataSource.invoke((method: string), (params: object));
 ```
 
-Invoke is a data source's function that execute *method* chain and pass *params* as initial arguments.
-Method's chain - sequence of steps where each step is a *function* and its result is an argument for the next step.
-Steps sequence could configured as second argument to data source constructor or as property *steps*.
+Invoke is a data source's function that execute _method_ chain and pass _params_
+as initial arguments. Method's chain - sequence of steps where each step is a
+_function_ and its result is an argument for the next step. Steps sequence could
+configured as second argument to data source constructor or as property _steps_.
 If there is no method configuration at step - it will be skipped.
 
 Default steps sequence:
 
-- *prepare* - used for request data transformation and serialization
-- *api* - api call
-- *process* - process the response
+* _prepare_ - used for request data transformation and serialization
+* _api_ - api call
+* _process_ - process the response
 
-## <a id='invoke-steps'></a>[#](#invoke-steps) Invoke steps
+## <a id='invoke-steps'>
+
+### [#](#invoke-steps) Invoke steps
 
 As property:
 
@@ -122,11 +129,15 @@ class AppDataSource extends DataSource {
 }
 ```
 
-In this example - there are three steps for *invoke* function - *validate*, *serialize* and *api*. Steps sequence and naming - just a developer fantasy and depends on application architecture and requirements.
+In this example - there are three steps for _invoke_ function - _validate_,
+_serialize_ and _api_. Steps sequence and naming - just a developer fantasy and
+depends on application architecture and requirements.
 
-## <a id='step-configuration'></a>[#](#step-configuration) Step configuration
+## <a id='step-configuration'>
 
-Step could be configured as *object* or as *function*.
+### [#](#step-configuration) Step configuration
+
+Step could be configured as _object_ or as _function_.
 
 * If step is configured as object:
 
@@ -135,11 +146,11 @@ class UserDataSource extends DataSource {
   static steps = ['api'];
 
   static api = {
-    loadAll: api('GET /users')
-  }
+    loadAll: api('GET /users'),
+  };
 
   loadAll() {
-    return invoke('loadAll')
+    return invoke('loadAll');
   }
 }
 ```
@@ -153,7 +164,7 @@ class UserDataSource extends DataSource {
   static immutable = response => Immutable.fromJSON(response);
 
   static api = {
-    loadAll: api ('GET /users')
+    loadAll: api('GET /users'),
   };
 
   loadAll(params) {
@@ -162,45 +173,54 @@ class UserDataSource extends DataSource {
 }
 ```
 
-## <a id='cache'></a>[#](#cache) Cache
+## <a id='cache'>
+
+### [#](#cache) Cache
+
 Define default cache config for all data source methods:
+
 ```js
 class UserDataSource extends DataSource {
   static defaultCache = {
     enabled: true,
     isGlobal: true,
-    ttl: 60000
+    ttl: 60000,
   };
 }
 ```
 
-
 Define cache config for specific data source method:
+
 ```js
 class UserDataSource extends DataSource {
   static cache = {
     loadAll: {
       enabled: true,
       isGlobal: true,
-      ttl: 60000
-    }
+      ttl: 60000,
+    },
   };
 }
 ```
 
 Configuration is almost same as invoke steps. Cache options:
 
-* *enabled: boolean* - enable / disable cache for method
-* *isGlobal: boolean* - enable / disable global method cache. If *true* - cache will be shared between all data source instances.
-* *ttl: integer* - cache lifetime in miliseconds
+* _enabled: boolean_ - enable / disable cache for method
+* _isGlobal: boolean_ - enable / disable global method cache. If _true_ - cache
+  will be shared between all data source instances.
+* _ttl: integer_ - cache lifetime in miliseconds
 
 Cache methods:
 
-* *getCacheKey(method: string, params: object)* - Hook for cache key generating. By default cache key is `JSON.stringify(params)``
+* _getCacheKey(method: string, params: object)_ - Hook for cache key generating.
+  By default cache key is `JSON.stringify(params)``
 
-* *clearCache(method: string)* - Clear method caches. If *method* argument is not specified - clear all data source caches.
+* _clearCache(method: string)_ - Clear method caches. If _method_ argument is
+  not specified - clear all data source caches.
 
-## <a id='debug-logs'></a>[#](#debug-logs) Debug logs
+## <a id='debug-logs'>
+
+### [#](#debug-logs) Debug logs
 
 ```js
 const appDataSource = new AppDataSource();
@@ -208,7 +228,9 @@ appDataSource.enableDebugLogs();
 appDataSource.disableDebugLogs();
 ```
 
-If logs are enabled - data source will post messages to console for each step with its parameters.
-[bows](https://www.npmjs.com/package/bows) is used for logging and thats why `localStorage.debug = true` should be set in your console to see messages.
+If logs are enabled - data source will post messages to console for each step
+with its parameters. [bows](https://www.npmjs.com/package/bows) is used for
+logging and thats why `localStorage.debug = true` should be set in your console
+to see messages.
 
 ![Bivrost logs](http://i.imgur.com/FOC5z5e.png)

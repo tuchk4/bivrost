@@ -10,22 +10,22 @@ With [Bivrost](https://github.com/tuchk4/bivrost):
 
 ```js
 import DataSource from 'bivrost/data/source';
-import bivrostApi from 'bivrost/http/api'
+import bivrostApi from 'bivrost/http/api';
 import localStorageAdapter from 'bivrost-local-storage-adapter';
 
 const api = bivrostApi({
   adapter: localStorageAdapter({
-    namespace: 'my-application'
-  })
-})
+    namespace: 'my-application',
+  }),
+});
 
 class UsersDataSource extends DataSource {
   steps = ['api'];
 
   api = {
     loadAll: api('GET /users'),
-    create: api('POST /users')
-  }
+    create: api('POST /users'),
+  };
 
   loadUsers() {
     return this.invoke('loadAll');
@@ -36,41 +36,41 @@ class UsersDataSource extends DataSource {
   }
 }
 ```
+
 Direct calls:
 
 ```js
 import localStorageAdapter from 'bivrost-local-storage-adapter';
 
 const localStorageAdapter = localStorageAdapter({
-  namespace: 'my-application'
+  namespace: 'my-application',
 });
 
 localStorageAdapter('/users/1', {
   method: 'POST',
   body: {
-    name: 'John Doe'
-  }
+    name: 'John Doe',
+  },
 }).then(() => console.log('saved to localStorage'));
 
-
 localStorageAdapter('/users/1', {
-  method: 'GET'
+  method: 'GET',
 }).then(user => {
-
   expect(user).toEqual({
-    name: 'John Doe'
+    name: 'John Doe',
   });
 });
 ```
 
-----
+---
 
-[Bivrost](https://github.com/tuchk4/bivrost) allows to organize a simple interface to asyncronous APIs.
+[Bivrost](https://github.com/tuchk4/bivrost) allows to organize a simple
+interface to asyncronous APIs.
 
 #### Other adapters
 
-  * [Fetch adapter](https://github.com/tuchk4/bivrost-fetch-adapter)
-  * [Axios adapter](https://github.com/tuchk4/bivrost-axios-adapter)
-  * [Delay adapter](https://github.com/tuchk4/bivrost-delay-adapter)
-  * [Local storage adapter](https://github.com/tuchk4/bivrost-local-storage-adapter)
-  * [Save blob adapter adapter](https://github.com/tuchk4/bivrost-save-blob-adapter)
+* [Fetch Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-fetch-adapter)
+* [Axios Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-axios-adapter)
+* [Delay Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-delay-adapter)
+* [LocalStorage Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-local-storage-adapter)
+* [Save Blob Adapter Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-save-blob-adapter)

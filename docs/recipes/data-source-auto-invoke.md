@@ -1,6 +1,6 @@
 # Generate DataSource invoke functions
 
-Generate invoke functions according to dataSource *api* step configuration.
+Generate invoke functions according to dataSource _api_ step configuration.
 
 ```js
 import DataSource from 'bivrost/data/source';
@@ -19,8 +19,8 @@ class UsersDataSource extends AutoInvokeDataSource {
   static api = {
     loadAll: api('GET /users'),
     load: api('GET /users/:id'),
-    create: api('POST /users')
-  }
+    create: api('POST /users'),
+  };
 
   create(props) {
     return super.create(props).them(user => {

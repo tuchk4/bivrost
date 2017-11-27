@@ -1,7 +1,8 @@
 ## Mock data source steps and methods
 
-Suggest to use [jest](https://facebook.github.io/jest/) for testing.
-It is really painless javascript unit testing library with code coverage and perfects mocks.
+Suggest to use [jest](https://facebook.github.io/jest/) for testing. It is
+really painless javascript unit testing library with code coverage and perfects
+mocks.
 
 Example data source:
 
@@ -11,18 +12,18 @@ export default class UsersDataSource extends DataSource {
 
   static serialize = {
     loadAll: ({ groupId }) => ({
-      g: groupId
-    })
+      g: groupId,
+    }),
   };
 
   static api = {
-    loadAll: api('GET /users')
-  }
+    loadAll: api('GET /users'),
+  };
 
   loadAll(props) {
     return this.invoke(props);
   }
-};
+}
 ```
 
 Example data source test:
@@ -39,21 +40,22 @@ describe('Datasource steps mock', () => {
   });
 
   it('should mock ds steps', () => {
-    const mocks = mockDs(ds, step => jest.fn(step));
+    const mocks = mockDataSource(ds, step => jest.fn(step));
 
-    ds.loadAll({
-      groupId: 5
-    }).then(() => {
+    ds
+      .loadAll({
+        groupId: 5,
+      })
+      .then(() => {
+        expect(mocks.serialize.loadAll.mock.calls.length).toEqual(1);
+        expect(mocks.serialize.loadAll.mock.calls[0][0]).toEqual({
+          groupId: 5,
+        });
 
-      expect(mocks.serialize.loadAll.mock.calls.length).toEqual(1);
-      expect(mocks.serialize.loadAll.mock.calls[0][0]).toEqual({
-        groupId: 5
+        expect(mocks.api.loadAll.mock.calls[0][0]).toEqual({
+          g: 5,
+        });
       });
-
-      expect(mocks.api.loadAll.mock.calls[0][0]).toEqual({
-        g: 5
-      });
-    });
   });
 });
 ```

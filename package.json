@@ -2,7 +2,13 @@
   "name": "bivrost",
   "version": "1.0.0",
   "description": "Bivrost allows to organize a simple interface to asynchronous APIs.",
-  "keywords": ["data-source", "api", "fetch", "axios", "local-storage"],
+  "keywords": [
+    "data-source",
+    "api",
+    "fetch",
+    "axios",
+    "local-storage"
+  ],
   "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
   "scripts": {
     "dev": "lerna run dev --stream --parallel",
@@ -18,7 +24,9 @@
   },
   "jest": {
     "rootDir": "./packages",
-    "setupFiles": ["./bivrost/__tests__/localstorage-mock.js"],
+    "setupFiles": [
+      "./bivrost/__tests__/localstorage-mock.js"
+    ],
     "modulePathIgnorePatterns": [
       "./bivrost/__tests__/http-bin-api.js",
       "./bivrost/__tests__/localstorage-mock.js"
@@ -49,6 +57,16 @@
   },
   "homepage": "https://github.com/frankland/bivrost",
   "lint-staged": {
-    "*.js": ["prettier --trailing-comma es5 --single-quote --write", "git add"]
+    "*.js": [
+      "prettier --trailing-comma es5 --single-quote --write",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "gitbook-plugin-anker-enable": "0.0.4",
+    "gitbook-plugin-edit-link": "^2.0.2",
+    "gitbook-plugin-ga": "^1.0.1",
+    "gitbook-plugin-github": "^2.0.0",
+    "gitbook-plugin-prism": "^2.3.0"
   }
 }

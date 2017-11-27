@@ -12,18 +12,18 @@ With [Bivrost](https://github.com/tuchk4/bivrost):
 
 ```js
 import DataSource from 'bivrost/data/source';
-import bivrostApi from 'bivrost/http/api'
+import bivrostApi from 'bivrost/http/api';
 import fetchAdapter from 'bivrost-fetch-adapter';
 
 const api = bivrostApi({
   host: 'localhost',
-  adapter: fetchAdapter()
+  adapter: fetchAdapter(),
 });
 
 class UsersDataSource extends DataSource {
   static api = {
-    loadAll: api('GET /users')    
-  }
+    loadAll: api('GET /users'),
+  };
 
   loadUsers(filters) {
     return this.invoke('loadAll', filters);
@@ -41,11 +41,11 @@ const api = fetchAdapter();
 const options = {
   method: 'GET',
   query: {
-    groupId: 10
+    groupId: 10,
   },
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 };
 
 api('/users', options) // /users?groupId=10
@@ -59,11 +59,11 @@ api('/users', options) // /users?groupId=10
 const options = {
   method: 'POST',
   body: {
-    name: 'kek'
+    name: 'kek',
   },
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 };
 
 api('/user/1', options)
@@ -75,7 +75,6 @@ api('/user/1', options)
   });
 ```
 
-
 ### Configuration
 
 ```js
@@ -85,20 +84,20 @@ const api = fetchAdapter({
   // default options for each request with created adapter
   options: {
     mode: 'cors',
-    redirect: 'follow'
-  }
+    redirect: 'follow',
+  },
 });
 ```
 
 Available options:
 
-- *headers* - associated Headers object
-- *referrer* - referrer of the request
-- *mode* - cors, no-cors, same-origin
-- *credentials* - should cookies go with the request? omit, same-origin
-- *redirect* - follow, error, manual
-- *integrity* - subresource integrity value
-- *cache* - cache mode (default, reload, no-cache)
+* _headers_ - associated Headers object
+* _referrer_ - referrer of the request
+* _mode_ - cors, no-cors, same-origin
+* _credentials_ - should cookies go with the request? omit, same-origin
+* _redirect_ - follow, error, manual
+* _integrity_ - subresource integrity value
+* _cache_ - cache mode (default, reload, no-cache)
 
 ### Interceptors
 
@@ -119,15 +118,19 @@ const api = fetchAdapter({
     // takes Response instance as argument
     response: response => {
       // ...
-    }
-  }
+    },
+  },
 });
 ```
 
-* Request object documentation -  https://developer.mozilla.org/en-US/docs/Web/API/Request
-* Response object documentation - https://developer.mozilla.org/en-US/docs/Web/API/Response
+* Request object documentation -
+  https://developer.mozilla.org/en-US/docs/Web/API/Request
+* Response object documentation -
+  https://developer.mozilla.org/en-US/docs/Web/API/Response
 
-    NOTE: If there is a network error or another reason why the HTTP request couldn't be fulfilled, the fetch() promise will be rejected with a reference to that error.
+  NOTE: If there is a network error or another reason why the HTTP request
+  couldn't be fulfilled, the fetch() promise will be rejected with a reference
+  to that error.
 
 Interceptor example:
 
@@ -153,14 +156,15 @@ const api = fetchAdapter({
 
 Github whatwg-fetch - https://github.com/github/fetch
 
-----
+---
 
-[Bivrost](https://github.com/tuchk4/bivrost) allows to organize a simple interface to asyncronous APIs.
+[Bivrost](https://github.com/tuchk4/bivrost) allows to organize a simple
+interface to asyncronous APIs.
 
 #### Other adapters
 
-  * [Fetch adapter](https://github.com/tuchk4/bivrost-fetch-adapter)
-  * [Axios adapter](https://github.com/tuchk4/bivrost-axios-adapter)
-  * [Delay adapter](https://github.com/tuchk4/bivrost-delay-adapter)
-  * [Local storage adapter](https://github.com/tuchk4/bivrost-local-storage-adapter)
-  * [Save blob adapter adapter](https://github.com/tuchk4/bivrost-save-blob-adapter)
+* [Fetch Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-fetch-adapter)
+* [Axios Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-axios-adapter)
+* [Delay Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-delay-adapter)
+* [LocalStorage Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-local-storage-adapter)
+* [Save Blob Adapter Adapter](https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-save-blob-adapter)

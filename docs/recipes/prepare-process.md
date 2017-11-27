@@ -1,6 +1,9 @@
 # Prepare request and process response
 
-Process request is very useful for response transformation to more usable format according to current application. For example - auto add users avatars using http://placehold.it service.
+Response processing in some cases are important to get more usable format
+according to current application.
+
+For example - auto add users avatars using http://placehold.it service.
 
 ```js
 class UsersDataSource extends DataSource {
@@ -25,7 +28,9 @@ class UsersDataSource extends DataSource {
 }
 ```
 
-Prepare requests is very useful for requests params transformation (serialization): covert form camelCase to snake_case, rename some props, auto adding props etc.
+Prepare requests is very useful for requests params transformation
+(serialization): covert form camelCase to snake_case, rename some props, auto
+adding props etc.
 
 ```js
 class UsersDataSource extends DataSource {
@@ -33,22 +38,13 @@ class UsersDataSource extends DataSource {
 
   static prepare = {
     list: params => ({
-      l: [params.limit, f: params.offset],
-      o: params.order
-    })
+      l: [params.limit, params.offset],
+      o: params.order,
+    }),
   };
 
   static api = {
-    list: api ('GET /users')
-  };
-
-  static process = {
-    list: users => users.map(user => {
-      return {
-        ...user,
-        avatar: user.avatar ? user.avatar : 'http://placehold.it/30x30'
-      }
-    });
+    list: api('GET /users'),
   };
 
   loadAll(params) {
@@ -59,6 +55,6 @@ const usersDataSource = new UsersDataSource();
 usersDataSource.loadAll({
   limit: 100,
   offset: 2,
-  order: 'id'
+  order: 'id',
 }); // GET /users?l=100,2&o=id
 ```

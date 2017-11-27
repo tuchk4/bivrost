@@ -1,6 +1,8 @@
 # Data source immutable output
 
-[Immutable](https://facebook.github.io/immutable-js/) - Immutable.js provides many Persistent Immutable data structures including: List, Stack, Map, OrderedMap, Set, OrderedSet and Record.
+[Immutable](https://facebook.github.io/immutable-js/) - Immutable.js provides
+many Persistent Immutable data structures including: List, Stack, Map,
+OrderedMap, Set, OrderedSet and Record.
 
 Make each methods response immutable:
 
@@ -11,7 +13,7 @@ class UserDataSource extends DataSource {
   static immutable = response => Immutable.fromJSON(response);
 
   static api = {
-    list: api ('GET /users')
+    list: api('GET /users'),
   };
 
   loadAll(params) {
@@ -20,14 +22,15 @@ class UserDataSource extends DataSource {
 }
 ```
 
-Use Immutable [Records](https://facebook.github.io/immutable-js/docs/#/Record) and [Maps](https://facebook.github.io/immutable-js/docs/#/Map):
+Use Immutable [Records](https://facebook.github.io/immutable-js/docs/#/Record)
+and [Maps](https://facebook.github.io/immutable-js/docs/#/Map):
 
 ```js
 import { Record, Map } from 'immutable';
 
 const User = Record({
   id: null,
-  name: ''
+  name: '',
 });
 
 class UserDataSource extends DataSource {
@@ -35,8 +38,8 @@ class UserDataSource extends DataSource {
 
   static api = {
     update: api('PUT /users/:id'),
-    loadAll: api('GET /users')
-  }
+    loadAll: api('GET /users'),
+  };
 
   static model = {
     update: response => new User(response),
@@ -44,13 +47,13 @@ class UserDataSource extends DataSource {
     loadAll: response => {
       return response.reduce((map, user) => {
         map.set({
-          [user.id]: user
+          [user.id]: user,
         });
 
         return map;
       }, Map());
-    }
-  }
+    },
+  };
 
   update(user) {
     return this.invoke('update', user);

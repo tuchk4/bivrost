@@ -1,11 +1,14 @@
 # Validation
 
-Throw error or return rejected promise at any step.
-There are some useful libraries for data validation:
+Throw error or return rejected promise at any step. There are some useful
+libraries for data validation:
 
-* [tcomb](https://github.com/gcanti/tcomb) - Type checking and DDD. There is additional example with tcomb - [Data source type checking with tcomb](/docs/recipes/data-source-type-checking.md)
+* [tcomb](https://github.com/gcanti/tcomb) - Type checking and DDD. There is
+  additional example with tcomb -
+  [Data source type checking with tcomb](/docs/recipes/data-source-type-checking.md)
 * [Joi](https://www.npmjs.com/package/joi) - Obejct schema validation
-* [Validator](https://github.com/chriso/validator.js) - String validation and sanitization
+* [Validator](https://github.com/chriso/validator.js) - String validation and
+  sanitization
 
 ```js
 import ALL_USERS_FIXTURE form 'fixtures/all-users';
@@ -21,7 +24,7 @@ class UserDataSource extends DataSource {
         return Promise.reject('"id" is required');
       }
 
-      return user;  
+      return user;
     }
   }
 
