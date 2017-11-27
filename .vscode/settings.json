@@ -24,6 +24,7 @@
     "packages/fetch-api-call/coverage/": true,
     "packages/fetch-api-call/index.js": true,
     "packages/fetch-api-call/createInterceptors.js": true,
-    "packages/fetch-api-call/setup.js": true
+    "packages/fetch-api-call/setup.js": true,
+    "packages/fetch-api-call/node.js": true
   }
 }

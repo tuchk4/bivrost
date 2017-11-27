@@ -15,7 +15,8 @@
     "request",
     "call steps"
   ],
-  "main": "index.js",
+  "browser": "index.js",
+  "main": "node.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
     "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"
@@ -32,6 +33,7 @@
   "homepage": "hhttps://github.com/tuchk4/bivrost",
   "dependencies": {
     "bivrost": "^3.0.0",
-    "bivrost-fetch-adapter": "^3.0.0"
+    "bivrost-fetch-adapter": "^3.0.0",
+    "regenerator-runtime": "^0.11.0"
   }
 }

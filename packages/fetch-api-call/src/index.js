@@ -1,3 +1,4 @@
+import regeneratorRuntime from 'regenerator-runtime';
 import fetchAdapter from 'bivrost-fetch-adapter';
 import setup from './setup';
 
