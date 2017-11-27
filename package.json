@@ -12,7 +12,7 @@
   "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
   "scripts": {
     "dev": "lerna run dev --stream --parallel",
-    "test": "jest  --coverage",
+    "test": "jest",
     "test-dev": "jest --watch",
     "docs:clean": "rimraf _book",
     "docs:prepare": "gitbook install",
