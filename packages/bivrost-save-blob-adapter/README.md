@@ -1,7 +1,9 @@
 # Bivrost save blob adapter
 
+Bivrost adapter. Allows to save api resposne as blob.
+
 ```
-npm i --save bivrost-save-blob-adapter
+yarn add bivrost-save-blob-adapter
 ```
 
 ## Usage

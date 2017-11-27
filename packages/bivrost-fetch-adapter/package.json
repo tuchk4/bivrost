@@ -1,7 +1,19 @@
 {
   "name": "bivrost-fetch-adapter",
   "version": "2.0.6",
-  "description": "bivrost XHR adapter using browser's native fetch function",
+  "description": "Bivrost adapter using browser's native fetch function",
+  "keywords": [
+    "bivrost",
+    "data-source",
+    "api",
+    "fetch",
+    "axios",
+    "local-storage",
+    "fetch-api-call",
+    "response",
+    "request",
+    "call steps"
+  ],
   "main": "index.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/babel -d ./ ./src",

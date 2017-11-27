@@ -1,7 +1,9 @@
 # Bivrost delay adapter
 
+Bivrost adapter enchantment to add request/respone delays for UI tests
+
 ```
-npm i --save bivrost-delay-adapter
+yarn add bivrost-delay-adapter
 ```
 
 ### Usage

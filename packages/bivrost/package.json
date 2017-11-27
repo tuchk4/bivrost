@@ -1,8 +1,20 @@
 {
   "name": "bivrost",
   "version": "2.3.1",
-  "description": "",
   "main": "index.js",
+  "description": "Bivrost allows to organize a simple interface to asynchronous APIs.",
+  "keywords": [
+    "rest",
+    "data-source",
+    "api",
+    "fetch",
+    "axios",
+    "local-storage",
+    "fetch-api-call",
+    "response",
+    "request",
+    "call steps"
+  ],
   "scripts": {
     "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
     "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"

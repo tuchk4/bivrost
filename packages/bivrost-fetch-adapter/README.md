@@ -3,7 +3,7 @@
 Adapter for browser's native fetch function.
 
 ```
-npm i --save bivrost-fetch-adapter
+yarn add bivrost-fetch-adapter
 ```
 
 ### Usage

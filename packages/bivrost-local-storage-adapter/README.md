@@ -1,7 +1,9 @@
 # Bivrost localStorage adapter
 
+Bivrost adapter. Allows to work with localStorage as with REST backend
+
 ```
-npm i --save bivrost-local-storage-adapter
+yarn add bivrost-local-storage-adapter
 ```
 
 ## Usage

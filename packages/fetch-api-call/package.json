@@ -1,7 +1,20 @@
 {
   "name": "fetch-api-call",
   "version": "2.0.6",
-  "description": "bivrost fetch api call supporting url params / interceptors / awesome api setup",
+  "description": "Fetch api call supporting url params / interceptors / awesome api setup",
+  "keywords": [
+    "rest",
+    "bivrost",
+    "data-source",
+    "api",
+    "fetch",
+    "axios",
+    "local-storage",
+    "fetch-api-call",
+    "response",
+    "request",
+    "call steps"
+  ],
   "main": "index.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/babel -d ./ ./src",

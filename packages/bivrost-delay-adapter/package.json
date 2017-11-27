@@ -1,7 +1,19 @@
 {
   "name": "bivrost-delay-adapter",
   "version": "2.0.1",
-  "description": "",
+  "description": "Bivrost adapter enchantment to add request/respone delays for UI tests",
+  "keywords": [
+    "bivrost",
+    "data-source",
+    "api",
+    "fetch",
+    "axios",
+    "local-storage",
+    "fetch-api-call",
+    "response",
+    "request",
+    "call steps"
+  ],
   "main": "index.js",
   "scripts": {
     "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
