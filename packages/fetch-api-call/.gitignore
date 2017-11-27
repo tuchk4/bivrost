@@ -5,6 +5,7 @@
 
 /node_modules
 /index.js
+/setup.js
 /createInterceptors.js
 
 npm-debug.log*
