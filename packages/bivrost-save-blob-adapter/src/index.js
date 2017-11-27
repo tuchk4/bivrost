@@ -4,23 +4,21 @@ const isFunction = func =>
   func && {}.toString.call(func) === '[object Function]';
 
 export default function saveBlobAdapter(adapter) {
-  return (url, params, options) => {
-    return adapter(url, params, options).then(response => {
-      let filename = options.filename;
+  return (url, params) => {
+    return adapter(url, params).then(response => {
+      return getFileName => {
+        const filename = getFileName(url, params, response);
 
-      if (isFunction(filename)) {
-        filename = filename(url, params, response);
-      }
+        if (!filename) {
+          throw new Error('Bivrost save blob adapter: Empty file name');
+        }
 
-      if (!filename) {
-        throw new Error('Bivrost save blob adapter: Empty file name');
-      }
+        const blob = new Blob([JSON.stringify(response)]);
 
-      const blob = new Blob([JSON.stringify(response)]);
+        fileSaver.saveAs(blob, filename);
 
-      fileSaver.saveAs(blob, filename);
-
-      return response;
+        return response;
+      };
     });
   };
 }

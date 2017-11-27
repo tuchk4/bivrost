@@ -25,13 +25,14 @@ class UsersDataSource extends DataSource {
   steps = ['api'];
 
   api = {
-    loadAll: api('GET /users', {
-      filename: 'users.json',
-    }),
+    loadAll: api('GET /users'),
   };
 
   saveUsersJSON(filters) {
-    return this.invoke('loadAll', filters);
+    return this.invoke('loadAll', filters).then(download => {
+      // call download function and generate filename
+      download((url, params, response) => `users-${response.length}.json`);
+    });
   }
 }
 
@@ -57,11 +58,9 @@ const requestOptions = {
   method: 'GET',
 };
 
-saveBlob('/report/exel', requestOptions, {
-  filename: 'report-excel.xls',
-}).then(() => {
-  console.log('saved');
-}); // browser will save and download response
+saveBlob('/report/exel', requestOptions).then(download => {
+  download(() => 'exel.xls');
+}); // browser will save and download response as file
 ```
 
 ---
