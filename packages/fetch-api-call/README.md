@@ -4,6 +4,28 @@ Awesome fetch api for browser and nodejs with interceptors easy way to declare
 api endpoints. Provide very easy way to setup api for different
 backends/services.
 
+## Advantages
+
+* Support interceptors
+* Support multiple instances wiht its own interceptors
+* Easy way to define headers for specific requests
+* Declrative api end points
+
+```js
+const login = api('POST /login');
+login({});
+
+const loadStatistics = api('GET /statistics');
+loadStatistics({
+  filter: {},
+});
+
+const loadUser = api('GET /user/:id);
+laodUser({
+  id: 1
+});
+```
+
 ### Install
 
 ```
@@ -198,6 +220,8 @@ const api = createApi({
 
 const login = api('POST /login);
 ```
+
+Options:
 
 * _headers_ - default headers
 * _mode_ - default mode. More details at -
