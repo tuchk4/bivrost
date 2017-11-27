@@ -1,6 +1,6 @@
 {
   "name": "bivrost-delay-adapter",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Bivrost adapter enchantment to add request/respone delays for UI tests",
   "keywords": [
     "bivrost",

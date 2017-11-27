@@ -1,6 +1,6 @@
 {
   "name": "bivrost-save-blob-adapter",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Bivrost adapter. Allows to save api resposne as blob",
   "keywords": [
     "bivrost",

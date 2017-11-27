@@ -1,6 +1,6 @@
 {
   "name": "bivrost-localstorage-adapter",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Bivrost adapter. Allows to work with localStorage as with REST backend",
   "keywords": [
     "bivrost",
