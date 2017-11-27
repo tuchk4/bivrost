@@ -1,7 +1,28 @@
 import fetchApiCall from '../src';
 
 describe('fetchApiCall', () => {
-  it('should', () => {
+  it('should process error', () => {
+    const { api, interceptors } = fetchApiCall({
+      protocol: 'http:',
+      host: 'httpbin.org',
+    });
+
+    const badRequest = api('GET /status/:status');
+    const thenMock = jest.fn();
+
+    return badRequest({
+      status: 402,
+    })
+      .then(thenMock)
+      .catch(e => {
+        expect(e).toEqual('Fuck you, pay me!');
+      })
+      .then(() => {
+        expect(thenMock.mock.calls.length).toEqual(0);
+      });
+  });
+
+  it('should pass post body', () => {
     const { api, interceptors } = fetchApiCall({
       protocol: 'http:',
       host: 'httpbin.org',

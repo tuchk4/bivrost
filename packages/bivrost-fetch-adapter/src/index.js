@@ -8,36 +8,10 @@ const DEFAULT_ADAPTER_OPTIONS = {
   },
 };
 
-const DEFAULT_ADAPTER_INTERCEPTORS = {
-  response: response => {
-    const headers = response.headers;
-    const contentType = headers.get('content-type');
-
-    let action = null;
-
-    if (contentType && contentType.indexOf('application/json') !== -1) {
-      action = () => response.json();
-    } else {
-      action = () => response.text();
-    }
-
-    if (response.ok) {
-      return action();
-    } else {
-      return Promise.reject(response);
-    }
-  },
-};
-
 export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
   const adapterOptions = {
     ...DEFAULT_ADAPTER_OPTIONS,
     ...options,
-  };
-
-  const adapterIntinterceptors = {
-    ...DEFAULT_ADAPTER_INTERCEPTORS,
-    ...interceptors,
   };
 
   return function(url, requestOptions = {}) {
@@ -68,25 +42,25 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
       ...config,
     });
 
-    if (adapterIntinterceptors.request) {
-      request = adapterIntinterceptors.request(request);
+    if (interceptors.request) {
+      request = interceptors.request(request);
     }
 
     return fetch(request).then(
       response => {
         if (response.ok) {
-          return adapterIntinterceptors.response
-            ? adapterIntinterceptors.response(response)
+          return interceptors.response
+            ? interceptors.response(response)
             : response;
         } else {
-          return adapterIntinterceptors.error
-            ? adapterIntinterceptors.error(response)
+          return interceptors.error
+            ? interceptors.error(response)
             : Promise.reject(response);
         }
       },
       error => {
-        return adapterIntinterceptors.error
-          ? adapterIntinterceptors.error(error)
+        return interceptors.error
+          ? interceptors.error(error)
           : Promise.reject(error);
       }
     );
