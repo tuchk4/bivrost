@@ -5,6 +5,7 @@
   "keywords": ["data-source", "api", "fetch", "axios", "local-storage"],
   "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
   "scripts": {
+    "dev": "lerna run dev --stream --parallel",
     "test": "jest  --coverage",
     "test-dev": "jest --watch",
     "docs:clean": "rimraf _book",

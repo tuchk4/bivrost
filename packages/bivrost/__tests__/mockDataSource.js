@@ -1,5 +1,5 @@
 import DataSource from '../src/data/source';
-import mockDs from '../src/utils/mock-data-source';
+import mockDs from '../src/utils/mockDataSource';
 
 class DS extends DataSource {
   static steps = ['serialize', 'api'];

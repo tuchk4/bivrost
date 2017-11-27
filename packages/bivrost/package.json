@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/tuchk4/bivrost/issues"
   },
-  "homepage": "hhttps://github.com/tuchk4/bivrost"
+  "homepage": "hhttps://github.com/tuchk4/bivrost",
+  "dependencies": {
+    "form-data": "^2.3.1"
+  }
 }

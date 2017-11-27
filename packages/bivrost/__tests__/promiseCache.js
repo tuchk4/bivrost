@@ -1,5 +1,5 @@
-import promiseCache from '../src/utils/promise-cache';
-import promiseDedup from '../src/utils/promise-deduplicator';
+import promiseCache from '../src/utils/promiseCache';
+import promiseDedup from '../src/utils/promiseDeduplicator';
 
 import Cache from '../src/data/cache';
 
@@ -39,12 +39,11 @@ describe('Promise cache', () => {
     const firstPromise = promiseCache(cache, key, () => dedupPromise);
     const secondPromise = promiseCache(cache, key, () => dedupPromise);
 
-    return Promise.all([
-      firstPromise,
-      secondPromise,
-    ]).then(([firstResult, secondResult]) => {
-      expect(firstResult).toEqual(secondResult);
-      expect(promiseCreator.mock.calls.length).toBe(1);
-    });
+    return Promise.all([firstPromise, secondPromise]).then(
+      ([firstResult, secondResult]) => {
+        expect(firstResult).toEqual(secondResult);
+        expect(promiseCreator.mock.calls.length).toBe(1);
+      }
+    );
   });
 });

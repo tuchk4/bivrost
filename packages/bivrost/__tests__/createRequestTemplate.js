@@ -1,21 +1,16 @@
-import RequestTemplate from '../src/http/request-template';
+import createRequestTemplate from '../src/http/createRequestTemplate';
 
 describe('Request template', () => {
-  let POSTrequest = null;
-  let GETrequest = null;
+  let getPOSTrequest = null;
+  let getGETrequest = null;
 
   beforeEach(() => {
-    POSTrequest = new RequestTemplate('POST /user/:id');
-    GETrequest = new RequestTemplate('GET /user/:id');
-  });
-
-  it('hasBody', () => {
-    expect(POSTrequest.hasBody()).toEqual(true);
-    expect(GETrequest.hasBody()).toEqual(false);
+    getPOSTrequest = createRequestTemplate('POST /user/:id');
+    getGETrequest = createRequestTemplate('GET /user/:id');
   });
 
   it('apply POST request', () => {
-    const request = POSTrequest.getRequest({
+    const request = getPOSTrequest({
       id: 1,
       name: 'Thor',
     });
@@ -31,7 +26,7 @@ describe('Request template', () => {
   });
 
   it('apply GET request', () => {
-    const request = GETrequest.getRequest({
+    const request = getGETrequest({
       id: 1,
       name: 'Thor',
     });
@@ -47,7 +42,7 @@ describe('Request template', () => {
 
   it('should throw exception if not enough bound params', () => {
     expect(() => {
-      GETrequest.apply({
+      getGETrequest({
         name: 'Thor',
       });
     }).toThrow();

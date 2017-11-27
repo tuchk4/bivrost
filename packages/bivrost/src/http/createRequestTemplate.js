@@ -1,7 +1,8 @@
+import FormData from 'form-data';
 import Url from 'url';
 
-const getUniqueBindings = requestTemplate =>
-  new Set([...requestTemplate.queryBindings, ...requestTemplate.pathBindings]);
+const getUniqueBindings = (queryBindings, pathBindings) =>
+  new Set([...queryBindings, ...pathBindings]);
 
 const buildQuery = (queryBindings, queryDefaults, paramsMap) => {
   let query = {};
@@ -30,32 +31,15 @@ const buildPath = (path, paramsMap) =>
     return paramsMap.get(paramName);
   });
 
-// TODO: wrong function
-const isFormDataSupported = params =>
-  typeof FormData !== 'undefined' && params instanceof FormData;
-
 const buildUnboundParams = (exceptParamsSet, params) => {
-  let keys = null;
-
-  const isArray = Array.isArray(params);
-  const isFormData = isFormDataSupported(params);
-
-  let initialValue = isArray ? [] : {};
-
-  if (isFormData) {
-    keys = params.entries();
-    initialValue = new FormData();
-  } else {
-    keys = Object.keys(params);
-  }
+  const keys = params.entries ? params.entries : Object.keys(params);
+  const initialValue = params.entries ? new FormData() : {};
 
   return keys
     .filter(it => !exceptParamsSet.has(it))
     .reduce((newParams, key) => {
-      if (isFormData) {
+      if (params.entries) {
         newParams.append(key, params.get(key));
-      } else if (isArray) {
-        newParams.push(params[key]);
       } else {
         newParams[key] = params[key];
       }
@@ -63,8 +47,6 @@ const buildUnboundParams = (exceptParamsSet, params) => {
       return newParams;
     }, initialValue);
 };
-
-const bodyMethods = new Set(['POST', 'PUT', 'PATCH']);
 
 const fNot = f => a => !f(a);
 
@@ -106,18 +88,10 @@ const extractMethodAndUrl = templateString => {
 };
 
 const getParamsMap = params => {
-  let keys = null;
-
-  const isFormData = isFormDataSupported(params);
-
-  if (isFormData) {
-    keys = params.entries();
-  } else {
-    keys = Object.keys(params);
-  }
+  const keys = params.entries ? params.entries : Object.keys(params);
 
   return keys.reduce((paramsMap, key) => {
-    if (isFormData) {
+    if (params.get) {
       paramsMap.set(key, params.get(key));
     } else {
       paramsMap.set(key, params[key]);
@@ -143,60 +117,41 @@ const parseRequestTemplate = templateString => {
   };
 };
 
-export default class RequestTemplate {
-  constructor(templateString) {
-    const {
-      httpMethod,
-      queryBindings,
-      queryDefaults,
-      pathBindings,
-      path,
-    } = parseRequestTemplate(templateString);
+const methodsWithBody = new Set(['POST', 'PUT', 'PATCH']);
 
-    this.httpMethod = httpMethod;
-    this.queryBindings = queryBindings;
-    this.queryDefaults = queryDefaults;
-    this.pathBindings = pathBindings;
-    this.path = path;
+export default function getRequestTempalate(tempalte) {
+  const {
+    httpMethod,
+    queryBindings,
+    queryDefaults,
+    pathBindings,
+    path,
+  } = parseRequestTemplate(tempalte);
 
-    this.uniqueBindings = getUniqueBindings(this);
-  }
+  const uniqueBindings = getUniqueBindings(queryBindings, pathBindings);
 
-  hasBody() {
-    return bodyMethods.has(this.httpMethod);
-  }
-
-  getRequest(params = {}) {
-    if (isFormDataSupported(params)) {
-      console.info(
-        'FormData may not be fully supported. More info https://developer.mozilla.org/en/docs/Web/API/FormData'
-      );
-    }
-
+  return function getRequest(params) {
     let paramsMap = getParamsMap(params);
     let request = {};
-
-    let query = buildQuery(this.queryBindings, this.queryDefaults, paramsMap);
-    let path = buildPath(this.path, paramsMap);
 
     let body = null;
     let unboundQuery = {};
 
-    if (this.hasBody()) {
-      body = buildUnboundParams(this.uniqueBindings, params);
+    if (methodsWithBody.has(httpMethod)) {
+      body = buildUnboundParams(uniqueBindings, params);
       request.body = body;
     } else {
-      unboundQuery = buildUnboundParams(this.uniqueBindings, params);
+      unboundQuery = buildUnboundParams(uniqueBindings, params);
     }
 
     return {
       ...request,
       query: {
-        ...query,
+        ...buildQuery(queryBindings, queryDefaults, paramsMap),
         ...unboundQuery,
       },
-      path,
-      method: this.httpMethod,
+      path: buildPath(path, paramsMap),
+      method: httpMethod,
     };
-  }
+  };
 }

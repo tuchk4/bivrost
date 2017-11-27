@@ -1,4 +1,4 @@
-import promiseCache from '../utils/promise-cache';
+import promiseCache from '../utils/promiseCache';
 import Cache from './cache';
 
 const DEFAULT_STEPS = ['prepare', 'api', 'process'];

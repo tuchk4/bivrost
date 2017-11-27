@@ -1,18 +1,16 @@
-import ClientRequest from './client-request';
+import clientRequest from './clientRequest';
 
-const CLIENT_REQUEST_SETUP_ERROR = 'CLIENT_REQUEST_SETUP_ERROR';
+export const CLIENT_REQUEST_SETUP_ERROR = 'CLIENT_REQUEST_SETUP_ERROR';
 
-function apiRequestTemplate(template, apiCommonOptions = {}, apiOptions = {}) {
-  const clientRequest = new ClientRequest(template, {
-    ...apiCommonOptions,
-    ...apiOptions,
-  });
+function apiRequestTemplate(template, options) {
+  const getRequestExecuteFunction = clientRequest(template, options);
 
-  const apiRequest = function(params, requestHeaders = {}) {
+  const apiRequest = function(params, headers = {}) {
     let error = null;
+    let executeRequest = null;
 
     try {
-      var { url, request } = clientRequest.getRequestOptions(params);
+      executeRequest = getRequestExecuteFunction(params);
     } catch (e) {
       error = {
         ok: false,
@@ -25,10 +23,7 @@ function apiRequestTemplate(template, apiCommonOptions = {}, apiOptions = {}) {
     if (error) {
       return Promise.reject(error);
     } else {
-      return clientRequest.execute(url, {
-        ...request,
-        headers: requestHeaders,
-      });
+      return executeRequest(headers);
     }
   };
 
@@ -37,7 +32,6 @@ function apiRequestTemplate(template, apiCommonOptions = {}, apiOptions = {}) {
   return apiRequest;
 }
 
-export default function api(apiCommonOptions = {}) {
-  return (template, apiOptions = {}) =>
-    apiRequestTemplate(template, apiCommonOptions, apiOptions);
+export default function api(options = {}) {
+  return template => apiRequestTemplate(template, options);
 }

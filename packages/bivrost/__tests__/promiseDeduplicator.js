@@ -1,4 +1,4 @@
-import promiseDedup from '../src/utils/promise-deduplicator';
+import promiseDedup from '../src/utils/promiseDeduplicator';
 
 describe('Promise deduplicator', () => {
   const key1 = 123;
