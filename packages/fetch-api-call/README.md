@@ -4,6 +4,15 @@ Awesome fetch api for browser and nodejs with interceptors easy way to declare
 api endpoints. Provide very easy way to setup api for different
 backends/services.
 
+* [Advantages](#advantages)
+* [Api Declaration](#api-declaration)
+* [Interceptors](#interceptors)
+* [Request Headers](#request-headers)
+* [Custom Setup](#custom-setup)
+* [Bivrost Docs](http://tuchk4.github.io/bivrost/)
+
+---
+
 ## Advantages
 
 * Support interceptors
@@ -22,19 +31,17 @@ loadStatistics({
 
 const loadUser = api('GET /user/:id');
 laodUser({
-  id: 1
+  id: 1,
 });
 ```
 
-### Install
+## Install
 
 ```
 yarn add fetch-api-call
 ```
 
-## Usage
-
-### Api Declaration
+## Api Declaration
 
 ```js
 import fetchApiCall from 'fetch-api-call';
@@ -92,7 +99,7 @@ getUser({
 });
 ```
 
-### Interceptors
+## Interceptors
 
 ```js
 import fetchApiCall from 'fetch-api-call';
@@ -138,7 +145,7 @@ getUser({
 });
 ```
 
-### Request Headers
+## Request Headers
 
 This is useful when using `fetch-api-call` on NodeJS. In some cases it is not
 possible to use interceptors to set auth headers becasue it will work for all
@@ -154,7 +161,7 @@ getStatistics(
 );
 ```
 
-### Multiple Api Instances
+## Multiple Api Instances
 
 Very useful if there is microservices backend architecture.
 
@@ -171,7 +178,7 @@ const Users = fetchApiCall({
 
 const Data = fetchApiCall({
   host: process.env.DATA_API_HOST,
-  prefix: 'v2'
+  prefix: 'v2',
 });
 
 const login = Auth.api('POST /login').then(({ accessToken }) => {
@@ -190,11 +197,11 @@ const loadStatisitcs = Data.api('GET /statisitcs');
 loadStatisitcs({
   filter: {
     //...
-  }
+  },
 });
 ```
 
-### Custom Setup
+## Custom Setup
 
 ```js
 import setup from 'fetch-api-call/setup';
@@ -216,7 +223,7 @@ const createApi = setup({
 const api = createApi({
   protocol: process.env.API_PROTOCOL,
   host: process.env.API_HOST,
-})
+});
 
 const login = api('POST /login');
 ```

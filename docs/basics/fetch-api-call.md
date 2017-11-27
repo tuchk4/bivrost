@@ -22,7 +22,7 @@ loadStatistics({
 
 const loadUser = api('GET /user/:id');
 laodUser({
-  id: 1
+  id: 1,
 });
 ```
 
@@ -169,7 +169,7 @@ const Users = fetchApiCall({
 
 const Data = fetchApiCall({
   host: process.env.DATA_API_HOST,
-  prefix: 'v2'
+  prefix: 'v2',
 });
 
 const login = Auth.api('POST /login').then(({ accessToken }) => {
@@ -188,7 +188,7 @@ const loadStatisitcs = Data.api('GET /statisitcs');
 loadStatisitcs({
   filter: {
     //...
-  }
+  },
 });
 ```
 
@@ -214,7 +214,7 @@ const createApi = setup({
 const api = createApi({
   protocol: process.env.API_PROTOCOL,
   host: process.env.API_HOST,
-})
+});
 
 const login = api('POST /login');
 ```
