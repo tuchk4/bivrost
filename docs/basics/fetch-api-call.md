@@ -20,7 +20,7 @@ loadStatistics({
   filter: {},
 });
 
-const loadUser = api('GET /user/:id);
+const loadUser = api('GET /user/:id');
 laodUser({
   id: 1
 });
@@ -184,7 +184,7 @@ const login = Auth.api('POST /login').then(({ accessToken }) => {
   });
 });
 
-const loadStatisitcs = Data.api('GET /statisitcs);
+const loadStatisitcs = Data.api('GET /statisitcs');
 loadStatisitcs({
   filter: {
     //...
@@ -216,7 +216,7 @@ const api = createApi({
   host: process.env.API_HOST,
 })
 
-const login = api('POST /login);
+const login = api('POST /login');
 ```
 
 Options:
@@ -225,6 +225,6 @@ Options:
 * _mode_ - default mode. More details at -
   https://developer.mozilla.org/en-US/docs/Web/API/Request/mode
 * _adapter_ - default HTTP adapter. See more at -
-  https://tuchk4.github.io/bivrost/docs/docs/adapters.html
+  https://tuchk4.github.io/bivrost/docs/adapters.html
 * _interceptors_ - initial interceptors. NOTE that this is NOT DEFAULT
   interceptors.
