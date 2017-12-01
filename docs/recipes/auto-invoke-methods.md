@@ -14,7 +14,7 @@ class UsersDataSource extends DataSource {
 const usersDataSource = new UsersDataSource();
 
 // Generated methods:
-usersDataSource.invokeLoad();
-usersDataSource.invokeLoadAll();
-usersDataSource.invokeCreate();
+usersDataSource.invokeLoad({});
+usersDataSource.invokeLoadAll({});
+usersDataSource.invokeCreate({});
 ```
