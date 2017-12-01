@@ -47,7 +47,7 @@ describe('fetchApiCall', () => {
     return withCustomHeaders(
       {},
       {
-        'x-with-custom-header': '123',
+        headers: { 'x-with-custom-header': '123' },
       }
     ).then(res => {
       expect(res.headers['X-With-Custom-Header']).toEqual('123');

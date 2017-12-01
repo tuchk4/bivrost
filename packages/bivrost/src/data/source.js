@@ -93,7 +93,6 @@ export default class Source {
   }
 
   invoke(method, params = {}, context = {}) {
-    const proxy = input => Promise.resolve(input);
     let log = null;
 
     if (this[_debugLogs]) {
@@ -101,7 +100,7 @@ export default class Source {
         console.log('Bivrost --> ', ...args);
       };
 
-      log('call argumengts', params);
+      log(`"${method}" call argumengts`, params, context);
     }
 
     const fn = (params, context) => {
@@ -122,21 +121,21 @@ export default class Source {
         }
 
         stepsPromise = stepsPromise.then(input => {
-          if (log && step != proxy) {
-            log(`"${stepId}" call`, input);
+          if (log) {
+            log(`"${stepId}" call`, input, context);
           }
 
           return Promise.resolve(null)
             .then(() => step(input, context))
             .then(output => {
-              if (log && step != proxy) {
+              if (log) {
                 log(`"${stepId}" response`, output);
               }
 
               return output;
             })
             .catch(error => {
-              if (log && step != proxy) {
+              if (log) {
                 log(`"${stepId}" error`, error);
               }
 

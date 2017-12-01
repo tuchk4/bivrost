@@ -49,13 +49,11 @@ function getClass() {
 
 describe('Classes', () => {
   it('should generate auto invoke methods', () => {
-    class DS extends DataSource {
+    const ds = new class extends DataSource {
       static api = {
         load_user: httpBinApi('POST /post'),
       };
-    }
-
-    const ds = new DS();
+    }();
 
     return ds
       .invokeLoadUser({
@@ -69,13 +67,11 @@ describe('Classes', () => {
   });
 
   it('should make request with empty obj', () => {
-    class DS extends DataSource {
+    const ds = new class extends DataSource {
       static api = {
         load_user: httpBinApi('POST /post'),
       };
-    }
-
-    const ds = new DS();
+    }();
 
     return ds.invokeLoadUser().then(res => {
       expect(res.data.json).toEqual({});
@@ -83,54 +79,45 @@ describe('Classes', () => {
   });
 
   it('should pass context', () => {
-    const process = jest.fn(props => {
-      return {
-        ...props,
-        fromProcess: 3,
-      };
-    });
+    const processMock = jest.fn(props => ({
+      ...props.data.json,
+      fromProcess: 3,
+    }));
 
-    const prepare = jest.fn(props => {
+    const prepareMock = jest.fn(props => {
       return {
         ...props,
         fromPrepare: 2,
       };
     });
 
-    class DS extends DataSource {
+    const ds = new class extends DataSource {
       static prepare = {
-        load_user: prepare,
+        load_user: prepareMock,
       };
 
       static process = {
-        load_user: process,
+        load_user: processMock,
       };
 
       static api = {
         load_user: httpBinApi('POST /post'),
       };
-    }
-
-    const ds = new DS();
+    }();
 
     return ds.invokeLoadUser({ bar: 1 }, { foo: 1 }).then(res => {
-      expect(prepare.mock.calls.length).toEqual(1);
-      expect(process.mock.calls.length).toEqual(1);
-
-      expect(prepare.mock.calls[0][1]).toEqual({
-        foo: 1,
-      });
-
-      expect(process.mock.calls[0][1]).toEqual({
-        foo: 1,
-      });
-
-      expect(process.mock.calls[0][0]).toEqual({
-        bar: 1,
-        fromPrepare: 2,
-      });
-
       expect(res.fromProcess).toEqual(3);
+
+      expect(prepareMock.mock.calls.length).toEqual(1);
+      expect(processMock.mock.calls.length).toEqual(1);
+
+      expect(prepareMock.mock.calls[0][1]).toEqual({
+        foo: 1,
+      });
+
+      expect(processMock.mock.calls[0][1]).toEqual({
+        foo: 1,
+      });
     });
   });
 
