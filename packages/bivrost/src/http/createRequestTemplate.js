@@ -130,7 +130,7 @@ export default function getRequestTempalate(tempalte) {
 
   const uniqueBindings = getUniqueBindings(queryBindings, pathBindings);
 
-  return function getRequest(params) {
+  return function getRequest(params = {}) {
     let paramsMap = getParamsMap(params);
     let request = {};
 

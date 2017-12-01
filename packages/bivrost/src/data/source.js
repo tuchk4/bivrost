@@ -85,7 +85,7 @@ export default class Source {
     return this[_caches].get(cacheMehtodName);
   }
 
-  invoke(method, params, context) {
+  invoke(method, params = {}, context = {}) {
     const proxy = input => Promise.resolve(input);
     let log = null;
 

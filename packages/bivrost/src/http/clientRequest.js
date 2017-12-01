@@ -22,7 +22,7 @@ export default (template, options = {}) => {
 
   const adapter = options.adapter;
 
-  return function getRequestExecuteFunction(params) {
+  return function getRequestExecuteFunction(params = {}) {
     const request = getRequest(params);
     const url = buildUrl(
       options.protocol,
