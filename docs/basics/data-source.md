@@ -83,17 +83,24 @@ usersDataSource.loadAll({});
 
 ### <a id='invoke'>
 
-### [#](#invoke) invoke(method: string, params: object)
+### [#](#invoke) invoke(method: string, params: object, context: object)
 
 ```js
-DataSource.invoke((method: string), (params: object));
+DataSource.invoke((method: string), (params: object), (context: object));
 ```
 
 Invoke is a data source's function that execute _method_ chain and pass _params_
-as initial arguments. Method's chain - sequence of steps where each step is a
-_function_ and its result is an argument for the next step. Steps sequence could
-configured as second argument to data source constructor or as property _steps_.
-If there is no method configuration at step - it will be skipped.
+as initial arguments and _context_ as second.
+
+Method's chain - sequence of steps where each step is a _function_ and its
+result is an argument for the next step (like lodash's flow).
+
+_context_ - is useful when you need to pass the same object to all steps. For
+example - dynamic _params_ validation or step's configuration.
+
+Steps sequence could configured as second argument to data source constructor or
+as property _steps_. If there is no method configuration at step - it will be
+skipped.
 
 Default steps sequence:
 

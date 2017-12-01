@@ -1,3 +1,4 @@
+import camelCase from 'lodash.camelcase';
 import promiseCache from '../utils/promiseCache';
 import Cache from './cache';
 
@@ -66,6 +67,12 @@ export default class Source {
 
     this[_steps] = this.constructor.steps || steps;
     this[_caches] = buildCaches(this);
+
+    if (this.constructor.api) {
+      for (const id of Object.keys(this.constructor.api)) {
+        this[camelCase(`invoke ${id}`)] = this.invoke.bind(this, id);
+      }
+    }
   }
 
   getSteps() {

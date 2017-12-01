@@ -1,7 +1,7 @@
 # Table of content
 
 * [Api enchantment](/docs/recipes/api-enchantment.md)
-* [Generate DataSource invoke functions](/docs/recipes/data-source-auto-invoke.md)
+* [Auto Invoke Methods](/docs/recipes/auto-invoke-methods.md)
 * [Data source immutable output](/docs/recipes/data-source-immutable.md)
 * [Data source type checking with tcomb](/docs/recipes/data-source-type-checking.md)
 * [CRUD Data source](/docs/recipes/generate-crud-methods.md)

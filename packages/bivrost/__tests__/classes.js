@@ -48,22 +48,107 @@ function getClass() {
 }
 
 describe('Classes', () => {
-  it('should done XHR request with correct result', done => {
+  it('should generate auto invoke methods', () => {
+    class DS extends DataSource {
+      static api = {
+        load_user: httpBinApi('POST /post'),
+      };
+    }
+
+    const ds = new DS();
+
+    return ds
+      .invokeLoadUser({
+        foo: 1,
+      })
+      .then(res => {
+        expect(res.data.json).toEqual({
+          foo: 1,
+        });
+      });
+  });
+
+  it('should make request with empty obj', () => {
+    class DS extends DataSource {
+      static api = {
+        load_user: httpBinApi('POST /post'),
+      };
+    }
+
+    const ds = new DS();
+
+    return ds.invokeLoadUser().then(res => {
+      expect(res.data.json).toEqual({});
+    });
+  });
+
+  it('should pass context', () => {
+    const process = jest.fn(props => {
+      return {
+        ...props,
+        fromProcess: 3,
+      };
+    });
+
+    const prepare = jest.fn(props => {
+      return {
+        ...props,
+        fromPrepare: 2,
+      };
+    });
+
+    class DS extends DataSource {
+      static prepare = {
+        load_user: prepare,
+      };
+
+      static process = {
+        load_user: process,
+      };
+
+      static api = {
+        load_user: httpBinApi('POST /post'),
+      };
+    }
+
+    const ds = new DS();
+
+    return ds.invokeLoadUser({ bar: 1 }, { foo: 1 }).then(res => {
+      expect(prepare.mock.calls.length).toEqual(1);
+      expect(process.mock.calls.length).toEqual(1);
+
+      expect(prepare.mock.calls[0][1]).toEqual({
+        foo: 1,
+      });
+
+      expect(process.mock.calls[0][1]).toEqual({
+        foo: 1,
+      });
+
+      expect(process.mock.calls[0][0]).toEqual({
+        bar: 1,
+        fromPrepare: 2,
+      });
+
+      expect(res.fromProcess).toEqual(3);
+    });
+  });
+
+  it('should done XHR request with correct result', () => {
     let DS = getClass();
 
     let ds = new DS({
       a: 8889,
     });
 
-    ds
+    return ds
       .highLevelMethod()
-      .catch(e => console.log(e))
+      .catch(e => e)
       .then(res => {
         expect(res).toEqual({
           bar: 200,
           foo: 8889,
         });
-      })
-      .then(() => done(), done);
+      });
   });
 });

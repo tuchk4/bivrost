@@ -31,7 +31,7 @@ export default (template, options = {}) => {
       request.path
     );
 
-    return function executeRequest(headers) {
+    return function executeRequest(headers = {}) {
       const promiseCreator = () =>
         adapter(url, {
           ...request,

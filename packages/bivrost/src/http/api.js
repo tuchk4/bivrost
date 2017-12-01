@@ -5,7 +5,7 @@ export const CLIENT_REQUEST_SETUP_ERROR = 'CLIENT_REQUEST_SETUP_ERROR';
 function apiRequestTemplate(template, options) {
   const getRequestExecuteFunction = clientRequest(template, options);
 
-  const apiRequest = function(params = {}, headers = {}) {
+  const apiRequest = function(params = {}, context = {}) {
     let error = null;
     let executeRequest = null;
 
@@ -23,7 +23,7 @@ function apiRequestTemplate(template, options) {
     if (error) {
       return Promise.reject(error);
     } else {
-      return executeRequest(headers);
+      return executeRequest(context.headers);
     }
   };
 

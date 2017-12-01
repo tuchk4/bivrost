@@ -147,7 +147,9 @@ const getStatistics = api('GET /statistics');
 getStatistics(
   {},
   {
-    MyCustomHeader: '123zxc',
+    headers: {
+      MyCustomHeader: '123zxc',
+    },
   }
 );
 ```

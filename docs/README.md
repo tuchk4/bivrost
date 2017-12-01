@@ -10,7 +10,7 @@
 
 * [Recipes](/docs/recipes/README.md)
   * [Api Enchantment](/docs/recipes/api-enchantment.md)
-  * [Generate DataSource invoke functions](/docs/recipes/data-source-auto-invoke.md)
+  * [Auto Invoke Methods](/docs/recipes/auto-invoke-methods.md)
   * [Immutable Output](/docs/recipes/data-source-immutable.md)
   * [Type checking with tcomb](/docs/recipes/data-source-type-checking.md)
   * [CRUD Data Source](/docs/recipes/generate-crud-methods.md)
