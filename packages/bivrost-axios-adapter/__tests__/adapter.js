@@ -3,8 +3,13 @@ import axiosAdapter from '../src';
 const httpbin = 'http://httpbin.org';
 
 describe('Adapter', () => {
-  const requestInterceptor = jest.fn(req => req);
-  const responsetInterceptor = jest.fn(res => res);
+  const requestInterceptor = jest.fn(req => {
+    return req;
+  });
+
+  const responsetInterceptor = jest.fn(res => {
+    return res;
+  });
 
   const axiosApi = axiosAdapter({
     interceptors: {
