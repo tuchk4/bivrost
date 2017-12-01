@@ -31,7 +31,7 @@ const buildPath = (path, paramsMap) =>
     return paramsMap.get(paramName);
   });
 
-const buildUnboundParams = (exceptParamsSet, params) => {
+const buildUnboundParams = (exceptParamsSet, params = {}) => {
   const keys = params.entries ? params.entries : Object.keys(params);
   const initialValue = params.entries ? new FormData() : {};
 
