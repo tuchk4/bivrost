@@ -121,28 +121,21 @@ Each methods return function to remove interceptor.
 Iterceptors will be called for all request done with _api_.
 
 ```js
-// user login api
 const login = api('POST /login');
+const logout = api('POST /logout');
+
 let removeAcessTokenIterceptor = null;
 
-login({}).then(({ acessToken }) => {
-  removeAcessTokenIterceptor = iterceptors.addRequestInterceptor(request => {
-    request.headers.set('Acess-Token', acessToken);
-    return request;
-  });
+const { acessToken } = await login({});
+
+removeAcessTokenIterceptor = iterceptors.addRequestInterceptor(request => {
+  request.headers.set('Acess-Token', acessToken);
+  return request;
 });
 
-// user logout api
-const logout = api('POST /logout');
-logout().then(() => {
-  removeAcessTokenIterceptor();
-});
 
-// get user api
-const getUser = api('GET /user/:id');
-getUser({
-  id: 1,
-});
+await logout();
+removeAcessTokenIterceptor();
 ```
 
 ## Request Headers
