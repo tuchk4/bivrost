@@ -58,11 +58,15 @@ let uid = 1;
 export default class Source {
   static caches = [];
 
-  constructor(options, steps = DEFAULT_STEPS) {
+  constructor(
+    { options = {}, steps = DEFAULT_STEPS, context = {}, headers = {} } = {}
+  ) {
     if (!this.constructor.uid) {
       this.constructor.uid = uid++;
     }
 
+    this.context = context;
+    this.headers = headers;
     this.options = options;
 
     this[_steps] = this.constructor.steps || steps;
@@ -147,11 +151,27 @@ export default class Source {
       return stepsPromise;
     };
 
-    let cache = this.getCache(method);
+    const cache = this.getCache(method);
+
+    const methodContext = {
+      ...this.context,
+      ...context,
+    };
+
+    const headers = {
+      ...(this.context.headers || {}),
+      ...(this.headers || {}),
+      ...(context.headers || {}),
+    };
+
+    if (Object.keys(headers).length) {
+      methodContext.headers = headers;
+    }
+
     if (!cache) {
-      return fn(params, context);
+      return fn(params, methodContext);
     } else {
-      const key = this.getCacheKey(method, params, context);
+      const key = this.getCacheKey(method, params, methodContext);
 
       if (log) {
         if (cache.has(key)) {

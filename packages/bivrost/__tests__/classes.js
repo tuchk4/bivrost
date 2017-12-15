@@ -125,7 +125,9 @@ describe('Classes', () => {
     let DS = getClass();
 
     let ds = new DS({
-      a: 8889,
+      options: {
+        a: 8889,
+      },
     });
 
     return ds
@@ -135,6 +137,35 @@ describe('Classes', () => {
         expect(res).toEqual({
           bar: 200,
           foo: 8889,
+        });
+      });
+  });
+
+  it('should pass headers from context', () => {
+    const loadUserMock = jest.fn();
+
+    const ds = new class extends DataSource {
+      static api = {
+        load_user: loadUserMock,
+      };
+    }({
+      headers: {
+        abc: 'zxc',
+      },
+    });
+
+    return ds
+      .invokeLoadUser({
+        foo: 1,
+      })
+      .then(res => {
+        expect(loadUserMock.mock.calls[0][0]).toEqual({
+          foo: 1,
+        });
+        expect(loadUserMock.mock.calls[0][1]).toEqual({
+          headers: {
+            abc: 'zxc',
+          },
         });
       });
   });

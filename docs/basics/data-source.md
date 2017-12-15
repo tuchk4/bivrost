@@ -1,9 +1,6 @@
 # Data source
 
-A DataSource - is a group of several API methods and its configuration. Every
-method call passes with the configured steps. Result of each step will be passed
-as arguments to the next step and whole steps chain will be cached if cache is
-enabled.
+A DataSource - is a group of several API methods and its configuration. Every method call passes with the configured steps. Result of each step will be passed as arguments to the next step and whole steps chain will be cached if cache is enabled.
 
 A DataSource provide methods for:
 
@@ -89,18 +86,15 @@ usersDataSource.loadAll({});
 DataSource.invoke((method: string), (params: object), (context: object));
 ```
 
-Invoke is a data source's function that execute _method_ chain and pass _params_
-as initial arguments and _context_ as second.
+Now Bivrost generates [Auto Invoke Methods](/docs/recipes/auto-invoke-methods.md)
 
-Method's chain - sequence of steps where each step is a _function_ and its
-result is an argument for the next step (like lodash's flow).
+Invoke is a data source's function that execute _method_ chain and pass _params_ as initial arguments and _context_ as second.
 
-_context_ - is useful when you need to pass the same object to all steps. For
-example - dynamic _params_ validation or step's configuration.
+Method's chain - sequence of steps where each step is a _function_ and its result is an argument for the next step (like lodash's flow).
 
-Steps sequence could configured as second argument to data source constructor or
-as property _steps_. If there is no method configuration at step - it will be
-skipped.
+_context_ - is useful when you need to pass the same object to all steps. For example - dynamic _params_ validation or step's configuration.
+
+Steps sequence could configured as second argument to data source constructor or as property _steps_. If there is no method configuration at step - it will be skipped.
 
 Default steps sequence:
 
@@ -118,27 +112,35 @@ As property:
 import DataSource from 'bivrost/data/source';
 
 class AppDataSource extends DataSource {
-  steps = ['validate', 'serialize', 'api'];
+  static steps = ['validate', 'serialize', 'api'];
 }
 ```
 
-As constructor argument:
+As constructor arguments (All arguments are optional):
+
+* _headers_ - additional headers
+* _steps_ - step sequence
+* _context_ - context object. Final context is calculated with:
+  * DataSource context (passed as argument to DataSource constructor)
+  * [invoke()](#invoke) context (passed as third param to invoke function)
+* _options_ - any data will be saved in data source instance
 
 ```js
 import DataSource from 'bivrost/data/source';
 
-const STEPS = ['validate', 'serialize', 'api'];
-
 class AppDataSource extends DataSource {
-  constructor(options) {
-    super(options, STEPS);
+  constructor() {
+    super({
+      options: {},
+      steps: ['validate', 'serialize', 'api'],
+      context: {},
+      headers: {},
+    });
   }
 }
 ```
 
-In this example - there are three steps for _invoke_ function - _validate_,
-_serialize_ and _api_. Steps sequence and naming - just a developer fantasy and
-depends on application architecture and requirements.
+In this example - there are three steps for _invoke_ function - _validate_, _serialize_ and _api_. Steps sequence and naming - just a developer fantasy and depends on application architecture and requirements.
 
 ## <a id='step-configuration'>
 
@@ -213,17 +215,14 @@ class UserDataSource extends DataSource {
 Configuration is almost same as invoke steps. Cache options:
 
 * _enabled: boolean_ - enable / disable cache for method
-* _isGlobal: boolean_ - enable / disable global method cache. If _true_ - cache
-  will be shared between all data source instances.
+* _isGlobal: boolean_ - enable / disable global method cache. If _true_ - cache will be shared between all data source instances.
 * _ttl: integer_ - cache lifetime in miliseconds
 
 Cache methods:
 
-* _getCacheKey(method: string, params: object)_ - Hook for cache key generating.
-  By default cache key is `JSON.stringify(params)``
+* _getCacheKey(method: string, params: object)_ - Hook for cache key generating. By default cache key is `JSON.stringify(params)``
 
-* _clearCache(method: string)_ - Clear method caches. If _method_ argument is
-  not specified - clear all data source caches.
+* _clearCache(method: string)_ - Clear method caches. If _method_ argument is not specified - clear all data source caches.
 
 ## <a id='debug-logs'>
 
@@ -235,9 +234,6 @@ appDataSource.enableDebugLogs();
 appDataSource.disableDebugLogs();
 ```
 
-If logs are enabled - data source will post messages to console for each step
-with its parameters. [bows](https://www.npmjs.com/package/bows) is used for
-logging and thats why `localStorage.debug = true` should be set in your console
-to see messages.
+If logs are enabled - data source will post messages to console for each step with its parameters. [bows](https://www.npmjs.com/package/bows) is used for logging and thats why `localStorage.debug = true` should be set in your console to see messages.
 
 ![Bivrost logs](http://i.imgur.com/FOC5z5e.png)
