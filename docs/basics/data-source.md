@@ -43,9 +43,9 @@ class UsersDataSource extends DataSource {
 
   static validate = {
     update: ({ id }) => {
-        if (!id) {
-          throw new Error('"ID" field is required for user update');
-        }
+      if (!id) {
+        throw new Error('"ID" field is required for user update');
+      }
     }
   }
 
@@ -76,6 +76,34 @@ usersDataSource.loadAll({});
 // if previous loadAll call IS finished - will not trigger step chain.
 //  - will not trigger step chain because of enabled cache
 usersDataSource.loadAll({});
+```
+
+### <a id ='constructor'>
+
+### [#](#constructor) constructor({ headers, context, steps, options })
+
+As constructor arguments (all arguments are optional):
+
+* _headers_ - additional headers
+* _steps_ - step sequence
+* _context_ - context object. Final context is calculated with:
+  * DataSource context (passed as argument to DataSource constructor)
+  * [invoke()](#invoke) context (passed as third param to invoke function)
+* _options_ - any data will be saved in data source instance
+
+```js
+import DataSource from 'bivrost/data/source';
+
+class AppDataSource extends DataSource {
+  constructor() {
+    super({
+      options: {},
+      steps: ['validate', 'serialize', 'api'],
+      context: {},
+      headers: {},
+    });
+  }
+}
 ```
 
 ### <a id='invoke'>
@@ -113,30 +141,6 @@ import DataSource from 'bivrost/data/source';
 
 class AppDataSource extends DataSource {
   static steps = ['validate', 'serialize', 'api'];
-}
-```
-
-As constructor arguments (All arguments are optional):
-
-* _headers_ - additional headers
-* _steps_ - step sequence
-* _context_ - context object. Final context is calculated with:
-  * DataSource context (passed as argument to DataSource constructor)
-  * [invoke()](#invoke) context (passed as third param to invoke function)
-* _options_ - any data will be saved in data source instance
-
-```js
-import DataSource from 'bivrost/data/source';
-
-class AppDataSource extends DataSource {
-  constructor() {
-    super({
-      options: {},
-      steps: ['validate', 'serialize', 'api'],
-      context: {},
-      headers: {},
-    });
-  }
 }
 ```
 
