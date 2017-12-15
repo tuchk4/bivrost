@@ -1,0 +1,214 @@
+import camelCase from 'lodash.camelcase';
+import promiseCache from '../utils/promiseCache';
+import Cache from './cache';
+
+const DEFAULT_STEPS = ['prepare', 'api', 'process'];
+const DEFAULT_METHOD_CACHE_CONFIG = {
+  isGlobal: false,
+  enabled: false,
+  ttl: 60000,
+};
+
+const isFunction = func =>
+  func && {}.toString.call(func) === '[object Function]';
+
+const getMethodCacheName = (instance, method) =>
+  `${instance.constructor.uid}@${method}`;
+
+const buildCaches = instance => {
+  const caches = new Map();
+  const cacheConfig = instance.constructor.cache || {};
+  const defaultCacheConfig = {
+    ...DEFAULT_METHOD_CACHE_CONFIG,
+    ...instance.constructor.defaultCache,
+  };
+
+  for (let method of Object.keys(cacheConfig)) {
+    const config = {
+      ...defaultCacheConfig,
+      ...cacheConfig[method],
+    };
+
+    let cache = null;
+    const cacheMehtodName = getMethodCacheName(instance, method);
+
+    if (config.enabled) {
+      if (config.isGlobal) {
+        if (!instance.constructor.caches.hasOwnProperty(cacheMehtodName)) {
+          instance.constructor.caches[cacheMehtodName] = new Cache(config);
+        }
+        cache = instance.constructor.caches[cacheMehtodName];
+      } else {
+        cache = new Cache(config);
+      }
+
+      caches.set(cacheMehtodName, cache);
+    }
+  }
+
+  return caches;
+};
+
+const _steps = Symbol('steps');
+const _caches = Symbol('caches');
+const _debugLogs = Symbol('debug logs');
+
+let uid = 1;
+
+export default class Source {
+  static caches = [];
+
+  constructor(
+    { options = {}, steps = DEFAULT_STEPS, context = {}, headers = {} } = {}
+  ) {
+    if (!this.constructor.uid) {
+      this.constructor.uid = uid++;
+    }
+
+    this.context = context;
+    this.headers = headers;
+    this.options = options;
+
+    this[_steps] = this.constructor.steps || steps;
+    this[_caches] = buildCaches(this);
+
+    if (this.constructor.api) {
+      for (const id of Object.keys(this.constructor.api)) {
+        this[camelCase(`invoke ${id}`)] = this.invoke.bind(this, id);
+      }
+    }
+  }
+
+  getSteps() {
+    return this[_steps];
+  }
+
+  enableDebugLogs() {
+    this[_debugLogs] = true;
+  }
+
+  disableDebugLogs() {
+    this[_debugLogs] = false;
+  }
+
+  getCache(method) {
+    const cacheMehtodName = getMethodCacheName(this, method);
+    return this[_caches].get(cacheMehtodName);
+  }
+
+  invoke(method, params = {}, context = {}) {
+    let log = null;
+
+    if (this[_debugLogs]) {
+      log = (...args) => {
+        console.log('Bivrost --> ', ...args);
+      };
+
+      log(`"${method}" call argumengts`, params, context);
+    }
+
+    const fn = (params, context) => {
+      let stepsPromise = Promise.resolve(params);
+
+      for (let stepId of this[_steps]) {
+        let step = null;
+
+        if (isFunction(stepId)) {
+          step = stepId;
+        } else {
+          const stepConfig = this.constructor[stepId] || {};
+          step = isFunction(stepConfig) ? stepConfig : stepConfig[method];
+
+          if (!step) {
+            continue;
+          }
+        }
+
+        stepsPromise = stepsPromise.then(input => {
+          if (log) {
+            log(`"${stepId}" call`, input, context);
+          }
+
+          return Promise.resolve(null)
+            .then(() => step(input, context))
+            .then(output => {
+              if (log) {
+                log(`"${stepId}" response`, output);
+              }
+
+              return output;
+            })
+            .catch(error => {
+              if (log) {
+                log(`"${stepId}" error`, error);
+              }
+
+              return Promise.reject(error);
+            });
+        });
+      }
+
+      return stepsPromise;
+    };
+
+    const cache = this.getCache(method);
+
+    const methodContext = {
+      ...this.context,
+      ...context,
+    };
+
+    const headers = {
+      ...(this.context.headers || {}),
+      ...(this.headers || {}),
+      ...(context.headers || {}),
+    };
+
+    if (Object.keys(headers).length) {
+      methodContext.headers = headers;
+    }
+
+    if (!cache) {
+      return fn(params, methodContext);
+    } else {
+      const key = this.getCacheKey(method, params, methodContext);
+
+      if (log) {
+        if (cache.has(key)) {
+          log(`get from cache by key "${key}"`);
+        } else {
+          log('cache miss');
+        }
+      }
+
+      return promiseCache(cache, key, () => fn(params));
+    }
+  }
+
+  getCacheKey(method, params = {}, context = {}) {
+    return JSON.stringify(params);
+  }
+
+  clearCache(method, params) {
+    let cacheKey = null;
+    if (params) {
+      cacheKey = this.getCacheKey(method, params);
+    }
+
+    let caches = method ? [this.getCache(method)] : this[_caches].values();
+
+    if (this[_debugLogs]) {
+      if (cacheKey) {
+        console.log(`Bivrost ---> clear cache for "${method}@${cacheKey}"`);
+      } else {
+        console.log(`Bivrost ---> clear all "${method}" caches`);
+      }
+    }
+
+    for (let cache of caches) {
+      if (cache) {
+        cache.clear(cacheKey);
+      }
+    }
+  }
+}

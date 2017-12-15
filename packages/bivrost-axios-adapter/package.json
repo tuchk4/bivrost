@@ -1,0 +1,34 @@
+{
+  "name": "bivrost-axios-adapter",
+  "version": "3.0.2",
+  "description": "Bivrost adapter for axios",
+  "keywords": [
+    "bivrost",
+    "data-source",
+    "api",
+    "axios",
+    "local-storage",
+    "fetch-api-call",
+    "response",
+    "request",
+    "call steps"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
+    "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuchk4/bivrost.git"
+  },
+  "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tuchk4/bivrost/issues"
+  },
+  "homepage": "hhttps://github.com/tuchk4/bivrost",
+  "dependencies": {
+    "axios": "^0.17.1"
+  }
+}

@@ -1,0 +1,783 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Fetch API Call · Bivrost</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-prism/prism.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="data-source.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Basics
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="api-function.html">
+            
+                <a href="api-function.html">
+            
+                    
+                    Api Function
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="adapter.html">
+            
+                <a href="adapter.html">
+            
+                    
+                    Adapter
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="data-source.html">
+            
+                <a href="data-source.html">
+            
+                    
+                    Data Source
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.4" data-path="fetch-api-call.html">
+            
+                <a href="fetch-api-call.html">
+            
+                    
+                    Fetch API Call
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <a target="_blank" href="https://github.com/tuchk4/bivrost">
+            
+                    
+                    Bivrost at GitHub
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="../recipes/">
+            
+                <a href="../recipes/">
+            
+                    
+                    Recipes
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../recipes/api-enchantment.html">
+            
+                <a href="../recipes/api-enchantment.html">
+            
+                    
+                    Api Enchantment
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="../recipes/auto-invoke-methods.html">
+            
+                <a href="../recipes/auto-invoke-methods.html">
+            
+                    
+                    Auto Invoke Methods
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="../recipes/data-source-immutable.html">
+            
+                <a href="../recipes/data-source-immutable.html">
+            
+                    
+                    Immutable Output
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="../recipes/data-source-type-checking.html">
+            
+                <a href="../recipes/data-source-type-checking.html">
+            
+                    
+                    Type checking with tcomb
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="../recipes/generate-crud-methods.html">
+            
+                <a href="../recipes/generate-crud-methods.html">
+            
+                    
+                    CRUD Data Source
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="../recipes/file-upload.html">
+            
+                <a href="../recipes/file-upload.html">
+            
+                    
+                    File Upload
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.7" data-path="../recipes/fixtures.html">
+            
+                <a href="../recipes/fixtures.html">
+            
+                    
+                    Fixtures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.8" data-path="../recipes/default-response.html">
+            
+                <a href="../recipes/default-response.html">
+            
+                    
+                    Default Api Response
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.9" data-path="../recipes/prepare-process.html">
+            
+                <a href="../recipes/prepare-process.html">
+            
+                    
+                    Prepare Request and Process Response
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.10" data-path="../recipes/validation.html">
+            
+                <a href="../recipes/validation.html">
+            
+                    
+                    Data Validation
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Adapters</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../adapters.html">
+            
+                <a href="../adapters.html">
+            
+                    
+                    Adapeters List
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" >
+            
+                <a target="_blank" href="https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-fetch-adapter">
+            
+                    
+                    Fetch Adapter
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" >
+            
+                <a target="_blank" href="https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-axios-adapter">
+            
+                    
+                    Axios Adapter
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" >
+            
+                <a target="_blank" href="https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-delay-adapter">
+            
+                    
+                    Delay Adapter
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" >
+            
+                <a target="_blank" href="https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-local-storage-adapter">
+            
+                    
+                    LocalStorage Adapter
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" >
+            
+                <a target="_blank" href="https://github.com/tuchk4/bivrost/tree/master/packages/bivrost-save-blob-adapter">
+            
+                    
+                    Save Blob Adapter
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.7" data-path="../testing.html">
+            
+                <a href="../testing.html">
+            
+                    
+                    Testing
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.8" data-path="../contributing.html">
+            
+                <a href="../contributing.html">
+            
+                    
+                    Contributing
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >Fetch API Call</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="fetch-api-call"><a href="https://github.com/tuchk4/bivrost/tree/master/packages/fetch-api-call" target="_blank">Fetch API Call</a></h1>
+<p>Awesome fetch api for browser and nodejs with interceptors easy way to declare
+api endpoints. Provide very easy way to setup api for different
+backends/services.</p>
+<h2 id="advantages"><a href="#advantages">#</a> Advantages</h2>
+<ul>
+<li>Support interceptors</li>
+<li>Support multiple instances wiht its own interceptors</li>
+<li>Easy way to define headers for specific requests</li>
+<li>Declrative api end points</li>
+</ul>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> login <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;POST /login&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">login</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> loadStatistics <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;GET /statistics&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">loadStatistics</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  filter<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> loadUser <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;GET /user/:id&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">laodUser</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="install"><a href="#install">#</a> Install</h3>
+<pre class="language-"><code>yarn add fetch-api-call
+</code></pre><h3 id="api-declaration"><a href="#api-declaration">#</a> Api Declaration</h3>
+<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> fetchApiCall <span class="token keyword">from</span> <span class="token string">&apos;fetch-api-call&apos;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token punctuation">{</span> api <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">fetchApiCall</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  protocol<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>API_PROTOCOL<span class="token punctuation">,</span>
+  host<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>API_HOST<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Options:</p>
+<ul>
+<li><em>protocol</em> - http protocol. Available values - <strong>http:</strong> an <strong>https:</strong></li>
+<li><em>host</em> - server hostname</li>
+<li><em>headers</em> - requests headers. NOTE that headers could be also set with
+interceptors</li>
+<li><em>mode</em> - more details at -
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Request/mode" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/Request/mode</a></li>
+<li><em>prefix</em> - api url prefix. Useful when there are multiple api versions:<ul>
+<li><em>/user</em></li>
+<li><em>/v1/user</em></li>
+<li><em>/v2/user</em></li>
+</ul>
+</li>
+</ul>
+<p><strong>api</strong> - function to define api methods in single line of code.</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> apiCall <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;HTTP_METHOD /api/path/:with/:placeholders&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><em>apiCall(params = {}, headers = {})</em> - function takes two optional params:</p>
+<ul>
+<li><em>params</em> - api params. Also is used for building final api entrypoint. More
+detauls see at
+<a href="https://tuchk4.github.io/bivrost/docs/basics/api-function.html#api-definition" target="_blank">Api Url Definition and Placeholders</a>.</li>
+<li><em>headers</em> - certain request headers.</li>
+</ul>
+<p>Examples:</p>
+<pre class="language-"><code class="lang-js"><span class="token comment" spellcheck="true">// user login api</span>
+<span class="token keyword">const</span> login <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;POST /login&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">login</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  username<span class="token punctuation">,</span>
+  password<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// user logout api</span>
+<span class="token keyword">const</span> logout <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;POST /logout&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">logout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// get user api</span>
+<span class="token keyword">const</span> getUser <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;GET /user/:id&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">getUser</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="interceptors"><a href="#interceptors">#</a> Interceptors</h3>
+<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> fetchApiCall <span class="token keyword">from</span> <span class="token string">&apos;fetch-api-call&apos;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> <span class="token punctuation">{</span> api<span class="token punctuation">,</span> interceptors <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">fetchApiCall</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  protocol<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>API_PROTOCOL<span class="token punctuation">,</span>
+  host<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>API_HOST<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><strong>interceptors</strong> methods:</p>
+<ul>
+<li><em>addRequestInterceptor(request)</em></li>
+<li><em>addResponseInterceptor(response)</em></li>
+<li><em>addErrorInterceptor(error)</em></li>
+</ul>
+<p>Each methods return function to remove interceptor.</p>
+<p>Iterceptors will be called for all request done with <em>api</em>.</p>
+<pre class="language-"><code class="lang-js"><span class="token comment" spellcheck="true">// user login api</span>
+<span class="token keyword">const</span> login <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;POST /login&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> removeAcessTokenIterceptor <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+
+<span class="token function">login</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> acessToken <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+  removeAcessTokenIterceptor <span class="token operator">=</span> iterceptors<span class="token punctuation">.</span><span class="token function">addRequestInterceptor</span><span class="token punctuation">(</span>request <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    request<span class="token punctuation">.</span>headers<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">&apos;Acess-Token&apos;</span><span class="token punctuation">,</span> acessToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> request<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// user logout api</span>
+<span class="token keyword">const</span> logout <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;POST /logout&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">logout</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+  <span class="token function">removeAcessTokenIterceptor</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// get user api</span>
+<span class="token keyword">const</span> getUser <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;GET /user/:id&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">getUser</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="request-headers"><a href="#request-headers">#</a> Request Headers</h3>
+<p>This is useful when using <code>fetch-api-call</code> on NodeJS. In some cases it is not
+possible to use interceptors to set auth headers becasue it will work for all
+request. We should specify certain request with certain header.</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">const</span> getStatistics <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;GET /statistics&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">getStatistics</span><span class="token punctuation">(</span>
+  <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    headers<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      MyCustomHeader<span class="token punctuation">:</span> <span class="token string">&apos;123zxc&apos;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="multiple-api-instances"><a href="#multiple-api-instances">#</a> Multiple Api Instances</h3>
+<p>Very useful if there is microservices backend architecture.</p>
+<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> fetchApiCall <span class="token keyword">from</span> <span class="token string">&apos;fetch-api-call&apos;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> Auth <span class="token operator">=</span> <span class="token function">fetchApiCall</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  host<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>AUTH_API_HOST<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> Users <span class="token operator">=</span> <span class="token function">fetchApiCall</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  host<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>USERS_API_HOST<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> Data <span class="token operator">=</span> <span class="token function">fetchApiCall</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  host<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DATA_API_HOST<span class="token punctuation">,</span>
+  prefix<span class="token punctuation">:</span> <span class="token string">&apos;v2&apos;</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> login <span class="token operator">=</span> Auth<span class="token punctuation">.</span><span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;POST /login&apos;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> accessToken <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+  Users<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span><span class="token function">addRequest</span><span class="token punctuation">(</span>res <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    request<span class="token punctuation">.</span>headers<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">&apos;Acess-Token&apos;</span><span class="token punctuation">,</span> acessToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> request<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  Data<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span><span class="token function">addRequest</span><span class="token punctuation">(</span>res <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    request<span class="token punctuation">.</span>headers<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">&apos;Acess-Token&apos;</span><span class="token punctuation">,</span> acessToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> request<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> loadStatisitcs <span class="token operator">=</span> Data<span class="token punctuation">.</span><span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;GET /statisitcs&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">loadStatisitcs</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  filter<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">//...</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="custom-setup"><a href="#custom-setup">#</a> Custom Setup</h3>
+<pre class="language-"><code class="lang-js"><span class="token keyword">import</span> setup <span class="token keyword">from</span> <span class="token string">&apos;fetch-api-call/setup&apos;</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> fetchAdapter <span class="token keyword">from</span> <span class="token string">&apos;bivrost-fetch-adapter&apos;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> createApi <span class="token operator">=</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  headers<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&apos;Content-Type&apos;</span><span class="token punctuation">:</span> <span class="token string">&apos;application/json&apos;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  mode<span class="token punctuation">:</span> <span class="token string">&apos;cors&apos;</span><span class="token punctuation">,</span>
+  adapter<span class="token punctuation">:</span> fetchAdapter<span class="token punctuation">,</span>
+  interceptors<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    resposne<span class="token punctuation">:</span> res <span class="token operator">=</span><span class="token operator">&gt;</span> res<span class="token punctuation">,</span>
+    request<span class="token punctuation">:</span> req <span class="token operator">=</span><span class="token operator">&gt;</span> req<span class="token punctuation">,</span>
+    error<span class="token punctuation">:</span> err <span class="token operator">=</span><span class="token operator">&gt;</span> err<span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> api <span class="token operator">=</span> <span class="token function">createApi</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  protocol<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>API_PROTOCOL<span class="token punctuation">,</span>
+  host<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>API_HOST<span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> login <span class="token operator">=</span> <span class="token function">api</span><span class="token punctuation">(</span><span class="token string">&apos;POST /login&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Options:</p>
+<ul>
+<li><em>headers</em> - default headers</li>
+<li><em>mode</em> - default mode. More details at -
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/Request/mode" target="_blank">https://developer.mozilla.org/en-US/docs/Web/API/Request/mode</a></li>
+<li><em>adapter</em> - default HTTP adapter. See more at -
+<a href="https://tuchk4.github.io/bivrost/docs/adapters.html" target="_blank">https://tuchk4.github.io/bivrost/docs/adapters.html</a></li>
+<li><em>interceptors</em> - initial interceptors. NOTE that this is NOT DEFAULT
+interceptors.</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="data-source.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Data Source">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Fetch API Call","level":"1.2.4","depth":2,"next":{"title":"Bivrost at GitHub","level":"1.3","depth":1,"url":"https://github.com/tuchk4/bivrost","ref":"https://github.com/tuchk4/bivrost","articles":[]},"previous":{"title":"Data Source","level":"1.2.3","depth":2,"path":"docs/basics/data-source.md","ref":"docs/basics/data-source.md","articles":[]},"dir":"ltr"},"config":{"plugins":["edit-link","prism","-highlight","github","ga","anker-enable"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{},"github":{"url":"https://github.com/tuchk4/bivrost"},"anker-enable":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"ga":{"configuration":"auto","token":"UA-89488143-1"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"edit-link":{"label":"Edit This Page","base":"https://github.com/tuchk4/bivrost/tree/master"},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Bivrost","gitbook":">=3.2.1"},"file":{"path":"docs/basics/fetch-api-call.md","mtime":"2017-12-01T10:50:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-12-15T10:07:13.671Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-edit-link/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-github/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-ga/plugin.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-anker-enable/anker.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

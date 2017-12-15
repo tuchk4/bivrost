@@ -1,0 +1,14 @@
+.DS_Store
+/.git
+/.idea
+/_book
+/npm-debug.log
+/node_modules
+/data
+/http
+/coverage
+/utils
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

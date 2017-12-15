@@ -1,0 +1,35 @@
+{
+  "name": "bivrost-save-blob-adapter",
+  "version": "3.0.1",
+  "description": "Bivrost adapter. Allows to save api resposne as blob",
+  "keywords": [
+    "bivrost",
+    "data-source",
+    "api",
+    "fetch",
+    "axios",
+    "local-storage",
+    "fetch-api-call",
+    "response",
+    "request",
+    "call steps"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "prepublish": "../../node_modules/.bin/babel -d ./ ./src",
+    "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuchk4/bivrost.git"
+  },
+  "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tuchk4/bivrost/issues"
+  },
+  "homepage": "hhttps://github.com/tuchk4/bivrost",
+  "dependencies": {
+    "browser-filesaver": "^1.1.1"
+  }
+}
