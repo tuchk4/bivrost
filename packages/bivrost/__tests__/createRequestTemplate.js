@@ -1,4 +1,5 @@
 import createRequestTemplate from '../src/http/createRequestTemplate';
+import api from '../src/http/api';
 
 describe('Request template', () => {
   let getPOSTrequest = null;
@@ -7,6 +8,18 @@ describe('Request template', () => {
   beforeEach(() => {
     getPOSTrequest = createRequestTemplate('POST /user/:id');
     getGETrequest = createRequestTemplate('GET /user/:id');
+  });
+
+  it('stringify', () => {
+    const getUser = api({
+      host: 'localhost',
+    })('GET /user/:id');
+
+    expect(
+      getUser.stringify({
+        id: 1,
+      })
+    ).toEqual('http://localhost/user/1');
   });
 
   it('apply POST request', () => {

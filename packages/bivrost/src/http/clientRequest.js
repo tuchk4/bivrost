@@ -14,15 +14,15 @@ const join = (...parts) =>
     .replace(/\/\#/g, '#')
     .replace(/\:\//g, '://');
 
-const buildUrl = (protocol, host, prefix, path) =>
+const buildUrl = (protocol = 'http:', host, prefix, path) =>
   `${protocol}//${join(host, prefix, path)}`;
 
-export default (template, options = {}) => {
+export default function clientRequest(template, options = {}) {
   const getRequest = createRequestTemplate(template);
 
   const adapter = options.adapter;
 
-  return function getRequestExecuteFunction(params = {}) {
+  function getRequestExecuteFunction(params = {}) {
     const request = getRequest(params);
     const url = buildUrl(
       options.protocol,
@@ -49,5 +49,19 @@ export default (template, options = {}) => {
         return promiseCreator();
       }
     };
+  }
+
+  getRequestExecuteFunction.stringify = params => {
+    const request = getRequest(params);
+    const url = buildUrl(
+      options.protocol,
+      options.host,
+      options.prefix,
+      request.path
+    );
+
+    return url;
   };
-};
+
+  return getRequestExecuteFunction;
+}

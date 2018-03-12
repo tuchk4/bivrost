@@ -28,6 +28,7 @@ function apiRequestTemplate(template, options) {
   };
 
   apiRequest.displayName = `API: ${template}`;
+  apiRequest.stringify = params => getRequestExecuteFunction.stringify(params);
 
   return apiRequest;
 }

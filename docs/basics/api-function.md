@@ -1,7 +1,6 @@
 # Api function
 
-_Api_ is simple HTTP client wrapper that lets us define REST methods in single
-line of code.
+_Api_ is simple HTTP client wrapper that lets us define REST methods in single line of code.
 
 ```js
 import api from 'bivrost/http/api'
@@ -28,12 +27,19 @@ Example:
 ```js
 // Create a new repository for the authenticated user
 const createRepository = githubApi('POST /user/repos');
+
 createRepository({
   name: 'My new repo',
 }).then(response => {});
 
 // List all public repositories
 const getRepositoryList = githubApi('GET /repositories');
+
+// Stringify url according to params
+getRepositoryList.stringify({
+  since: 364,
+}); // https://api.github.com/repositories?since=364
+
 getRepositoryList({
   since: 364, // The integer ID of the last Repository that you've seen.
 }).then(response => {});
@@ -50,8 +56,7 @@ getUserRepositories({
 
 ### [#](#api-definition) Api url definition and placeholders
 
-* `PUT /user/:id` - _id_ parameter is required. _id_ will be removed from
-  request body. All other parameters will be passed to request body.
+* `PUT /user/:id` - _id_ parameter is required. _id_ will be removed from request body. All other parameters will be passed to request body.
 
 ```js
 const updateUser = api('PUT /user/:id');
@@ -65,9 +70,7 @@ updateUser({
 // name=Valerii
 ```
 
-* `POST /user?:hash&:version` - _hash_ and _version_ parameters are required.
-  These parameters will be removed from request body and passed to query. All
-  other parameters will be passed to request body.
+* `POST /user?:hash&:version` - _hash_ and _version_ parameters are required. These parameters will be removed from request body and passed to query. All other parameters will be passed to request body.
 
 ```js
 const createUser = api('POST /user?:hash&:version&');
@@ -102,7 +105,4 @@ getUsers({
 
 * [Adapters](/docs/basics/adapter.md)
 
-`POST /user?:hash&:version` does not guarantee that XHR POST method will be
-called. What will be done depends on used adapter - _api_ just calls adapter
-function with generated config. In case of _localStorage_ adapter - it will save
-or load data to localStorage.
+`POST /user?:hash&:version` does not guarantee that XHR POST method will be called. What will be done depends on used adapter - _api_ just calls adapter function with generated config. In case of _localStorage_ adapter - it will save or load data to localStorage.
