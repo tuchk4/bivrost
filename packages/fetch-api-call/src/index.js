@@ -10,6 +10,8 @@ function processResponse(response) {
 
     if (contentType && contentType.indexOf('application/json') !== -1) {
       return response.json();
+    } else if (contentType && contentType.indexOf('image') !== -1) {
+      return response.blob();
     } else {
       return response.text();
     }
