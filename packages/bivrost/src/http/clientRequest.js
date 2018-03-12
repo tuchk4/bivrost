@@ -1,3 +1,4 @@
+import qs from 'qs';
 import createRequestTemplate from './createRequestTemplate';
 import promiseDeduplicator from '../utils/promiseDeduplicator';
 import api from './api';
@@ -53,6 +54,7 @@ export default function clientRequest(template, options = {}) {
 
   getRequestExecuteFunction.stringify = params => {
     const request = getRequest(params);
+
     const url = buildUrl(
       options.protocol,
       options.host,
@@ -60,7 +62,8 @@ export default function clientRequest(template, options = {}) {
       request.path
     );
 
-    return url;
+    const queryString = qs.stringify(request.query);
+    return `${url}${queryString ? `?${queryString}` : ''}`;
   };
 
   return getRequestExecuteFunction;

@@ -10,7 +10,7 @@ describe('Request template', () => {
     getGETrequest = createRequestTemplate('GET /user/:id');
   });
 
-  it('stringify', () => {
+  it('stringify - 1', () => {
     const getUser = api({
       host: 'localhost',
     })('GET /user/:id');
@@ -20,6 +20,32 @@ describe('Request template', () => {
         id: 1,
       })
     ).toEqual('http://localhost/user/1');
+  });
+
+  it('stringify - 2', () => {
+    const getUser = api({
+      host: 'localhost',
+    })('GET /user/:id');
+
+    expect(
+      getUser.stringify({
+        id: 1,
+        group: 5,
+      })
+    ).toEqual('http://localhost/user/1?group=5');
+  });
+
+  it('stringify - 3', () => {
+    const getUser = api({
+      host: 'localhost',
+    })('GET /user?:id&:group');
+
+    expect(
+      getUser.stringify({
+        id: 1,
+        group: 5,
+      })
+    ).toEqual('http://localhost/user?id=1&group=5');
   });
 
   it('apply POST request', () => {
