@@ -2,8 +2,8 @@ import clientRequest from './clientRequest';
 
 export const CLIENT_REQUEST_SETUP_ERROR = 'CLIENT_REQUEST_SETUP_ERROR';
 
-function apiRequestTemplate(template, options) {
-  const getRequestExecuteFunction = clientRequest(template, options);
+function apiRequestTemplate(template, apiOptions, requestOptions) {
+  const getRequestExecuteFunction = clientRequest(template, apiOptions);
 
   const apiRequest = function(params = {}, context = {}) {
     let error = null;
@@ -23,7 +23,12 @@ function apiRequestTemplate(template, options) {
     if (error) {
       return Promise.reject(error);
     } else {
-      return executeRequest(context.headers);
+      return executeRequest({
+        headers: {
+          ...context.headers,
+          ...requestOptions.headers,
+        },
+      });
     }
   };
 
@@ -33,6 +38,7 @@ function apiRequestTemplate(template, options) {
   return apiRequest;
 }
 
-export default function api(options = {}) {
-  return template => apiRequestTemplate(template, options);
+export default function api(apiOptions = {}) {
+  return (template, requestOptions = {}) =>
+    apiRequestTemplate(template, apiOptions, requestOptions);
 }

@@ -36,7 +36,7 @@ describe('fetchApiCall', () => {
     });
   });
 
-  it('should run call with custom headers', () => {
+  it('should run call with custom headers 1', () => {
     const { api, interceptors } = fetchApiCall({
       protocol: 'http:',
       host: 'httpbin.org',
@@ -51,6 +51,29 @@ describe('fetchApiCall', () => {
       }
     ).then(res => {
       expect(res.headers['X-With-Custom-Header']).toEqual('123');
+    });
+  });
+
+  it('should run call with custom headers 2', () => {
+    const { api, interceptors } = fetchApiCall({
+      protocol: 'http:',
+      host: 'httpbin.org',
+    });
+
+    const withCustomHeaders = api('GET /headers', {
+      headers: {
+        'x-with-custom-header-2': '345',
+      },
+    });
+
+    return withCustomHeaders(
+      {},
+      {
+        headers: { 'x-with-custom-header': '123' },
+      }
+    ).then(res => {
+      expect(res.headers['X-With-Custom-Header']).toEqual('123');
+      expect(res.headers['X-With-Custom-Header-2']).toEqual('345');
     });
   });
 });

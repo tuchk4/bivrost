@@ -8,6 +8,15 @@ const DEFAULT_ADAPTER_OPTIONS = {
   },
 };
 
+const filterNullValues = obj =>
+  Object.keys(obj).reduce((map, key) => {
+    if (obj[key]) {
+      map[key] = obj[key];
+    }
+
+    return map;
+  }, {});
+
 export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
   const adapterOptions = {
     ...DEFAULT_ADAPTER_OPTIONS,
@@ -18,10 +27,12 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
     const config = {
       ...adapterOptions,
       ...requestOptions,
-      headers: new Headers({
-        ...(adapterOptions.headers || {}),
-        ...(requestOptions.headers || {}),
-      }),
+      headers: new Headers(
+        filterNullValues({
+          ...(adapterOptions.headers || {}),
+          ...(requestOptions.headers || {}),
+        })
+      ),
     };
 
     if (requestOptions.body) {

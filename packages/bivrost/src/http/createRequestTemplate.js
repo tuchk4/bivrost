@@ -32,20 +32,26 @@ const buildPath = (path, paramsMap) =>
   });
 
 const buildUnboundParams = (exceptParamsSet, params = {}) => {
-  const keys = params.entries ? params.entries : Object.keys(params);
-  const initialValue = params.entries ? new FormData() : {};
+  const keys = params.entries ? params.entries() : Object.keys(params);
+  const isIterator = !!params.entries;
 
-  return keys
-    .filter(it => !exceptParamsSet.has(it))
-    .reduce((newParams, key) => {
-      if (params.entries) {
-        newParams.append(key, params.get(key));
-      } else {
-        newParams[key] = params[key];
-      }
+  const newParams = isIterator ? new FormData() : {};
 
-      return newParams;
-    }, initialValue);
+  for (const pair of keys) {
+    const key = isIterator ? pair[0] : pair;
+
+    if (exceptParamsSet.has(key)) {
+      continue;
+    }
+
+    if (isIterator) {
+      newParams.set(pair[0], pair[1]);
+    } else {
+      newParams[pair] = params[pair];
+    }
+  }
+
+  return newParams;
 };
 
 const fNot = f => a => !f(a);
@@ -88,16 +94,19 @@ const extractMethodAndUrl = templateString => {
 };
 
 const getParamsMap = params => {
-  const keys = params.entries ? params.entries : Object.keys(params);
+  const isIterator = !!params.entries;
+  const keys = isIterator ? params.entries() : Object.keys(params);
 
-  return keys.reduce((paramsMap, key) => {
-    if (params.get) {
-      paramsMap.set(key, params.get(key));
+  const paramsMap = new Map();
+  for (const pair of keys) {
+    if (isIterator) {
+      paramsMap.set(pair[0], pair[1]);
     } else {
-      paramsMap.set(key, params[key]);
+      paramsMap.set(pair, params[pair]);
     }
-    return paramsMap;
-  }, new Map());
+  }
+
+  return paramsMap;
 };
 
 const parseRequestTemplate = templateString => {
