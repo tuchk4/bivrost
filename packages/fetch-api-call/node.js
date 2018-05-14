@@ -1,4 +1,4 @@
 'use strict';
 
-var createApi = require('./index');
+let createApi = require('./index');
 module.exports = createApi.default;

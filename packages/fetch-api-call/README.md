@@ -213,6 +213,7 @@ const createApi = setup({
     request: req => req,
     error: err => err,
   },
+  deduplicate: false
 });
 
 const api = createApi({
