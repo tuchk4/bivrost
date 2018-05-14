@@ -1,6 +1,6 @@
 {
   "name": "bivrost",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "main": "index.js",
   "description": "Bivrost allows to organize a simple interface to asynchronous APIs.",
   "keywords": [
@@ -20,7 +20,7 @@
     "dev": "../../node_modules/.bin/babel -d ./ ./src --watch"
   },
   "devDependencies": {
-    "bivrost-axios-adapter": "^3.0.2"
+    "bivrost-axios-adapter": "^3.2.1"
   },
   "repository": {
     "type": "git",

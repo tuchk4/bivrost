@@ -1,11 +1,6 @@
 import qs from 'qs';
 import createRequestTemplate from './createRequestTemplate';
 import promiseDeduplicator from '../utils/promiseDeduplicator';
-import api from './api';
-
-const DEFAULT_OPTIONS = {
-  protocol: 'http:',
-};
 
 const join = (...parts) =>
   parts
@@ -42,7 +37,7 @@ export default function clientRequest(template, options = {}) {
           },
         });
 
-      if (request.method === 'GET') {
+      if (options.deduplicate && request.method === 'GET') {
         let dedupKey = JSON.stringify([request.method, url, request.query]);
 
         return promiseDeduplicator(dedupKey, promiseCreator);
