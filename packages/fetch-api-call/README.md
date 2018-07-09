@@ -36,9 +36,11 @@ laodUser({
 
 
 // or even bind params to query
-const getUserDetails = api('GET /user/:id?:details&sections');
+const getUserDetails = api('POST /user/:id?:version');
 getUser({
   id: 1,
+  data: {},
+  version: 2
 });
 ```
 
