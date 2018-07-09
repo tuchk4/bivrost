@@ -33,6 +33,13 @@ const loadUser = api('GET /user/:id');
 laodUser({
   id: 1,
 });
+
+
+// or even bind params to query
+const getUserDetails = api('GET /user/:id?:details&sections');
+getUser({
+  id: 1,
+});
 ```
 
 ## Install
@@ -94,12 +101,6 @@ logout();
 
 // get user api
 const getUser = api('GET /user/:id');
-getUser({
-  id: 1,
-});
-
-// or event bind parasm to query
-const getUser = api('GET /user/:id?:group&:details');
 getUser({
   id: 1,
 });
