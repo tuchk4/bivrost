@@ -97,6 +97,12 @@ const getUser = api('GET /user/:id');
 getUser({
   id: 1,
 });
+
+// or event bind parasm to query
+const getUser = api('GET /user/:id?:group&:details');
+getUser({
+  id: 1,
+});
 ```
 
 ## Interceptors
