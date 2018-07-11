@@ -52,7 +52,7 @@ import DataSource from 'bivrost/data/source';
 import githubApi from './github-api';
 import tcomb from 'tcomb';
 
-class GihtubRepositories extends DataSource {
+class GithubRepositories extends DataSource {
   // define invoke method chain. Default chain is - ['api', 'process']
   static steps = ['api', 'immutable'];
 
@@ -81,15 +81,15 @@ class GihtubRepositories extends DataSource {
 }
 ```
 
-Extends GihtubRepositories and define username. Now all requests will be done
+Extends GithubRepositories and define username. Now all requests will be done
 for facebook's github group.
 
 ```js
-import GihtubRepositories from './github-repositories';
+import GithubRepositories from './github-repositories';
 
 const FACEBOOK_GITHUB_ACCOUNT = 'facebook';
 
-class FacebookRepositories extends GihtubRepositories {
+class FacebookRepositories extends GithubRepositories {
   getRepositories() {
     return super.getRepositories(FACEBOOK_GITHUB_ACCOUNT);
   }
