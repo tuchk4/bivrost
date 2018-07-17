@@ -181,7 +181,7 @@ export default class Source {
         }
       }
 
-      return promiseCache(cache, key, () => fn(params));
+      return promiseCache(cache, key, () => fn(params, methodContext));
     }
   }
 
