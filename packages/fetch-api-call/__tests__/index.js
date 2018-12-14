@@ -22,6 +22,24 @@ describe('fetchApiCall', () => {
       });
   });
 
+  it('should process request options', () => {
+    const { api, interceptors } = fetchApiCall({
+      protocol: 'http:',
+      host: 'httpbin.org',
+      request: {
+        credentials: 'include',
+      },
+    });
+
+    const request = api('GET /response-headers');
+
+    return request({
+      status: 200,
+    }).then(r => {
+      console.log(r);
+    });
+  });
+
   it('should pass post body', () => {
     const { api, interceptors } = fetchApiCall({
       protocol: 'http:',

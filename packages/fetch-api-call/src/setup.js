@@ -5,6 +5,11 @@ import createInterceptors from './createInterceptors';
 export default ({ adapter, ...defaults }) => ({
   headers,
   mode,
+  // https://developer.mozilla.org/en-US/docs/Web/API/Request/Request
+  request = {
+    ...defaults.request,
+    ...request,
+  },
   ...options
 }) => {
   const interceptors = createInterceptors(defaults.interceptors);
@@ -21,6 +26,7 @@ export default ({ adapter, ...defaults }) => ({
           },
           response: async response => await interceptors.response(response),
         },
+        ...request,
       }),
       deduplicate: defaults.hasOwnProperty('deduplicate')
         ? defaults.deduplicate
