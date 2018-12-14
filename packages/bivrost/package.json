@@ -1,6 +1,6 @@
 {
   "name": "bivrost",
-  "version": "3.2.4",
+  "version": "3.2.5",
   "main": "index.js",
   "description": "Bivrost allows to organize a simple interface to asynchronous APIs.",
   "keywords": [
