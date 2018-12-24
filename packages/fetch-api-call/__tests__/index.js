@@ -35,8 +35,6 @@ describe('fetchApiCall', () => {
 
     return request({
       status: 200,
-    }).then(r => {
-      console.log(r);
     });
   });
 

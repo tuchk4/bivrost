@@ -1,6 +1,6 @@
 {
   "name": "fetch-api-call",
-  "version": "3.2.5",
+  "version": "3.2.6",
   "description": "Fetch api call supporting url params / interceptors / awesome api setup",
   "keywords": [
     "rest",
