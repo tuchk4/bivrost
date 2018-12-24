@@ -146,7 +146,10 @@ export default function getRequestTempalate(tempalte) {
     let unboundQuery = {};
 
     if (methodsWithBody.has(httpMethod)) {
-      if (params instanceof FormData) {
+      const isFormData =
+        params.toString && params.toString() === '[object FormData]';
+
+      if (isFormData) {
         request = params;
       } else {
         request.body = buildUnboundParams(uniqueBindings, params);
