@@ -1,4 +1,4 @@
-import FormData from 'form-data';
+import FormData from 'formdata-polyfill';
 import Url from 'url';
 
 const getUniqueBindings = (queryBindings, pathBindings) =>
@@ -128,14 +128,14 @@ const parseRequestTemplate = templateString => {
 
 const methodsWithBody = new Set(['POST', 'PUT', 'PATCH']);
 
-export default function getRequestTempalate(tempalte) {
+export default function getRequestTemplate(template) {
   const {
     httpMethod,
     queryBindings,
     queryDefaults,
     pathBindings,
     path,
-  } = parseRequestTemplate(tempalte);
+  } = parseRequestTemplate(template);
 
   const uniqueBindings = getUniqueBindings(queryBindings, pathBindings);
 
