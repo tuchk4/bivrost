@@ -30,7 +30,6 @@
   },
   "homepage": "hhttps://github.com/tuchk4/bivrost",
   "dependencies": {
-    "formdata-polyfill": "^3.0.13",
     "isomorphic-fetch": "2.2.1",
     "qs": "^6.5.1"
   }

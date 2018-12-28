@@ -34,7 +34,6 @@
   },
   "homepage": "hhttps://github.com/tuchk4/bivrost",
   "dependencies": {
-    "formdata-polyfill": "^3.0.13",
     "lodash.camelcase": "^4.3.0"
   }
 }

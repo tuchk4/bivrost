@@ -1,4 +1,3 @@
-import FormData from 'formdata-polyfill';
 import Url from 'url';
 
 const getUniqueBindings = (queryBindings, pathBindings) =>
@@ -31,25 +30,16 @@ const buildPath = (path, paramsMap) =>
     return paramsMap.get(paramName);
   });
 
-const buildUnboundParams = (exceptParamsSet, params = {}) => {
-  const keys = params.entries ? params.entries() : Object.keys(params);
-  const isIterator = !!params.entries;
+const buildUnboundParams = (exceptParamsSet, paramsMap) => {
+  const newParams = {};
 
-  const newParams = isIterator ? new FormData() : {};
-
-  for (const pair of keys) {
-    const key = isIterator ? pair[0] : pair;
-
+  paramsMap.forEach((value, key) => {
     if (exceptParamsSet.has(key)) {
-      continue;
+      return;
     }
 
-    if (isIterator) {
-      newParams.set(pair[0], pair[1]);
-    } else {
-      newParams[pair] = params[pair];
-    }
-  }
+    newParams[key] = value;
+  });
 
   return newParams;
 };
@@ -94,16 +84,9 @@ const extractMethodAndUrl = templateString => {
 };
 
 const getParamsMap = params => {
-  const isIterator = !!params.entries;
-  const keys = isIterator ? params.entries() : Object.keys(params);
-
   const paramsMap = new Map();
-  for (const pair of keys) {
-    if (isIterator) {
-      paramsMap.set(pair[0], pair[1]);
-    } else {
-      paramsMap.set(pair, params[pair]);
-    }
+  for (const key of Object.keys(params)) {
+    paramsMap.set(key, params[key]);
   }
 
   return paramsMap;
@@ -140,17 +123,32 @@ export default function getRequestTemplate(template) {
   const uniqueBindings = getUniqueBindings(queryBindings, pathBindings);
 
   return function getRequest(params = {}) {
-    let paramsMap = getParamsMap(params);
+    const isIterable = params.forEach instanceof Function;
+
+    let templateParams = null;
+
+    if (isIterable) {
+      params.forEach((value, key) => {
+        templateParams[key] = value;
+      });
+    } else {
+      templateParams = params;
+    }
+
+    let paramsMap = getParamsMap(templateParams);
+
     let request = {};
 
-    let body = null;
     let unboundQuery = {};
 
     if (methodsWithBody.has(httpMethod)) {
-      body = buildUnboundParams(uniqueBindings, params);
-      request.body = body;
+      request.body = !isIterable
+        ? buildUnboundParams(uniqueBindings, paramsMap)
+        : params;
     } else {
-      unboundQuery = buildUnboundParams(uniqueBindings, params);
+      unboundQuery = !isIterable
+        ? buildUnboundParams(uniqueBindings, paramsMap)
+        : params;
     }
 
     return {

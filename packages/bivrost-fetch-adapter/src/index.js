@@ -1,6 +1,5 @@
 import qs from 'qs';
 import 'isomorphic-fetch';
-import FormData from 'formdata-polyfill';
 
 const DEFAULT_ADAPTER_OPTIONS = {
   queryFormat: {
@@ -36,8 +35,7 @@ export default function fetchAdapter({ interceptors = {}, ...options } = {}) {
     };
 
     if (requestOptions.body) {
-      // if (requestOptions.body instanceof FormData) {
-      if (requestOptions.body.entries instanceof Function) {
+      if (requestOptions.body.forEach instanceof Function) {
         config.body = requestOptions.body;
       } else {
         config.body = JSON.stringify(requestOptions.body);
