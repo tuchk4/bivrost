@@ -1,14 +1,9 @@
 {
   "name": "bivrost",
   "version": "1.0.0",
-  "description": "Bivrost allows to organize a simple interface to asynchronous APIs.",
-  "keywords": [
-    "data-source",
-    "api",
-    "fetch",
-    "axios",
-    "local-storage"
-  ],
+  "description":
+    "Bivrost allows to organize a simple interface to asynchronous APIs.",
+  "keywords": ["data-source", "api", "fetch", "axios", "local-storage"],
   "author": "tuchk4 <valeriy.sorokobatko@gmail.com>",
   "scripts": {
     "dev": "lerna run dev --stream --parallel",
@@ -16,17 +11,18 @@
     "test-dev": "jest --watch",
     "docs:clean": "rimraf _book",
     "docs:prepare": "gitbook install",
-    "docs:build": "npm run docs:prepare && rm -rf _book && ./node_modules/.bin/gitbook build",
+    "docs:build":
+      "npm run docs:prepare && rm -rf _book && ./node_modules/.bin/gitbook build",
     "docs:watch": "npm run docs:prepare && ./node_modules/.bin/gitbook serve",
-    "docs:publish": "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push git@github.com:tuchk4/bivrost gh-pages --force",
+    "docs:publish":
+      "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push git@github.com:tuchk4/bivrost gh-pages --force",
     "precommit": "lint-staged",
-    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules|coverage)/**/*.js'"
+    "format":
+      "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules|coverage)/**/*.js'"
   },
   "jest": {
     "rootDir": "./packages",
-    "setupFiles": [
-      "./bivrost/__tests__/localstorage-mock.js"
-    ],
+    "setupFiles": ["./bivrost/__tests__/localstorage-mock.js"],
     "modulePathIgnorePatterns": [
       "./bivrost/__tests__/http-bin-api.js",
       "./bivrost/__tests__/localstorage-mock.js"
@@ -56,15 +52,11 @@
   },
   "homepage": "https://github.com/frankland/bivrost",
   "lint-staged": {
-    "*.js": [
-      "prettier --trailing-comma es5 --single-quote --write",
-      "git add"
-    ]
+    "*.js": ["prettier --trailing-comma es5 --single-quote --write", "git add"]
   },
   "dependencies": {
     "gitbook-plugin-anker-enable": "0.0.4",
     "gitbook-plugin-edit-link": "^2.0.2",
-    "gitbook-plugin-ga": "^1.0.1",
     "gitbook-plugin-github": "^2.0.0",
     "gitbook-plugin-prism": "^2.3.0"
   }
